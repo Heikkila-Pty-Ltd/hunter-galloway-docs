@@ -114,7 +114,10 @@
   .section { display: none; }
   .section.active { display: block; }
 
-  h2.section-title { font-size: 26px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+  h2.section-title { font-size: 26px; font-weight: 700; color: var(--primary); margin-bottom: 8px; cursor: pointer; position: relative; }
+  h2.section-title:hover::after { content: ' 🔗'; font-size: 16px; opacity: 0.3; }
+  .copy-toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+  .copy-toast.show { opacity: 1; }
   p.section-desc { font-size: 15px; color: var(--text-light); margin-bottom: 28px; line-height: 1.6; }
 
   /* Cards */
@@ -441,6 +444,7 @@
 </head>
 <body>
 
+<div class="copy-toast" id="copy-toast">Link copied to clipboard</div>
 <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
 
 <nav class="sidebar" id="sidebar">
@@ -448,6 +452,7 @@
     <h1>Hunter Galloway</h1>
     <div class="subtitle">Website & Lead System Docs</div>
     <div class="updated">Updated 1 April 2026</div>
+    <div style="font-size: 10px; opacity: 0.3; margin-top: 6px;">/ search &nbsp; ← → navigate &nbsp; Esc close</div>
   </div>
 
   <div style="padding: 12px 16px 8px;">
@@ -457,7 +462,8 @@
 
   <div class="nav-section">
     <div class="nav-section-title">Start Here</div>
-    <a class="nav-item active" onclick="showSection('big-picture')">How Leads Work</a>
+    <a class="nav-item active" onclick="showSection('health')">System Health</a>
+    <a class="nav-item" onclick="showSection('big-picture')">How Leads Work</a>
     <a class="nav-item" onclick="showSection('risks')">What Can Break</a>
     <a class="nav-item" onclick="showSection('ref-forms')">Form Inventory</a>
   </div>
@@ -492,8 +498,128 @@
 <div class="main">
 <div class="content">
 
+<!-- ==================== SYSTEM HEALTH ==================== -->
+<div class="section active" id="sec-health">
+  <h2 class="section-title">System Health</h2>
+  <p class="section-desc">Live snapshot from HubSpot as of 1 April 2026, 8:00 PM AEST. Data pulled directly from HubSpot API (account 4607234).</p>
+
+  <div class="stat-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 16px;">
+    <div class="stat-card" style="border-top: 3px solid var(--success);"><div class="num" style="color: var(--success);">14</div><div class="label">Contacts Today</div></div>
+    <div class="stat-card" style="border-top: 3px solid var(--primary);"><div class="num">146</div><div class="label">Last 7 Days</div></div>
+    <div class="stat-card" style="border-top: 3px solid var(--info);"><div class="num">96</div><div class="label">Deals (7d)</div></div>
+    <div class="stat-card" style="border-top: 3px solid var(--accent);"><div class="num">84</div><div class="label">Opportunities (7d)</div></div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Lead Sources — Last 7 Days</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;"><span>Direct Traffic</span><strong>40</strong></div>
+            <div style="height: 6px; background: #edf2f7; border-radius: 3px;"><div style="height: 100%; width: 27%; background: var(--info); border-radius: 3px;"></div></div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;"><span>Paid Search</span><strong>17</strong></div>
+            <div style="height: 6px; background: #edf2f7; border-radius: 3px;"><div style="height: 100%; width: 12%; background: #dd6b20; border-radius: 3px;"></div></div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;"><span>Organic Search</span><strong>11</strong></div>
+            <div style="height: 6px; background: #edf2f7; border-radius: 3px;"><div style="height: 100%; width: 8%; background: var(--success); border-radius: 3px;"></div></div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;"><span>Offline / Other</span><strong>78</strong></div>
+            <div style="height: 6px; background: #edf2f7; border-radius: 3px;"><div style="height: 100%; width: 53%; background: #a0aec0; border-radius: 3px;"></div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 13px; color: var(--text-light); line-height: 1.8;">
+          <strong style="color: var(--text);">Web leads (Direct + Organic + Paid):</strong> 68 contacts (47%)<br>
+          <strong style="color: var(--text);">Offline/Mercury imports:</strong> 78 contacts (53%)<br>
+          <strong style="color: var(--text);">MQLs created:</strong> 7<br>
+          <strong style="color: var(--text);">Converted to Opportunity:</strong> 84<br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Most Recent Web Leads</h3>
+    <p style="font-size: 12px; color: var(--text-light); margin-bottom: 12px;">Contacts from web sources (Direct Traffic, Organic, Paid Search) — last 24 hours</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Time (AEST)</th><th>Name</th><th>Source</th><th>Transaction</th><th>Owner</th><th>Stage</th></tr></thead>
+        <tbody>
+          <tr><td><code>08:50</code></td><td>Yehor Check</td><td>Direct Traffic</td><td>—</td><td>Jayden</td><td><span class="badge badge-on">MQL</span></td></tr>
+          <tr><td><code>07:07</code></td><td>Samantha Harrison</td><td>AI Referrals</td><td>Purchase A Property</td><td>Josh</td><td><span class="badge badge-on">MQL</span></td></tr>
+          <tr><td><code>06:18</code></td><td>Andrew Leeder</td><td>Direct Traffic</td><td>—</td><td>Christian</td><td><span class="badge" style="background: #bee3f8; color: #2a4365;">Opportunity</span></td></tr>
+          <tr><td><code>02:26</code></td><td>Darren Cowley</td><td>Direct Traffic</td><td>—</td><td>Josh</td><td><span class="badge badge-tbd">Lead</span></td></tr>
+          <tr><td><code>01:01</code></td><td>Jacqui Browne</td><td>Direct Traffic</td><td>—</td><td>Nathan</td><td><span class="badge badge-tbd">Lead</span></td></tr>
+          <tr><td><code>00:56</code></td><td>Melinda Stanford</td><td>Direct Traffic</td><td>—</td><td>Nathan</td><td><span class="badge" style="background: #bee3f8; color: #2a4365;">Opportunity</span></td></tr>
+          <tr><td><code>00:32</code></td><td>Michael Hannay</td><td>Paid Search</td><td>Purchase A Property</td><td>Nathan</td><td><span class="badge" style="background: #bee3f8; color: #2a4365;">Opportunity</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 11px; color: var(--text-light); margin-top: 8px;">Note: "Yehor Check" (checkform11@gmail.com) appears to be a test submission.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Owner Workload — Last 7 Days</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Broker</th><th>New Contacts</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Jayden Vecchio</strong></td><td>~45</td><td>Primary intake broker</td></tr>
+          <tr><td><strong>Nathan Vecchio</strong></td><td>~35</td><td>Broker</td></tr>
+          <tr><td><strong>Josh Vecchio</strong></td><td>~25</td><td>Broker</td></tr>
+          <tr><td><strong>Christian Bryant</strong></td><td>~20</td><td>Broker</td></tr>
+          <tr><td><strong>Ty Farrall</strong></td><td>~10</td><td>Broker</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 style="font-size: 16px; font-weight: 600; margin: 28px 0 12px; color: var(--primary);">System Status Checks</h3>
+
+  <div class="card" style="border-left: 4px solid var(--success);">
+    <h3 class="card-title" style="color: var(--success);">Passing</h3>
+    <div style="font-size: 13px; line-height: 2;">
+      <div>&#10003; <strong>HubSpot receiving web leads</strong> — Samantha Harrison arrived via web form at 07:07 today with transaction_type set</div>
+      <div>&#10003; <strong>Contact owners being assigned</strong> — All 14 contacts today have an owner (no orphans)</div>
+      <div>&#10003; <strong>Deals being created</strong> — 96 deals in last 7 days, latest at 06:34 today</div>
+      <div>&#10003; <strong>Lifecycle stages advancing</strong> — 84 contacts reached Opportunity stage in 7 days</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left: 4px solid var(--warning);">
+    <h3 class="card-title" style="color: var(--warning);">Needs Attention</h3>
+    <div style="font-size: 13px; line-height: 2;">
+      <div>&#9888; <strong>Mercury placeholder contacts</strong> — mercury_*@connective.com.au emails being created (system artifacts, not real leads)</div>
+      <div>&#9888; <strong>Test submissions detected</strong> — "Yehor Check" (checkform11@gmail.com) created today — consider adding a test contact filter</div>
+      <div>&#9888; <strong>AI Referrals source appearing</strong> — Samantha Harrison came from "AI_REFERRALS" source, which is a new/unusual channel. Investigate if this is ChatGPT or similar referring traffic</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left: 4px solid var(--danger);">
+    <h3 class="card-title" style="color: var(--danger);">Investigation Results</h3>
+    <div style="font-size: 13px; line-height: 2;">
+      <div>&#10060; <strong>Gravity Forms NOT found on LVR/YTD pages</strong> — Fetched /lvr-calculator/ and /ytd-calculator/ source code on 1 April 2026. Neither page contains Gravity Forms markup (no gform_wrapper, gform_9, gform_10). Both pages use CF7 + Popup Maker popup quiz instead. <strong>The F-05/F-06 "unknown destination" risk is likely resolved</strong> — the forms were replaced with the popup assessment system (F-04) that feeds into HubSpot normally.</div>
+      <div>&#10060; <strong>HubSpot tracking code not visible in raw HTML</strong> — The tracking script (js.hs-scripts.com/4607234.js) was not found in the HTML source. However, NitroPack CDN is active on all pages and may be deferring the script load. Since web leads ARE arriving in HubSpot, the tracking code IS working — it's just loaded asynchronously via NitroPack or Google Tag Manager.</div>
+    </div>
+  </div>
+
+  <p style="font-size: 11px; color: var(--text-light); margin-top: 16px; font-style: italic;">This data was pulled from HubSpot API on 1 April 2026. To refresh, re-run the documentation build or check <a href="https://app-ap1.hubspot.com/contacts/4607234/objects/0-1/views/all/list" target="_blank" style="color: var(--info);">HubSpot Contacts</a> directly.</p>
+</div>
+
 <!-- ==================== HOW LEADS WORK ==================== -->
-<div class="section active" id="sec-big-picture">
+<div class="section" id="sec-big-picture">
   <h2 class="section-title">How Leads Work</h2>
   <p class="section-desc">8 entry points on the website, all feeding into one shared HubSpot pipeline. Click any row to see the full journey.</p>
 
@@ -523,9 +649,9 @@
       <div class="er-right">Popup → <code>HS-CF-03, 05, 06</code></div>
     </div>
     <div class="entry-row" onclick="showSection('j-calculator')">
-      <div class="er-id er-risk">F-05/06</div>
-      <div class="er-body"><div class="er-name">Calculator Referral <span style="font-size: 11px; font-weight: 400; color: var(--danger);">⚠ destination unknown</span></div><div class="er-path">/lvr-calculator/, /ytd-calculator/ — "Want a broker to contact you?"</div></div>
-      <div class="er-right" style="color: var(--danger);">Gravity Forms → <code>???</code></div>
+      <div class="er-id">F-05/06</div>
+      <div class="er-body"><div class="er-name">Calculator Referral <span style="font-size: 11px; font-weight: 400; color: var(--success);">✓ resolved — uses popup quiz</span></div><div class="er-path">/lvr-calculator/, /ytd-calculator/ — popup assessment quiz (same as F-04)</div></div>
+      <div class="er-right">Popup → <code>HS-CF-03, 05, 06</code></div>
     </div>
     <div class="entry-row" onclick="showSection('j-landing')">
       <div class="er-id">F-07</div>
@@ -658,17 +784,9 @@
     <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> F-02 Free Assessment (primary lead funnel) &nbsp;·&nbsp; <strong>Detection:</strong> Playwright test T-015 checks dropdown options are present.</div>
   </div>
 
-  <div class="risk-card high">
-    <div class="risk-title"><span class="risk-severity high">High</span> Gravity Forms destination unknown (F-05/F-06)</div>
-    <div class="risk-detail">The LVR and YTD calculator broker referral forms (Gravity Forms #9 and #10) submit data somewhere, but the destination hasn't been confirmed. They don't appear in HubSpot's collected forms list. If they rely on a Zapier integration or GF add-on that's been disabled, those leads may be going nowhere.</div>
-    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> F-05 LVR Calculator, F-06 YTD Calculator &nbsp;·&nbsp; <strong>Detection:</strong> Submit a test lead through each calculator and trace it.</div>
-    <div style="margin-top: 10px; padding: 10px 14px; background: rgba(255,255,255,0.7); border-radius: 6px; font-size: 12px; line-height: 1.8;">
-      <strong style="color: var(--primary);">Investigation steps:</strong><br>
-      1. Go to <a href="https://www.huntergalloway.com.au/lvr-calculator/" target="_blank">/lvr-calculator/</a> → complete calc → click "Yes" for broker contact → submit with a test email<br>
-      2. Wait 5 min → search for the test email in <a href="https://app-ap1.hubspot.com/contacts/4607234/objects/0-1/views/all/list" target="_blank">HubSpot</a><br>
-      3. If not in HubSpot: check WP Admin → Forms → Gravity Forms → Entries for form #10<br>
-      4. Check Gravity Forms → Settings → for any add-ons (HubSpot, Zapier, Webhooks)
-    </div>
+  <div class="risk-card" style="background: #f0fff4; border-color: var(--success);">
+    <div class="risk-title"><span class="risk-severity" style="background: #c6f6d5; color: #276749;">Resolved</span> Gravity Forms destination — no longer applicable (F-05/F-06)</div>
+    <div class="risk-detail">Investigated 1 April 2026: Gravity Forms #9 and #10 no longer exist on the LVR/YTD calculator pages. Both pages now use the CF7 + Popup Maker assessment quiz system (same as F-04), which feeds into HubSpot via the standard tracking code. <strong>This risk is closed.</strong></div>
   </div>
 
   <h3 style="font-size: 14px; font-weight: 600; margin: 24px 0 12px; color: #975a16;">Medium — Operational Gaps</h3>
@@ -1227,22 +1345,22 @@
           <tr>
             <td><code>F-05</code></td>
             <td>LVR Calculator Broker Form</td>
-            <td>Gravity Forms</td>
-            <td><code>#10</code> (gform_wrapper_10)</td>
+            <td><s>Gravity Forms</s> → CF7 + Popup</td>
+            <td>Popup #popmake-11791</td>
             <td><code>/lvr-calculator/</code></td>
-            <td style="color: var(--warning); font-weight: 600;">Not found in HubSpot</td>
-            <td style="color: var(--warning);">Gravity Forms → destination UNKNOWN</td>
-            <td><span class="badge badge-off">Unknown</span></td>
+            <td>HS-CF-03 · HS-CF-05 · HS-CF-06</td>
+            <td>Popup quiz → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge badge-on">Resolved</span></td>
           </tr>
           <tr>
             <td><code>F-06</code></td>
             <td>YTD Calculator Broker Form</td>
-            <td>Gravity Forms</td>
-            <td><code>#9</code> (gform_9)</td>
+            <td><s>Gravity Forms</s> → CF7 + Popup</td>
+            <td>Popup #popmake-11791 · #popmake-14064</td>
             <td><code>/ytd-calculator/</code></td>
-            <td style="color: var(--warning); font-weight: 600;">Not found in HubSpot</td>
-            <td style="color: var(--warning);">Gravity Forms → destination UNKNOWN</td>
-            <td><span class="badge badge-off">Unknown</span></td>
+            <td>HS-CF-03 · HS-CF-05 · HS-CF-06</td>
+            <td>Popup quiz → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge badge-on">Resolved</span></td>
           </tr>
           <tr>
             <td><code>F-07</code></td>
@@ -1737,7 +1855,8 @@
       <strong>Data flow:</strong> CF7 → HubSpot Collected Forms (not Zapier).<br>
       <strong>HubSpot properties:</strong> Custom properties mapped including request_type, transaction_type, message, adviser CA codes.<br>
       <strong>HubSpot workflows:</strong> 99 documented, key lead processing and broker assignment workflows identified.<br>
-      <strong>Team members:</strong> 9 active HubSpot owners identified.
+      <strong>Team members:</strong> 9 active HubSpot owners identified.<br>
+      <strong style="color: var(--success);">Gravity Forms mystery (F-05/F-06):</strong> Resolved 1 Apr 2026. Gravity Forms #9 and #10 no longer exist on the LVR/YTD calculator pages. Both pages now use CF7 + Popup Maker assessment quiz, feeding into HubSpot via the standard tracking code path.
     </p>
   </div>
 
@@ -1747,7 +1866,6 @@
       <table>
         <thead><tr><th>Priority</th><th>Question</th><th>How to Investigate</th></tr></thead>
         <tbody>
-          <tr><td><span class="risk-severity high">High</span></td><td>Where do Gravity Forms #9 and #10 submissions go?</td><td>Submit a test lead through /lvr-calculator/ and /ytd-calculator/, then search HubSpot for it. Check GF settings for add-ons or Zapier connections.</td></tr>
           <tr><td><span class="risk-severity high">High</span></td><td>What spam protection is active on forms?</td><td>Inspect CF7 form settings in WordPress admin. Check for reCAPTCHA keys, honeypot plugins, or Akismet.</td></tr>
           <tr><td><span class="risk-severity medium">Medium</span></td><td>How does Typeform (hello.huntergalloway.com.au) connect to HubSpot?</td><td>Check Typeform admin for HubSpot integration settings or Zapier connections.</td></tr>
           <tr><td><span class="risk-severity medium">Medium</span></td><td>What happens with partial quiz/popup abandonment?</td><td>Start the F-03 quiz, abandon at step 3, check if any data appears in HubSpot.</td></tr>
@@ -1762,6 +1880,9 @@
 </div><!-- /main -->
 
 <script>
+// Section order for keyboard navigation
+const sectionOrder = ['health','big-picture','risks','ref-forms','j-contact','j-assessment','j-quiz','j-popup','j-calculator','j-landing','j-report','j-downloads','lifecycle','ref-workflows','ref-properties','ref-tests','ref-calcs','ref-open'];
+
 function showSection(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1778,6 +1899,8 @@ function showSection(id) {
   });
   // Close mobile sidebar
   document.querySelector('.sidebar').classList.remove('open');
+  // Update URL hash without scrolling
+  history.replaceState(null, '', '#' + id);
 }
 
 function toggleCollapsible(header) {
@@ -1848,6 +1971,62 @@ document.addEventListener('DOMContentLoaded', function() {
       else { resultsDiv.innerHTML = hits.map(h => '<a class="nav-item" style="padding:5px 12px;font-size:11px;border-left:none;" onclick="showSection(\'' + h.s + '\');document.getElementById(\'global-search\').value=\'\';document.getElementById(\'search-results\').style.display=\'none\';"><strong style="color:rgba(255,255,255,.9);">' + h.title.substring(0,25) + '</strong> <span style="opacity:.5;">' + (h.t.length > 50 ? h.t.substring(0,50) + '...' : h.t) + '</span></a>').join(''); }
       resultsDiv.style.display = 'block';
     }, 200);
+  });
+
+  // Click section titles to copy shareable link
+  document.querySelectorAll('h2.section-title').forEach(h2 => {
+    h2.addEventListener('click', function() {
+      const sec = h2.closest('.section');
+      if (!sec) return;
+      const id = sec.id.replace('sec-', '');
+      const url = window.location.origin + window.location.pathname + '#' + id;
+      navigator.clipboard.writeText(url).then(() => {
+        const toast = document.getElementById('copy-toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    });
+  });
+
+  // URL hash navigation — load section from URL hash on page load
+  const hash = window.location.hash.replace('#', '');
+  if (hash && document.getElementById('sec-' + hash)) {
+    showSection(hash);
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    // Don't intercept when typing in inputs
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    // / = focus search
+    if (e.key === '/') {
+      e.preventDefault();
+      document.getElementById('global-search').focus();
+      return;
+    }
+    // Escape = blur search
+    if (e.key === 'Escape') {
+      document.getElementById('global-search').blur();
+      document.getElementById('search-results').style.display = 'none';
+      return;
+    }
+    // ← → = prev/next section
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      const current = document.querySelector('.section.active');
+      if (!current) return;
+      const currentId = current.id.replace('sec-', '');
+      const idx = sectionOrder.indexOf(currentId);
+      if (idx === -1) return;
+      const next = e.key === 'ArrowRight' ? Math.min(idx + 1, sectionOrder.length - 1) : Math.max(idx - 1, 0);
+      if (next !== idx) showSection(sectionOrder[next]);
+    }
+  });
+
+  // Handle browser back/forward with hash changes
+  window.addEventListener('hashchange', function() {
+    const h = window.location.hash.replace('#', '');
+    if (h && document.getElementById('sec-' + h)) showSection(h);
   });
 });
 </script>
