@@ -1,0 +1,38 @@
+Form ID,Source System,Source Field,Field Label,Field Type,Required,Validation,Transform,Destination System,Destination Field,Notes
+F-01,WP CF7,your-message,Message,textarea,Yes,"Non-empty, error: 'Please enter your message'",Plain text,TBD,TBD,Step 1 of contact form
+F-01,WP CF7,request-type,Request Type,select,Yes,Must select option,Exact match,TBD,TBD,"Options: First Home Purchase Inquiry, Investment Property Financing, Home Loan Refinance Inquiry, Borrowing Capacity Assessment, General Mortgage Advice, Other"
+F-01,WP CF7,your-name,Name,text,Yes,Non-empty,Trim,TBD,TBD,Placeholder: Enter your Name
+F-01,WP CF7,your-email,Email,email,Yes,"Regex: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/",Lowercase/trim,TBD,TBD,Placeholder: Enter your Email
+F-01,WP CF7,your-phone,Phone,text,Yes,"Regex: /^(04\d{2}\s\d{3}\s\d{3}|\d{2}\s\d{4}\s\d{4})$/, max 12 chars",Auto-formatted to '0412 345 678',TBD,TBD,"JS auto-formats on input, handles backspace/delete"
+F-02,WP CF7,text-name,Name,text,Yes,"Non-empty, error: 'Please enter your name.'",Trim,TBD,TBD,
+F-02,WP CF7,text-email,Email,email,Yes,"Regex: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/",Lowercase/trim,TBD,TBD,"Error: 'Please enter a valid email address.'"
+F-02,WP CF7,text-phone,Phone,text,Yes,"Regex: /^(04\d{2}\s\d{3}\s\d{3}|\d{2}\s\d{4}\s\d{4})$/, max 12 chars",Auto-formatted,TBD,TBD,"Error: 'Please enter a valid phone number.'"
+F-02,WP CF7,transaction_type,Transaction Type,custom select,Yes,Must select option,Exact match,TBD,TBD,"Options: Purchase A Property, Refinance A Loan, Commercial Or Business Loan, Build"
+F-03,WP Custom JS,purpose,Purpose,radio,Yes,Must select,Exact match,TBD,TBD,"Options: Purchase a property, Build, Commercial or business loan, Refinance a loan, I'm just exploring"
+F-03,WP Custom JS,applicant_type,Applicant Type,radio,Yes,Must select,,TBD,TBD,"Options: Couple, Single person"
+F-03,WP Custom JS,first_home,First Home Owner,radio,Yes,Must select,,TBD,TBD,"Options: Yes, No"
+F-03,WP Custom JS,state,State,dropdown,Yes,Must select,,TBD,TBD,"Options: NSW, VIC, QLD, ACT, WA, SA, TAS, NT"
+F-03,WP Custom JS,dependents,Dependents,radio,Yes,Must select,,TBD,TBD,"Options: 0, 1, 2, 3+"
+F-03,WP Custom JS,income,Total Household Income,currency,Yes,Dollar amount,Strip formatting,TBD,TBD,$ prefix
+F-03,WP Custom JS,deposit,Deposit Amount,currency,Yes,Dollar amount,Strip formatting,TBD,TBD,$ prefix
+F-03,WP Custom JS,name,Name,text,Yes,Non-empty,Trim,TBD,TBD,Final step
+F-03,WP Custom JS,email,Email,email,Yes,Valid email,Lowercase/trim,TBD,TBD,Final step
+F-03,WP Custom JS,phone,Phone,text,Yes,Valid AU phone,Auto-formatted,TBD,TBD,Final step
+F-03,WP Custom JS,goal,What are you looking to do?,dropdown,Yes,Must select,,TBD,TBD,"Options: borrowing power, pre-approval, contract signed, refinance, other"
+F-04,WP Popup,property_price,Property Price,preset buttons + input,Yes,Numeric,Strip formatting,TBD,TBD,"Preset: $500k, $600k, $700k, $800k, more than $800k, or custom"
+F-04,WP Popup,deposit_available,Deposit Available?,radio,Yes,Must select,,TBD,TBD,"Auto-calculated as 8% of property price. Options: YES, NO"
+F-04,WP Popup,circumstances,Special Circumstances,checkboxes,No,,,TBD,TBD,"Options: Bridging or Low Documentation Loan, Bad Credit Rating Default or Bankruptcy, None of these"
+F-04,WP Popup,name,Name,text,Yes,Non-empty,Trim,TBD,TBD,
+F-04,WP Popup,email,Email,email,Yes,Valid email,Lowercase/trim,TBD,TBD,
+F-04,WP Popup,phone,Phone,text,Yes,Valid AU phone,Auto-formatted,TBD,TBD,
+F-05,WP Gravity Forms,full_name,Full Name,text,Yes,Non-empty,,TBD,TBD,Gravity Form ID: 10
+F-05,WP Gravity Forms,contact_number,Contact Number,text,Yes,Phone number,,TBD,TBD,
+F-05,WP Gravity Forms,email,Email,email,Yes,Valid email,,TBD,TBD,
+F-06,WP Gravity Forms,full_name,Full Name,text,Yes,Non-empty,,TBD,TBD,Gravity Form ID: 9
+F-06,WP Gravity Forms,contact_number,Contact Number,text,Yes,Phone number,,TBD,TBD,
+F-06,WP Gravity Forms,email,Email,email,Yes,Valid email,,TBD,TBD,
+F-07,WP CF7,name,Name,text,Yes,Non-empty,Trim,TBD,TBD,Standard landing page form
+F-07,WP CF7,email,Email,email,Yes,Valid email,Lowercase/trim,TBD,TBD,
+F-07,WP CF7,phone,Phone,text,Yes,Valid AU phone,Auto-formatted,TBD,TBD,
+TBD,Zapier,TBD - UTM params,UTM Source/Medium/Campaign,hidden,No,,Passthrough,HubSpot,TBD,"NEEDS INVESTIGATION: Are UTM params captured as hidden fields?"
+TBD,Zapier,TBD - Page URL,Source Page,hidden,No,,Passthrough,HubSpot,TBD,"NEEDS INVESTIGATION: Is the referring page/URL captured?"

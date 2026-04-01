@@ -1,0 +1,28 @@
+Form ID,Scenario,Conditions,Expected Result,Confirmed?,Notes
+F-01,New lead submits contact form,Email not in CRM,Contact created + notification sent to broker,TBD,NEEDS INVESTIGATION: confirm CRM behavior
+F-01,Existing contact submits,Email already exists in CRM,Contact updated (not duplicated),TBD,NEEDS INVESTIGATION: confirm dedup logic
+F-01,Empty message field,User clicks Next without message,Validation error: 'Please enter your message',Yes,Tested in Playwright suite
+F-01,Invalid email format,User enters 'notanemail',Inline validation error shown,Yes,Regex validated client-side
+F-01,Invalid phone format,User enters non-AU number,Validation error shown,Yes,Regex: /^(04\d{2}\s\d{3}\s\d{3}|\d{2}\s\d{4}\s\d{4})$/
+F-01,Request type = First Home Purchase,Dropdown selection,TBD: Does this affect routing/assignment?,TBD,NEEDS INVESTIGATION
+F-01,Duplicate submission within X minutes,Same user submits twice quickly,TBD: Blocked? Deduped? Both created?,TBD,NEEDS INVESTIGATION
+F-01,Form submission succeeds,All fields valid + submit,User sees success message + CF7 POST to /wp-json/.../11830/feedback returns 'success',Yes,Endpoint confirmed
+F-01,CF7 submission fails,Server error on POST,User sees error message. Status: 'mail_failed' or 'validation_failed',TBD,NEEDS INVESTIGATION: What does user see on server error?
+F-02,New assessment submission,Fresh email + valid fields,Contact created in CRM + broker notified,TBD,NEEDS INVESTIGATION
+F-02,Transaction type = Purchase,Dropdown = 'Purchase A Property',Result type one (.result-typ_one) shown,TBD,Different result UI for different types
+F-02,Transaction type = Build,Dropdown = 'Build',Result type two (.result-typ_two) shown,TBD,Build has different result display
+F-02,Empty fields submitted,User clicks submit without filling,Validation errors shown per field,Yes,Tested in Playwright suite
+F-02,Phone auto-format,User types '0412345678',Auto-formatted to '0412 345 678',Yes,Tested in Playwright suite
+F-03,Quiz completed with contact details,User finishes all steps,Lead captured with all quiz answers + contact info,TBD,NEEDS INVESTIGATION: Where does quiz data go?
+F-03,Quiz abandoned mid-flow,User leaves at step 2,No data captured (no partial submissions),TBD,NEEDS INVESTIGATION: Is partial data saved anywhere?
+F-03,User clicks Back during quiz,At any step,Returns to previous step with selections preserved,Yes,Tested in Playwright suite
+F-04,Assessment popup CTA clicked,User clicks 'Get a Free Assessment',Popup opens with quiz OR navigates to /get-free-assessment/,Yes,Behavior varies by page
+F-04,Property price selected,$500k preset clicked,Deposit calculated as 8% ($40k) and shown,TBD,
+F-04,Bad credit selected,Checkbox 'Bad Credit Rating' checked,TBD: Different routing? Different result?,TBD,NEEDS INVESTIGATION
+F-05,Broker contact requested (LVR),User selects 'Yes' after LVR calc,"Gravity Form appears, user submits, lead created",TBD,NEEDS INVESTIGATION: Where does GF10 send data?
+F-06,Broker contact requested (YTD),User selects 'Yes' after YTD calc,"Gravity Form appears, user submits, lead created",TBD,NEEDS INVESTIGATION: Where does GF9 send data?
+ALL,Spam submission,Bot fills form / honeypot triggered,Submission blocked or flagged,TBD,"NEEDS INVESTIGATION: What spam protection is active? reCAPTCHA? Honeypot? Akismet?"
+ALL,Mobile submission,User submits form on mobile device,"Same behavior as desktop, responsive layout",Yes,Tested on Mobile Safari viewport
+ALL,Slow network / timeout,Form POST takes >10 seconds,TBD: Spinner shown? Retry? Error message?,TBD,NEEDS INVESTIGATION
+ALL,Zapier outage,Zap trigger accepted but action fails,TBD: User still sees success? Lead lost?,TBD,CRITICAL: Define behavior explicitly
+ALL,HubSpot API reject,Contact creation fails in HubSpot,TBD: Is there a fallback? Is lead stored in WP?,TBD,CRITICAL: Define behavior explicitly

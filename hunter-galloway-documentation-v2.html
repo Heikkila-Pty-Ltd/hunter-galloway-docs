@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hunter Galloway — How the Website Works</title>
+<style>
+  :root {
+    --primary: #1a365d;
+    --primary-light: #2b6cb0;
+    --accent: #ffba3a;
+    --accent-dark: #e5a520;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #2d3748;
+    --text-light: #718096;
+    --success: #38a169;
+    --warning: #dd6b20;
+    --danger: #e53e3e;
+    --info: #3182ce;
+    --risk-critical-bg: #fff5f5;
+    --risk-high-bg: #fffaf0;
+    --risk-medium-bg: #fefcbf;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 270px;
+    min-width: 270px;
+    background: var(--primary);
+    color: white;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-header {
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .sidebar-header h1 { font-size: 17px; font-weight: 700; }
+  .sidebar-header .subtitle { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+  .sidebar-header .updated { font-size: 11px; opacity: 0.4; margin-top: 8px; }
+
+  .nav-section { padding: 14px 0 6px; }
+  .nav-section-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.4;
+    padding: 0 20px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+  .nav-item.active { background: rgba(255,255,255,0.12); color: white; border-left-color: var(--accent); font-weight: 600; }
+  .nav-id { font-family: 'SF Mono', monospace; font-size: 11px; opacity: 0.5; margin-right: 6px; }
+
+  .mobile-toggle {
+    display: none;
+    position: fixed;
+    top: 12px; left: 12px;
+    z-index: 200;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .mobile-toggle { display: block; }
+    .main { margin-left: 0 !important; }
+  }
+
+  /* Main */
+  .main {
+    margin-left: 270px;
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  .content { max-width: 900px; margin: 0 auto; padding: 32px 40px 80px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  h2.section-title { font-size: 26px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+  p.section-desc { font-size: 15px; color: var(--text-light); margin-bottom: 28px; line-height: 1.6; }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card-title { font-size: 16px; font-weight: 600; color: var(--primary); margin-bottom: 12px; }
+  .card-subtitle { font-size: 13px; color: var(--text-light); margin-bottom: 16px; }
+
+  /* Flow diagrams */
+  .flow-diagram {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 20px 0;
+    overflow-x: auto;
+  }
+
+  .flow-steps {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    min-width: max-content;
+  }
+
+  .flow-step {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    min-width: 140px;
+    max-width: 180px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.4;
+    position: relative;
+  }
+
+  .flow-step .step-num {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .flow-step .step-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .flow-step .step-detail {
+    font-size: 11px;
+    color: var(--text-light);
+  }
+
+  .flow-step.wp { border-color: #3182ce; }
+  .flow-step.hs { border-color: #ff7a59; }
+  .flow-step.wf { border-color: #38a169; }
+  .flow-step.broker { border-color: var(--accent); background: #fffbeb; }
+  .flow-step.risk { border-color: var(--danger); border-style: dashed; }
+
+  .flow-arrow-container {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    color: var(--text-light);
+    font-size: 18px;
+    min-width: 24px;
+    justify-content: center;
+  }
+
+  /* System labels */
+  .system-label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-bottom: 4px;
+  }
+  .system-label.wp { background: #ebf4ff; color: #2b6cb0; }
+  .system-label.hs { background: #fff0eb; color: #c4532d; }
+  .system-label.wf { background: #f0fff4; color: #276749; }
+  .system-label.crm { background: #faf5ff; color: #6b46c1; }
+
+  /* Risk cards */
+  .risk-card {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border-left: 4px solid;
+  }
+  .risk-card.critical { background: var(--risk-critical-bg); border-color: var(--danger); }
+  .risk-card.high { background: var(--risk-high-bg); border-color: var(--warning); }
+  .risk-card.medium { background: #fffff0; border-color: #d69e2e; }
+  .risk-card .risk-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .risk-card .risk-detail { font-size: 13px; color: var(--text-light); }
+  .risk-severity {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .risk-severity.critical { background: #fed7d7; color: #c53030; }
+  .risk-severity.high { background: #feebc8; color: #c05621; }
+  .risk-severity.medium { background: #fefcbf; color: #975a16; }
+
+  /* Tables */
+  .table-wrapper { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--bg); padding: 10px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-light); border-bottom: 2px solid var(--border); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:hover td { background: rgba(0,0,0,0.01); }
+  code { background: #edf2f7; padding: 2px 6px; border-radius: 3px; font-size: 12px; font-family: 'SF Mono', 'Fira Code', monospace; }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .badge-live { background: #c6f6d5; color: #276749; }
+  .badge-on { background: #c6f6d5; color: #276749; }
+  .badge-off { background: #e2e8f0; color: #718096; }
+  .badge-risk { background: #fed7d7; color: #c53030; }
+  .badge-tbd { background: #fef3c7; color: #92400e; }
+
+  /* Journey header */
+  .journey-header {
+    background: linear-gradient(135deg, rgba(26, 54, 93, 0.03), rgba(43, 108, 176, 0.06));
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .journey-header dl { display: grid; grid-template-columns: 140px 1fr; gap: 8px 16px; font-size: 13px; }
+  .journey-header dt { font-weight: 600; color: var(--text-light); font-size: 12px; }
+  .journey-header dd { color: var(--text); }
+
+  /* Collapsible sections */
+  .collapsible-header {
+    cursor: pointer;
+    padding: 14px 20px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.15s;
+  }
+  .collapsible-header:hover { background: #edf2f7; }
+  .collapsible-header .arrow { transition: transform 0.2s; font-size: 12px; }
+  .collapsible-header.open .arrow { transform: rotate(90deg); }
+  .collapsible-body { display: none; padding: 16px 20px; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; margin-bottom: 16px; margin-top: -5px; }
+  .collapsible-body.open { display: block; }
+
+  /* Big picture hero */
+  /* Entry point rows */
+  .entry-row {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .entry-row:hover { background: rgba(43, 108, 176, 0.04); }
+  .entry-row:last-child { border-bottom: none; }
+  .entry-row .er-id {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-light);
+    background: #ebf4ff;
+    border-radius: 6px;
+    padding: 6px 0;
+    text-align: center;
+    line-height: 1;
+  }
+  .entry-row .er-id.er-risk { color: #c53030; background: #fed7d7; }
+  .entry-row .er-body { min-width: 0; }
+  .entry-row .er-name { font-weight: 600; font-size: 14px; color: var(--text); }
+  .entry-row .er-path { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+  .entry-row .er-right { text-align: right; white-space: nowrap; font-size: 12px; color: var(--text-light); }
+  .entry-row .er-right code { font-size: 11px; }
+
+  /* Vertical pipeline */
+  .pipeline {
+    position: relative;
+    padding-left: 36px;
+    margin: 16px 0 0;
+  }
+  .pipeline::before {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--border);
+  }
+  .pipe-step {
+    position: relative;
+    padding: 0 0 14px;
+  }
+  .pipe-step:last-child { padding-bottom: 0; }
+  .pipe-dot {
+    position: absolute;
+    left: -30px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .pipe-dot.wp { background: #3182ce; }
+  .pipe-dot.hs { background: #ff7a59; }
+  .pipe-dot.wf { background: #38a169; }
+  .pipe-dot.broker { background: var(--accent); }
+  .pipe-dot.crm { background: #805ad5; }
+  .pipe-title { font-weight: 600; font-size: 13px; line-height: 1.6; }
+  .pipe-title span { font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 6px; }
+
+  .hero-flow {
+    background: linear-gradient(135deg, #f7fafc, #edf2f7);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 24px 0;
+  }
+
+  .hero-flow .phase {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-flow .phase:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .hero-flow .phase-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-flow .phase-label .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .hero-flow .phase-content {
+    font-size: 14px;
+    line-height: 1.8;
+    padding-left: 16px;
+  }
+  .hero-flow .phase-content .wf-ref {
+    font-family: 'SF Mono', monospace;
+    font-size: 11px;
+    background: #e2e8f0;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+  .hero-flow .phase-content .wf-ref.critical { background: #fed7d7; color: #c53030; }
+  .hero-flow .phase-content .wf-ref.info { background: #bee3f8; color: #2a4365; }
+
+  /* Stat grid */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-card .num { font-size: 28px; font-weight: 700; color: var(--primary); }
+  .stat-card .label { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+
+  /* Filter */
+  .ref-filter {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 16px;
+  }
+
+  /* Print */
+  @media print {
+    .sidebar, .mobile-toggle { display: none; }
+    .main { margin-left: 0; }
+    .section { display: block !important; page-break-before: always; }
+    .section:first-child { page-break-before: auto; }
+  }
+</style>
+</head>
+<body>
+
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h1>Hunter Galloway</h1>
+    <div class="subtitle">Website & Lead System Docs</div>
+    <div class="updated">Updated 1 April 2026</div>
+  </div>
+
+  <div style="padding: 12px 16px 8px;">
+    <input type="text" id="global-search" placeholder="Search everything..." style="width: 100%; padding: 7px 10px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; background: rgba(255,255,255,0.08); color: white; font-size: 12px; outline: none;" onfocus="this.style.borderColor='rgba(255,255,255,0.3)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+    <div id="search-results" style="display: none; margin-top: 8px;"></div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Start Here</div>
+    <a class="nav-item active" onclick="showSection('big-picture')">How Leads Work</a>
+    <a class="nav-item" onclick="showSection('risks')">What Can Break</a>
+    <a class="nav-item" onclick="showSection('ref-forms')">Form Inventory</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Lead Journeys</div>
+    <a class="nav-item" onclick="showSection('j-contact')"><span class="nav-id">F-01</span> Contact Form</a>
+    <a class="nav-item" onclick="showSection('j-assessment')"><span class="nav-id">F-02</span> Free Assessment</a>
+    <a class="nav-item" onclick="showSection('j-quiz')"><span class="nav-id">F-03</span> Mortgage Quiz</a>
+    <a class="nav-item" onclick="showSection('j-popup')"><span class="nav-id">F-04</span> Assessment Popup</a>
+    <a class="nav-item" onclick="showSection('j-calculator')"><span class="nav-id">F-05/06</span> Calculator Referral</a>
+    <a class="nav-item" onclick="showSection('j-landing')"><span class="nav-id">F-07</span> Landing Pages</a>
+    <a class="nav-item" onclick="showSection('j-report')"><span class="nav-id">F-08</span> Mortgage Report</a>
+    <a class="nav-item" onclick="showSection('j-downloads')">PDF Downloads</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">After the Lead</div>
+    <a class="nav-item" onclick="showSection('lifecycle')">Lead → Settlement</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Reference</div>
+    <a class="nav-item" onclick="showSection('ref-workflows')">All Workflows (99)</a>
+    <a class="nav-item" onclick="showSection('ref-properties')">HubSpot Properties</a>
+    <a class="nav-item" onclick="showSection('ref-tests')">Test Matrix (67)</a>
+    <a class="nav-item" onclick="showSection('ref-calcs')">Calculators (9)</a>
+    <a class="nav-item" onclick="showSection('ref-open')">Open Questions</a>
+  </div>
+</nav>
+
+<div class="main">
+<div class="content">
+
+<!-- ==================== HOW LEADS WORK ==================== -->
+<div class="section active" id="sec-big-picture">
+  <h2 class="section-title">How Leads Work</h2>
+  <p class="section-desc">8 entry points on the website, all feeding into one shared HubSpot pipeline. Click any row to see the full journey.</p>
+
+  <!-- Entry Points -->
+  <div class="card" style="padding: 0; overflow: hidden;">
+    <div style="padding: 10px 20px; border-bottom: 1px solid var(--border); background: var(--bg);">
+      <h3 class="card-title" style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light);">Entry Points — click any row for full journey</h3>
+    </div>
+    <div class="entry-row" onclick="showSection('j-contact')">
+      <div class="er-id">F-01</div>
+      <div class="er-body"><div class="er-name">Contact Form</div><div class="er-path">/contact/ — 2-step: message → name, email, phone, request type</div></div>
+      <div class="er-right">CF7 → <code>HS-CF-01, 02</code></div>
+    </div>
+    <div class="entry-row" onclick="showSection('j-assessment')" style="background: rgba(56, 161, 105, 0.03);">
+      <div class="er-id" style="background: #c6f6d5; color: #276749;">F-02</div>
+      <div class="er-body"><div class="er-name">Free Assessment <span style="font-size: 11px; font-weight: 400; color: var(--success);">★ primary funnel</span></div><div class="er-path">/get-free-assessment/ — name, email, phone, transaction type</div></div>
+      <div class="er-right">CF7 → <code>HS-CF-03, 05, 06</code></div>
+    </div>
+    <div class="entry-row" onclick="showSection('j-quiz')">
+      <div class="er-id">F-03</div>
+      <div class="er-body"><div class="er-name">Mortgage Quiz</div><div class="er-path">/mortgage-calculator/ — multi-step calculator → contact capture</div></div>
+      <div class="er-right">JS → <code>HS-CF-06</code></div>
+    </div>
+    <div class="entry-row" onclick="showSection('j-popup')">
+      <div class="er-id">F-04</div>
+      <div class="er-body"><div class="er-name">Assessment Popup</div><div class="er-path">Sitewide CTAs — popup quiz: price → deposit → contact</div></div>
+      <div class="er-right">Popup → <code>HS-CF-03, 05, 06</code></div>
+    </div>
+    <div class="entry-row" onclick="showSection('j-calculator')">
+      <div class="er-id er-risk">F-05/06</div>
+      <div class="er-body"><div class="er-name">Calculator Referral <span style="font-size: 11px; font-weight: 400; color: var(--danger);">⚠ destination unknown</span></div><div class="er-path">/lvr-calculator/, /ytd-calculator/ — "Want a broker to contact you?"</div></div>
+      <div class="er-right" style="color: var(--danger);">Gravity Forms → <code>???</code></div>
+    </div>
+    <div class="entry-row" onclick="showSection('j-landing')">
+      <div class="er-id">F-07</div>
+      <div class="er-body"><div class="er-name">Landing Pages</div><div class="er-path">/mortgage-broker-brisbane/ + 4 others — standard contact form</div></div>
+      <div class="er-right">CF7 → <code>HS-CF-04</code></div>
+    </div>
+    <div class="entry-row" onclick="showSection('j-report')">
+      <div class="er-id">F-08</div>
+      <div class="er-body"><div class="er-name">Mortgage Report</div><div class="er-path">/mortgage-report/ — affordability report for contact details</div></div>
+      <div class="er-right">CF7 → <code>HS-CF-07</code></div>
+    </div>
+    <div class="entry-row" onclick="showSection('j-downloads')">
+      <div class="er-id" style="font-size: 10px;">PDF</div>
+      <div class="er-body"><div class="er-name">PDF Downloads</div><div class="er-path">Sitewide exit-intent popups — PDF guides for email</div></div>
+      <div class="er-right">OptinMonster → <code>WF-045+</code></div>
+    </div>
+  </div>
+
+  <!-- Shared Pipeline (vertical, compact) -->
+  <div class="card" style="margin-top: 24px;">
+    <h3 class="card-title">After Every Submission</h3>
+    <p style="font-size: 13px; color: var(--text-light); margin-bottom: 12px;">All forms feed into one shared pipeline:</p>
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-dot wp"></div>
+        <div class="pipe-title">Form data hits WordPress <span>CF7 POST, Gravity Forms, or JS</span></div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-dot hs"></div>
+        <div class="pipe-title">HubSpot tracking code captures it <span>→ Collected Form → contact created/updated by email</span></div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-dot wf"></div>
+        <div class="pipe-title">Alert + assign broker <span><span class="wf-ref critical">WF-008</span> <span class="wf-ref critical">WF-002/003</span> <span class="wf-ref critical">WF-038</span></span></div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-dot broker"></div>
+        <div class="pipe-title">Per-broker outreach <span>SMS + email · <span class="wf-ref info">WF-005</span> <span class="wf-ref info">WF-006</span> <span class="wf-ref info">WF-011</span> <span class="wf-ref info">WF-027</span></span></div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-dot hs"></div>
+        <div class="pipe-title">Deal created in HubSpot pipeline <span><span class="wf-ref info">WF-004</span></span></div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-dot crm"></div>
+        <div class="pipe-title">Mercury / Connective <span>loan lifecycle · <a href="#" onclick="showSection('lifecycle'); return false;">Lead → Settlement →</a></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Systems key -->
+  <div style="margin-top: 20px; padding: 16px 20px; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); font-size: 12px; color: var(--text-light); display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px 20px;">
+    <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #3182ce; margin-right: 6px;"></span><strong style="color: var(--text);">WordPress</strong> — frontend forms</div>
+    <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ff7a59; margin-right: 6px;"></span><strong style="color: var(--text);">HubSpot</strong> — CRM, 58 workflows</div>
+    <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #805ad5; margin-right: 6px;"></span><strong style="color: var(--text);">Mercury</strong> — loan lifecycle</div>
+    <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #d69e2e; margin-right: 6px;"></span><strong style="color: var(--text);">Zapier</strong> — Mercury→HubSpot only</div>
+    <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #38a169; margin-right: 6px;"></span><strong style="color: var(--text);">Typeform</strong> — extended assessment</div>
+  </div>
+</div>
+
+<!-- ==================== WHAT CAN BREAK ==================== -->
+<div class="section" id="sec-risks">
+  <h2 class="section-title">What Can Break</h2>
+  <p class="section-desc">Single points of failure and known risks across the entire lead system, ranked by impact. These are the things to monitor and test regularly.</p>
+
+  <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--danger);">Critical — Leads Lost Silently</h3>
+
+  <div class="risk-card critical">
+    <div class="risk-title"><span class="risk-severity critical">Critical</span> HubSpot tracking code goes down</div>
+    <div class="risk-detail">If the HubSpot JavaScript tracking code fails to load (CDN issue, script blocked, WordPress theme update breaks it), <strong>every form submission still succeeds in WordPress but never reaches HubSpot</strong>. The visitor sees a success message. The lead is silently lost. There is no fallback, no error alert, no WordPress-side backup. This is the single biggest risk in the system.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> All forms (F-01 through F-08) &nbsp;·&nbsp; <strong>Detection:</strong> Monitor HubSpot form submission count daily. A sudden drop to zero = tracking code is broken.</div>
+    <div style="margin-top: 10px; padding: 10px 14px; background: rgba(255,255,255,0.7); border-radius: 6px; font-size: 12px; line-height: 1.8;">
+      <strong style="color: var(--primary);">Debug steps:</strong><br>
+      1. Open <a href="https://www.huntergalloway.com.au/contact/" target="_blank">any page</a> → DevTools → Console → search for <code>hs-script-loader</code> or <code>HubSpot</code> errors<br>
+      2. Check <a href="https://app-ap1.hubspot.com/reports-dashboard/4607234" target="_blank">HubSpot dashboard</a> for recent form submission count — if zero, tracking is down<br>
+      3. In WP Admin → check theme header/footer for the HubSpot embed script (<code>js.hs-scripts.com/4607234.js</code>)<br>
+      4. Test: submit a form, wait 2 min, search for the email in <a href="https://app-ap1.hubspot.com/contacts/4607234/objects/0-1/views/all/list" target="_blank">HubSpot Contacts</a>
+    </div>
+  </div>
+
+  <div class="risk-card critical">
+    <div class="risk-title"><span class="risk-severity critical">Critical</span> HS-WF-008 (New Lead SMS) is turned off or breaks</div>
+    <div class="risk-detail">This single workflow handles the SMS alert that tells brokers about new web leads AND assigns the contact owner. If it's off, leads still reach HubSpot but <strong>nobody gets notified and no owner is assigned</strong>. Leads sit uncontacted.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> All web form leads &nbsp;·&nbsp; <strong>Detection:</strong> If brokers stop receiving SMS alerts for new leads, check this workflow first.</div>
+    <div style="margin-top: 10px; padding: 10px 14px; background: rgba(255,255,255,0.7); border-radius: 6px; font-size: 12px; line-height: 1.8;">
+      <strong style="color: var(--primary);">Debug steps:</strong><br>
+      1. Go to <a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank">HubSpot Workflows</a> → search "WF-008" or "New Lead SMS" → check it's ON<br>
+      2. Check workflow logs for recent errors (enrollment failures, SMS send errors)<br>
+      3. Verify the SMS provider integration is still active (check connected apps)<br>
+      4. Test: create a test contact manually, check if SMS fires within 5 min
+    </div>
+  </div>
+
+  <div class="risk-card critical">
+    <div class="risk-title"><span class="risk-severity critical">Critical</span> HS-WF-002/003 (Broker Assignment) breaks</div>
+    <div class="risk-detail">These workflows map the <code>adviser</code> property to the correct broker. If they break, leads get assigned to no one or the wrong broker. The MANUAL version (HS-WF-003) has enrolled 221,000+ contacts — it's the most heavily used workflow in the system.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> All leads &nbsp;·&nbsp; <strong>Detection:</strong> Check if contact owner is blank after form submissions.</div>
+    <div style="margin-top: 10px; padding: 10px 14px; background: rgba(255,255,255,0.7); border-radius: 6px; font-size: 12px; line-height: 1.8;">
+      <strong style="color: var(--primary);">Debug steps:</strong><br>
+      1. <a href="https://app-ap1.hubspot.com/contacts/4607234/objects/0-1/views/all/list" target="_blank">HubSpot Contacts</a> → filter by "Contact owner is unknown" + created today → if many, assignment is broken<br>
+      2. Check WF-002 and WF-003 are ON and not paused in <a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank">Workflows</a><br>
+      3. Check the <code>adviser</code> property is being set correctly (it maps CA codes to brokers)<br>
+      4. Manual fix: use WF-003 (MANUAL version) to re-run assignment on affected contacts
+    </div>
+  </div>
+
+  <h3 style="font-size: 14px; font-weight: 600; margin: 24px 0 12px; color: var(--warning);">High — Features Broken, Partial Data Loss</h3>
+
+  <div class="risk-card high">
+    <div class="risk-title"><span class="risk-severity high">High</span> JavaScript fails on mortgage quiz (F-03)</div>
+    <div class="risk-detail">The mortgage calculator quiz is entirely JS-dependent. If JavaScript fails to load (script error, CDN issue, browser extension conflict), the quiz silently doesn't work. The calculator still shows results, but the lead capture form never appears. No error message is shown to the user.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> F-03 Mortgage Quiz &nbsp;·&nbsp; <strong>Detection:</strong> Playwright test T-025 checks quiz form loads, but can't catch all JS errors.</div>
+    <div style="margin-top: 10px; padding: 10px 14px; background: rgba(255,255,255,0.7); border-radius: 6px; font-size: 12px; line-height: 1.8;">
+      <strong style="color: var(--primary);">Debug steps:</strong><br>
+      1. Open <a href="https://www.huntergalloway.com.au/mortgage-calculator/" target="_blank">/mortgage-calculator/</a> → DevTools → Console → look for JS errors<br>
+      2. Complete the calculator → check if the contact form appears after the results<br>
+      3. If form doesn't appear: check Network tab for failed script loads
+    </div>
+  </div>
+
+  <div class="risk-card high">
+    <div class="risk-title"><span class="risk-severity high">High</span> Phone formatting is JS-only (all forms)</div>
+    <div class="risk-detail">Phone numbers are auto-formatted to Australian format (0412 345 678) by JavaScript. If JS breaks, unformatted numbers are accepted and submitted. HubSpot may reject or incorrectly parse these. No server-side phone validation has been confirmed.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> F-01, F-02, F-04, F-07 &nbsp;·&nbsp; <strong>Detection:</strong> Check for malformed phone numbers in HubSpot contacts.</div>
+  </div>
+
+  <div class="risk-card high">
+    <div class="risk-title"><span class="risk-severity high">High</span> Free Assessment custom dropdown breaks (F-02)</div>
+    <div class="risk-detail">The transaction type dropdown on the Free Assessment form uses a custom <code>.btn_select</code> UI component, not a native HTML <code>&lt;select&gt;</code>. If the custom JS breaks, the dropdown won't open and users can't select a transaction type. Since it's required, the form becomes unusable.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> F-02 Free Assessment (primary lead funnel) &nbsp;·&nbsp; <strong>Detection:</strong> Playwright test T-015 checks dropdown options are present.</div>
+  </div>
+
+  <div class="risk-card high">
+    <div class="risk-title"><span class="risk-severity high">High</span> Gravity Forms destination unknown (F-05/F-06)</div>
+    <div class="risk-detail">The LVR and YTD calculator broker referral forms (Gravity Forms #9 and #10) submit data somewhere, but the destination hasn't been confirmed. They don't appear in HubSpot's collected forms list. If they rely on a Zapier integration or GF add-on that's been disabled, those leads may be going nowhere.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> F-05 LVR Calculator, F-06 YTD Calculator &nbsp;·&nbsp; <strong>Detection:</strong> Submit a test lead through each calculator and trace it.</div>
+    <div style="margin-top: 10px; padding: 10px 14px; background: rgba(255,255,255,0.7); border-radius: 6px; font-size: 12px; line-height: 1.8;">
+      <strong style="color: var(--primary);">Investigation steps:</strong><br>
+      1. Go to <a href="https://www.huntergalloway.com.au/lvr-calculator/" target="_blank">/lvr-calculator/</a> → complete calc → click "Yes" for broker contact → submit with a test email<br>
+      2. Wait 5 min → search for the test email in <a href="https://app-ap1.hubspot.com/contacts/4607234/objects/0-1/views/all/list" target="_blank">HubSpot</a><br>
+      3. If not in HubSpot: check WP Admin → Forms → Gravity Forms → Entries for form #10<br>
+      4. Check Gravity Forms → Settings → for any add-ons (HubSpot, Zapier, Webhooks)
+    </div>
+  </div>
+
+  <h3 style="font-size: 14px; font-weight: 600; margin: 24px 0 12px; color: #975a16;">Medium — Operational Gaps</h3>
+
+  <div class="risk-card medium">
+    <div class="risk-title"><span class="risk-severity medium">Medium</span> No confirmed spam protection</div>
+    <div class="risk-detail">It hasn't been confirmed whether reCAPTCHA, honeypot fields, Akismet, or any other anti-spam method is active on the forms. If there's no spam protection, HubSpot could be filling with junk contacts, wasting workflow executions and polluting reporting.</div>
+  </div>
+
+  <div class="risk-card medium">
+    <div class="risk-title"><span class="risk-severity medium">Medium</span> No end-to-end automated tests</div>
+    <div class="risk-detail">The Playwright test suite (55 automated tests) validates that form fields exist and UI works, but stops short of actual submission to avoid creating fake leads. There are no automated tests that verify data actually reaches HubSpot. A full integration test with a known test email would catch silent failures.</div>
+  </div>
+
+  <div class="risk-card medium">
+    <div class="risk-title"><span class="risk-severity medium">Medium</span> Popup quiz abandonment captures nothing (F-04)</div>
+    <div class="risk-detail">If a user starts the popup quiz but abandons partway through, no partial data is captured. The quiz requires all steps to be completed before submission. There's no partial-save or cookie-based progress tracking confirmed.</div>
+  </div>
+</div>
+
+<!-- ==================== JOURNEY: CONTACT FORM ==================== -->
+<div class="section" id="sec-j-contact">
+  <h2 class="section-title">Contact Form Enquiry</h2>
+  <p class="section-desc">General enquiries from the /contact/ page. A 2-step form: message first, then contact details.</p>
+
+  <div class="journey-header">
+    <dl>
+      <dt>Form ID</dt><dd><code>F-01</code> · Contact Form 7 #11830</dd>
+      <dt>URL</dt><dd><a href="https://www.huntergalloway.com.au/contact/" target="_blank">huntergalloway.com.au/contact/</a></dd>
+      <dt>Endpoint</dt><dd><code>POST /wp-json/contact-form-7/v1/contact-forms/11830/feedback</code></dd>
+      <dt>HubSpot Forms</dt><dd>HS-CF-01 · HS-CF-02</dd>
+      <dt>Quick links</dt><dd><a href="https://www.huntergalloway.com.au/wp-admin/admin.php?page=wpcf7&post=11830&action=edit" target="_blank">WP Admin: Edit Form</a> · <a href="https://app-ap1.hubspot.com/contacts/4607234/objects/0-1/views/all/list" target="_blank">HubSpot Contacts</a></dd>
+      <dt>Data flow</dt><dd>WordPress CF7 → HubSpot Tracking Code → Collected Form → Contact created</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Happens</h3>
+    <div class="flow-diagram">
+      <div class="flow-steps">
+        <div class="flow-step wp"><div class="system-label wp">WordPress</div><div class="step-title">Step 1</div><div class="step-detail">Visitor types message in textarea</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wp"><div class="system-label wp">WordPress</div><div class="step-title">Step 2</div><div class="step-detail">Name, email, phone, request type</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wp"><div class="system-label wp">WordPress</div><div class="step-title">Submit</div><div class="step-detail">Button disables + spinner. CF7 POSTs to API</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step hs"><div class="system-label hs">HubSpot</div><div class="step-title">Collected Form</div><div class="step-detail">Tracking code detects submission. Contact created/updated</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wf"><div class="system-label wf">Workflow</div><div class="step-title">HS-WF-008</div><div class="step-detail">SMS alert sent. Contact owner assigned</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step broker"><div class="step-title">Broker Notified</div><div class="step-detail">Enters per-broker lead process</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Fields</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Step</th><th>Field</th><th>Key</th><th>Type</th><th>Required</th><th>Validation</th><th>Maps to HubSpot</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Message</td><td><code>your-message</code></td><td>textarea</td><td>Yes</td><td>Non-empty</td><td><code>message</code></td></tr>
+          <tr><td>2</td><td>Request Type</td><td><code>request-type</code></td><td>dropdown</td><td>Yes</td><td>Must select</td><td><code>request_type</code></td></tr>
+          <tr><td>2</td><td>Name</td><td><code>your-name</code></td><td>text</td><td>Yes</td><td>Non-empty</td><td><code>firstname</code> + <code>lastname</code></td></tr>
+          <tr><td>2</td><td>Email</td><td><code>your-email</code></td><td>email</td><td>Yes</td><td>Regex</td><td><code>email</code></td></tr>
+          <tr><td>2</td><td>Phone</td><td><code>your-phone</code></td><td>text</td><td>Yes</td><td>AU format, max 12</td><td><code>phone</code> + <code>mobilephone</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 12px; color: var(--text-light); margin-top: 12px;"><strong>Request type options:</strong> First Home Purchase Inquiry · Investment Property Financing · Home Loan Refinance Inquiry · Borrowing Capacity Assessment · General Mortgage Advice · Other</p>
+    <p style="font-size: 12px; color: var(--text-light); margin-top: 4px;"><strong>Phone auto-format:</strong> <code>0412345678</code> → <code>0412 345 678</code> (JS-only, no server-side fallback confirmed)</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Workflows That Fire</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Workflow</th><th>What it does for this journey</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><code>HS-WF-008</code> [Website Trigger] New Lead SMS</td><td>Sends SMS alert to team, assigns contact owner, filters weekends</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><code>HS-WF-002</code> Set Broker as Contact Owner</td><td>Maps <code>adviser</code> value to correct broker as contact owner</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><code>HS-WF-038</code> New Lead > Set Adviser Contact</td><td>Sets Adviser Contact property from owner email</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><code>HS-WF-005/006/011/027</code> Per-broker lead process</td><td>Timed SMS + email outreach sequence (depends on which broker)</td><td><span class="badge badge-on">On</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Can Go Wrong</h3>
+    <div class="risk-card critical" style="margin-bottom: 8px;">
+      <div class="risk-title"><span class="risk-severity critical">Critical</span> HubSpot tracking code not loaded</div>
+      <div class="risk-detail">Form submits successfully in WordPress but lead never reaches HubSpot. User sees success. Lead is lost.</div>
+    </div>
+    <div class="risk-card high" style="margin-bottom: 8px;">
+      <div class="risk-title"><span class="risk-severity high">High</span> JS fails → phone formatting broken</div>
+      <div class="risk-detail">Unformatted phone numbers accepted. May cause issues in HubSpot matching and broker SMS delivery.</div>
+    </div>
+    <div class="risk-card medium">
+      <div class="risk-title"><span class="risk-severity medium">Medium</span> Request type routing unclear</div>
+      <div class="risk-detail">It's unknown whether different request types (e.g., "First Home Purchase" vs "Refinance") trigger different workflows or broker assignments.</div>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Test Coverage (7 automated, 3 manual) <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Test</th><th>What it checks</th><th>Auto?</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>T-001</td><td>Form loads on /contact/</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-002</td><td>Textarea accepts input</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-003</td><td>Step 1 → Step 2 transition</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-004</td><td>Contact fields present</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-005</td><td>Submit button exists</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-006</td><td>Request type options present</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-007</td><td>Phone auto-formatting</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-008</td><td>Valid end-to-end submission</td><td>Manual</td><td><span class="badge badge-tbd">TBD</span></td></tr>
+          <tr><td>T-009</td><td>Invalid email rejected</td><td>Manual</td><td><span class="badge badge-tbd">TBD</span></td></tr>
+          <tr><td>T-010</td><td>Duplicate contact handling</td><td>Manual</td><td><span class="badge badge-tbd">TBD</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== JOURNEY: FREE ASSESSMENT ==================== -->
+<div class="section" id="sec-j-assessment">
+  <h2 class="section-title">Free Assessment Lead</h2>
+  <p class="section-desc">The primary lead funnel. Every "Get a Free Assessment" CTA on the site points here. If this form breaks, it's the highest-impact failure.</p>
+
+  <div class="journey-header">
+    <dl>
+      <dt>Form ID</dt><dd><code>F-02</code> · Contact Form 7 #68942</dd>
+      <dt>URL</dt><dd><a href="https://www.huntergalloway.com.au/get-free-assessment/" target="_blank">huntergalloway.com.au/get-free-assessment/</a></dd>
+      <dt>DOM ID</dt><dd><code>result-form</code></dd>
+      <dt>HubSpot Forms</dt><dd>HS-CF-03, HS-CF-05, HS-CF-06 (varies by referral page)</dd>
+      <dt>CTA locations</dt><dd>Homepage · First Home Buyer · Refinance · Mortgage vs Rent Calc · Deposit Calc · Equity Calc</dd>
+      <dt>Quick links</dt><dd><a href="https://www.huntergalloway.com.au/wp-admin/admin.php?page=wpcf7&post=68942&action=edit" target="_blank">WP Admin: Edit Form</a> · <a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank">HubSpot Workflows</a></dd>
+      <dt>Data flow</dt><dd>WordPress CF7 → HubSpot Tracking Code → Collected Form → Contact → <a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank">WF-019</a> email sequence</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Happens</h3>
+    <div class="flow-diagram">
+      <div class="flow-steps">
+        <div class="flow-step wp"><div class="system-label wp">WordPress</div><div class="step-title">CTA Click</div><div class="step-detail">"Get a Free Assessment" from any page</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wp"><div class="system-label wp">WordPress</div><div class="step-title">Form</div><div class="step-detail">Name, email, phone, transaction type</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wp"><div class="system-label wp">WordPress</div><div class="step-title">Branch</div><div class="step-detail">Build → type 2 result<br>Other → type 1 result</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step hs"><div class="system-label hs">HubSpot</div><div class="step-title">Collected Form</div><div class="step-detail">Contact created with transaction_type</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wf"><div class="system-label wf">Workflow</div><div class="step-title">HS-WF-019</div><div class="step-detail">Email sequence branches by deposit + contract status</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step broker"><div class="step-title">Broker Follow-up</div><div class="step-detail">Per-broker SMS + email sequence</div></div>
+      </div>
+    </div>
+    <p style="font-size: 12px; color: var(--text-light); margin-top: 12px;"><strong>Branching logic:</strong> If transaction type = "Build", the form shows <code>.result-typ_two</code> results. All other types show <code>.result-typ_one</code>.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Fields</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Field</th><th>Key</th><th>Type</th><th>Required</th><th>Validation</th><th>Maps to HubSpot</th></tr></thead>
+        <tbody>
+          <tr><td>Name</td><td><code>text-name</code></td><td>text</td><td>Yes</td><td>Non-empty</td><td><code>firstname</code> + <code>lastname</code></td></tr>
+          <tr><td>Email</td><td><code>text-email</code></td><td>email</td><td>Yes</td><td>Regex</td><td><code>email</code></td></tr>
+          <tr><td>Phone</td><td><code>text-phone</code></td><td>text</td><td>Yes</td><td>AU format</td><td><code>phone</code> + <code>mobilephone</code></td></tr>
+          <tr><td>Transaction Type</td><td><code>transaction_type</code></td><td>custom select</td><td>Yes</td><td>Must select</td><td><code>transaction_type</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 12px; color: var(--text-light); margin-top: 12px;"><strong>Transaction type options:</strong> Purchase A Property · Refinance A Loan · Commercial Or Business Loan · Build</p>
+    <p style="font-size: 12px; color: var(--text-light); margin-top: 4px;"><strong>Extended assessment:</strong> After the initial form, some leads are directed to <code>hello.huntergalloway.com.au/start</code> (Typeform) which collects annual income, deposit, first home buyer status, dependents, and more.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Workflows That Fire</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Workflow</th><th>What it does for this journey</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><code>HS-WF-008</code> [Website Trigger] New Lead SMS</td><td>SMS alert to team, assigns contact owner</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr style="background: rgba(56, 161, 105, 0.04);"><td><code>HS-WF-019</code> <strong>02-LEAD-WORKFLOW Home Buying Plan</strong></td><td><strong>Unique to this journey.</strong> Branches email sequence by contract status and deposit size. Updates marketing status. 8,935 enrolled.</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><code>HS-WF-002/003</code> Set Broker as Contact Owner</td><td>Maps adviser to broker</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><code>HS-WF-038</code> New Lead > Set Adviser Contact</td><td>Sets Adviser Contact from owner</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><code>HS-WF-005/006/011/027</code> Per-broker process</td><td>Timed SMS + email outreach</td><td><span class="badge badge-on">On</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Can Go Wrong</h3>
+    <div class="risk-card critical" style="margin-bottom: 8px;">
+      <div class="risk-title"><span class="risk-severity critical">Critical</span> This form goes down = primary lead funnel broken</div>
+      <div class="risk-detail">All "Get a Free Assessment" CTAs across the site point here. This is the highest-traffic lead form.</div>
+    </div>
+    <div class="risk-card high" style="margin-bottom: 8px;">
+      <div class="risk-title"><span class="risk-severity high">High</span> Custom dropdown (.btn_select) JS breaks</div>
+      <div class="risk-detail">Transaction type uses a custom UI, not native HTML. If the JS fails, the dropdown won't open and the form is unusable (transaction type is required).</div>
+    </div>
+    <div class="risk-card high">
+      <div class="risk-title"><span class="risk-severity high">High</span> Build vs Non-Build result display regression</div>
+      <div class="risk-detail">Two different DOM sections (<code>.result-typ_one</code> and <code>.result-typ_two</code>) display after submission. If the branching logic breaks, users see the wrong results or nothing.</div>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Test Coverage (7 automated, 1 manual) <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Test</th><th>What it checks</th><th>Auto?</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>T-011</td><td>Form loads</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-012</td><td>Name field works</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-013</td><td>Email field present</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-014</td><td>Phone auto-format</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-015</td><td>Transaction type dropdown</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-016</td><td>Submit button present</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-017</td><td>Empty submission blocked</td><td>Yes</td><td><span class="badge badge-live">Pass</span></td></tr>
+          <tr><td>T-018</td><td>Valid end-to-end submission</td><td>Manual</td><td><span class="badge badge-tbd">TBD</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== JOURNEY: MORTGAGE QUIZ ==================== -->
+<div class="section" id="sec-j-quiz">
+  <h2 class="section-title">Mortgage Calculator Quiz</h2>
+  <p class="section-desc">Multi-step quiz on the mortgage calculator page. Provides value (borrowing estimate) in exchange for contact details. Entirely JavaScript-dependent — highest silent-failure risk.</p>
+
+  <div class="journey-header">
+    <dl>
+      <dt>Form ID</dt><dd><code>F-03</code> · Custom JavaScript (not CF7 or Gravity Forms)</dd>
+      <dt>URL</dt><dd><a href="https://www.huntergalloway.com.au/mortgage-calculator/" target="_blank">huntergalloway.com.au/mortgage-calculator/</a></dd>
+      <dt>HubSpot Form</dt><dd>HS-CF-06 "Mortgage calculator: Form popup data HG"</dd>
+      <dt>Quick links</dt><dd><a href="https://www.huntergalloway.com.au/mortgage-calculator/" target="_blank">Live page</a> · <a href="https://app-ap1.hubspot.com/contacts/4607234/objects/0-1/views/all/list" target="_blank">HubSpot Contacts</a></dd>
+      <dt>Data flow</dt><dd>Custom JS quiz → HubSpot Tracking Code → Collected Form → Contact</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Happens</h3>
+    <div class="flow-diagram">
+      <div class="flow-steps">
+        <div class="flow-step wp"><div class="system-label wp">WordPress</div><div class="step-title">Calculator</div><div class="step-detail">User enters income, deposit, etc.</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wp"><div class="system-label wp">WordPress</div><div class="step-title">Results</div><div class="step-detail">Borrowing capacity shown</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wp"><div class="system-label wp">Custom JS</div><div class="step-title">Quiz Prompt</div><div class="step-detail">"Want to know more?" Multi-step quiz</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wp"><div class="system-label wp">Custom JS</div><div class="step-title">Contact Details</div><div class="step-detail">Name, email, phone collected</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step hs"><div class="system-label hs">HubSpot</div><div class="step-title">Collected Form</div><div class="step-detail">Contact created with menu_106 quiz data</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wf"><div class="system-label wf">Workflow</div><div class="step-title">Lead Processing</div><div class="step-detail">Standard alert + routing</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Can Go Wrong</h3>
+    <div class="risk-card high" style="margin-bottom: 8px;">
+      <div class="risk-title"><span class="risk-severity high">High</span> JavaScript fails = quiz silently disappears</div>
+      <div class="risk-detail">The entire quiz is JS-dependent. If the script doesn't load, the calculator still works but the lead capture quiz never appears. No error shown to user. The <code>menu_106</code> property (which captures quiz answers) won't be populated.</div>
+    </div>
+    <div class="risk-card medium">
+      <div class="risk-title"><span class="risk-severity medium">Medium</span> No partial data capture on abandonment</div>
+      <div class="risk-detail">If a user completes 3 of 5 quiz steps then leaves, nothing is saved. There's no cookie or partial-submission mechanism confirmed.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== JOURNEY: POPUP ==================== -->
+<div class="section" id="sec-j-popup">
+  <h2 class="section-title">Assessment Popup Quiz</h2>
+  <p class="section-desc">Popup quiz that appears on multiple pages when a CTA is clicked. Uses Popup Maker plugin. Cookie-tracked across sessions.</p>
+
+  <div class="journey-header">
+    <dl>
+      <dt>Form ID</dt><dd><code>F-04</code> · Popup Maker (#popmake-11791, #popmake-14062)</dd>
+      <dt>Pages</dt><dd>Multiple — homepage, /mortgage-broker-brisbane/, /mortgage-calculator/, and more</dd>
+      <dt>HubSpot Forms</dt><dd>HS-CF-03 "Mortgage Broker Brisbane: Form popup data HG" · HS-CF-05 "Hunter Galloway: Form popup data HG" · HS-CF-06</dd>
+      <dt>Data flow</dt><dd>Popup Maker form → HubSpot Tracking Code → Collected Form → Contact</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Happens</h3>
+    <p style="font-size: 14px; margin-bottom: 12px;">User clicks a CTA → popup appears with a multi-step quiz (transaction type, name, email, phone) → on completion, data is submitted and captured by HubSpot tracking code as a Collected Form. The popup uses different HubSpot form names depending on which page it was triggered from.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Fields</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Field</th><th>Key</th><th>Required</th><th>Maps to HubSpot</th></tr></thead>
+        <tbody>
+          <tr><td>Transaction Type</td><td><code>transaction_type</code></td><td>Yes</td><td><code>transaction_type</code></td></tr>
+          <tr><td>Name</td><td><code>your-name</code></td><td>Yes</td><td><code>firstname</code> + <code>lastname</code></td></tr>
+          <tr><td>Email</td><td><code>your-email</code></td><td>Yes</td><td><code>email</code></td></tr>
+          <tr><td>Phone</td><td><code>your-phone</code></td><td>Yes</td><td><code>phone</code> + <code>mobilephone</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Can Go Wrong</h3>
+    <div class="risk-card high" style="margin-bottom: 8px;">
+      <div class="risk-title"><span class="risk-severity high">High</span> Popup Maker plugin conflict or JS error</div>
+      <div class="risk-detail">The popup relies on the Popup Maker plugin and JavaScript. Plugin updates, theme conflicts, or JS errors can prevent the popup from appearing.</div>
+    </div>
+    <div class="risk-card medium">
+      <div class="risk-title"><span class="risk-severity medium">Medium</span> Cookie-based tracking may block returning visitors</div>
+      <div class="risk-detail">Popup Maker uses cookies to avoid showing the popup repeatedly. If cookie logic is wrong, returning visitors who haven't completed the form may never see it again.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== JOURNEY: CALCULATOR REFERRAL ==================== -->
+<div class="section" id="sec-j-calculator">
+  <h2 class="section-title">Calculator Broker Referral</h2>
+  <p class="section-desc">When users complete the LVR or YTD calculators, they're asked "Would you like a mortgage broker to contact you?" These Gravity Forms submissions have an unconfirmed data destination.</p>
+
+  <div class="journey-header">
+    <dl>
+      <dt>Form IDs</dt><dd><code>F-05</code> (LVR, Gravity Forms #10) · <code>F-06</code> (YTD, Gravity Forms #9)</dd>
+      <dt>URLs</dt><dd><code>/lvr-calculator/</code> · <code>/ytd-calculator/</code></dd>
+      <dt>Data flow</dt><dd style="color: var(--warning); font-weight: 600;">Gravity Forms → destination UNKNOWN (not visible in HubSpot Collected Forms)</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Happens</h3>
+    <p style="font-size: 14px; margin-bottom: 12px;">User completes the LVR or YTD calculator → results displayed → prompt asks "Would you like a mortgage broker to contact you?" → if "Yes", a Gravity Form appears collecting name, email, phone → form submits.</p>
+    <p style="font-size: 14px;"><strong>The open question:</strong> These forms don't appear in HubSpot's Collected Forms list. They may route through a Gravity Forms add-on, Zapier, or another integration that hasn't been confirmed yet.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Can Go Wrong</h3>
+    <div class="risk-card high">
+      <div class="risk-title"><span class="risk-severity high">High</span> Data destination unknown — leads may be going nowhere</div>
+      <div class="risk-detail">Since the Gravity Forms submissions aren't visible in HubSpot Collected Forms, there's a real possibility these leads are being captured in WordPress but not reaching any CRM. Needs immediate investigation: submit a test lead and trace it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== JOURNEY: LANDING PAGES ==================== -->
+<div class="section" id="sec-j-landing">
+  <h2 class="section-title">Landing Page Forms</h2>
+  <p class="section-desc">CF7 forms on dedicated landing pages like /mortgage-broker-brisbane/. Same data flow as the main contact form but on different URLs.</p>
+
+  <div class="journey-header">
+    <dl>
+      <dt>Form ID</dt><dd><code>F-07</code> · Contact Form 7</dd>
+      <dt>Pages</dt><dd><code>/mortgage-broker-brisbane/</code> and 4+ other landing pages</dd>
+      <dt>HubSpot Form</dt><dd>HS-CF-04 "Award-Winning Mortgage Broker in Brisbane | Hunter Galloway: .wpcf7-form"</dd>
+      <dt>Data flow</dt><dd>CF7 → HubSpot Tracking Code → Collected Form → Contact → Standard lead routing</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Happens</h3>
+    <p style="font-size: 14px;">Same flow as the Contact Form (F-01) but on landing pages. Visitor fills out a CF7 form, HubSpot tracking code captures it as Collected Form HS-CF-04, and standard lead routing workflows fire. These pages typically have higher conversion intent since they're targeted landing pages for SEO/SEM traffic.</p>
+  </div>
+</div>
+
+<!-- ==================== JOURNEY: MORTGAGE REPORT ==================== -->
+<div class="section" id="sec-j-report">
+  <h2 class="section-title">Mortgage Report Request</h2>
+  <p class="section-desc">A home affordability report generator on /mortgage-report/. Visitors enter financial details to receive a personalised report, and their contact info is captured as a lead.</p>
+
+  <div class="journey-header">
+    <dl>
+      <dt>Form ID</dt><dd><code>F-08</code> · Contact Form 7</dd>
+      <dt>URL</dt><dd><code>https://www.huntergalloway.com.au/mortgage-report/</code></dd>
+      <dt>HubSpot Form</dt><dd>HS-CF-07 "Mortgage Report | Hunter Galloway: .wpcf7-form"</dd>
+      <dt>Data flow</dt><dd>CF7 → HubSpot Tracking Code → Collected Form → Contact created → Standard lead routing</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">What Happens</h3>
+    <div class="flow-diagram">
+      <div class="flow-steps">
+        <div class="flow-step wp"><div class="system-label wp">WordPress</div><div class="step-title">Report Form</div><div class="step-detail">Visitor enters financial details and contact info on /mortgage-report/</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wp"><div class="system-label wp">WordPress</div><div class="step-title">Submit</div><div class="step-detail">CF7 POSTs to WordPress API</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step hs"><div class="system-label hs">HubSpot</div><div class="step-title">Collected Form</div><div class="step-detail">Tracking code captures as HS-CF-07. Contact created/updated</div></div>
+        <div class="flow-arrow-container">→</div>
+        <div class="flow-step wf"><div class="system-label wf">Workflow</div><div class="step-title">Lead Routing</div><div class="step-detail">Standard alert + broker assignment workflows fire</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Open Questions</h3>
+    <div class="risk-card medium">
+      <div class="risk-title"><span class="risk-severity medium">Medium</span> Form fields not fully documented</div>
+      <div class="risk-detail">The exact fields on the /mortgage-report/ form need to be confirmed. Expected fields: name, email, phone, plus financial inputs for the report (income, deposit, property price). A manual walkthrough is needed to catalogue all fields and their validation rules.</div>
+    </div>
+    <div class="risk-card medium">
+      <div class="risk-title"><span class="risk-severity medium">Medium</span> Report delivery mechanism unknown</div>
+      <div class="risk-detail">It's not confirmed whether the report is displayed on-page, emailed to the visitor, or both. If there's an email delivery, there may be an associated HubSpot workflow not yet identified.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== JOURNEY: PDF DOWNLOADS ==================== -->
+<div class="section" id="sec-j-downloads">
+  <h2 class="section-title">PDF Downloads &amp; Content Leads</h2>
+  <p class="section-desc">OptinMonster popup forms that offer PDF guides in exchange for contact details. Lower-intent leads compared to assessment requests.</p>
+
+  <div class="card">
+    <h3 class="card-title">Active Download Workflows</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Workflow</th><th>Content Offered</th><th>Status</th><th>Enrolled</th><th>What It Does</th></tr></thead>
+        <tbody>
+          <tr><td><code>HS-WF-045</code></td><td>How to Buy a House PDF</td><td><span class="badge badge-on">On</span></td><td>42</td><td>Sends guide email, internal notifications, updates contact properties</td></tr>
+          <tr><td><code>HS-WF-051</code></td><td>First Home Buyer Tools PDF</td><td><span class="badge badge-on">On</span></td><td>1,131</td><td>Sends emails, updates properties, manages subscriptions</td></tr>
+          <tr><td><code>HS-WF-060</code></td><td>FIF Newsletter Signup</td><td><span class="badge badge-on">On</span></td><td>402</td><td>Internal notification, updates properties on signup/exit intent</td></tr>
+          <tr><td><code>HS-WF-061</code></td><td>Home &amp; Hosed Popup</td><td><span class="badge badge-on">On</span></td><td>79</td><td>Email series, updates lead source to "Pop up"</td></tr>
+          <tr><td><code>HS-WF-062</code></td><td>Guide to Brisbane Popup</td><td><span class="badge badge-on">On</span></td><td>632</td><td>Email series, updates lead properties</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LEAD → SETTLEMENT ==================== -->
+<div class="section" id="sec-lifecycle">
+  <h2 class="section-title">Lead → Settlement Lifecycle</h2>
+  <p class="section-desc">After a lead is captured and assigned to a broker, it moves through the loan pipeline. These workflows automate communication at each stage.</p>
+
+  <div class="card">
+    <h3 class="card-title">Deal Pipeline Stages &amp; Automated Workflows</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Stage</th><th>Workflow</th><th>What Happens Automatically</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1.2 Lead No Answer</strong></td><td><code>HS-WF-087</code></td><td>Deal stage updated after 3-min delay</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>2.1 Pre-Approved</strong></td><td><code>HS-WF-010</code></td><td>Pre-approval email/SMS sequence (Blueprint content + Trycall + Zapier webhook)</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>2.1 Pre-Approved (Sat)</strong></td><td><code>HS-WF-021</code></td><td>Saturday-specific emails for pre-approved contacts</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>2.4 Mock Pre-Approval</strong></td><td><code>HS-WF-064</code></td><td>Sets Mock property to "Yes" for tracking</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>Pre-To-Full</strong></td><td><code>HS-WF-086</code></td><td>Deal stage updated to Pre-To-Full</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>4.2 Loan Approved</strong></td><td><code>HS-WF-085</code></td><td>Deal stage updated</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>4.2 Loan Approved</strong></td><td><code>HS-WF-013</code></td><td>Broker SMS notification (121-min delay)</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>5.4 Feedback</strong></td><td><code>HS-WF-077</code></td><td>SMS feedback request sent 4 min after enrollment</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>6.0 Settlement Booked</strong></td><td><code>HS-WF-014</code></td><td>Broker SMS about settlement (121-min delay)</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>Future Opportunity (&lt;6mth)</strong></td><td><code>HS-WF-028</code></td><td>Timed marketing emails with property tips</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>Future Opportunity (6-12mth)</strong></td><td><code>HS-WF-029</code></td><td>Longer-cadence marketing emails</td><td><span class="badge badge-on">On</span></td></tr>
+          <tr><td><strong>Not Proceeding</strong></td><td><code>HS-WF-052</code></td><td>Deal moved to "No Further Contact" or "Deal Declined"</td><td><span class="badge badge-on">On</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Broker Notification Workflows</h3>
+    <p class="card-subtitle">These fire when key milestones are reached, alerting the broker by SMS or email.</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Trigger</th><th>Workflow</th><th>Channel</th><th>Delay</th></tr></thead>
+        <tbody>
+          <tr><td>Loan approved (4.2)</td><td><code>HS-WF-013</code></td><td>SMS to broker</td><td>121 minutes</td></tr>
+          <tr><td>Settlement booked (6.0)</td><td><code>HS-WF-014</code></td><td>SMS to broker</td><td>121 minutes</td></tr>
+          <tr><td>Meeting form submitted</td><td><code>HS-WF-078</code></td><td>Email to loans team</td><td>Immediate</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Unsubscribe &amp; Marketing Status Management</h3>
+    <p class="card-subtitle">Workflows that manage marketing consent and contact status.</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Workflow</th><th>What It Does</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><code>HS-WF-046</code> Unsubscribe from all</td><td>Unsubscribes contacts and sets to non-marketing status</td><td><span class="badge badge-on">On</span></td><td>10,486</td></tr>
+          <tr><td><code>HS-WF-047</code> Connective Mercury > Non-marketing</td><td>Sets @connective.com.au contacts to non-marketing</td><td><span class="badge badge-on">On</span></td><td>10,098</td></tr>
+          <tr><td><code>HS-WF-050</code> Opt Out if Not Proceeding</td><td>Opts out all subscriptions when loan status = "Not Proceeding (No Further Contact)"</td><td><span class="badge badge-on">On</span></td><td>2,508</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== REFERENCE: FORM INVENTORY ==================== -->
+<div class="section" id="sec-ref-forms">
+  <h2 class="section-title">Form Inventory</h2>
+  <p class="section-desc">Every form on the WordPress site, the plugin it uses, and exactly how it flows through to HubSpot. This is the single source of truth for "where do form submissions go?"</p>
+
+  <div class="card">
+    <h3 class="card-title">WordPress → HubSpot Form Mapping</h3>
+    <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">All WordPress forms are captured by the HubSpot tracking code installed on the site. The tracking code detects CF7, Gravity Forms, and custom JS form submissions and creates "Collected Forms" in HubSpot. This is the primary integration path — <strong>not Zapier</strong>.</p>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>Form ID</th><th>Name</th><th>WP Plugin</th><th>WP ID</th><th>Page(s)</th><th>HubSpot Collected Form</th><th>Data Flow</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>F-01</code></td>
+            <td>Contact Us (2-step)</td>
+            <td>Contact Form 7</td>
+            <td><code>#11830</code></td>
+            <td><code>/contact/</code></td>
+            <td>HS-CF-01 · HS-CF-02</td>
+            <td>CF7 → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge badge-on">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td><code>F-02</code></td>
+            <td>Free Assessment</td>
+            <td>Contact Form 7</td>
+            <td><code>#68942</code></td>
+            <td><code>/get-free-assessment/</code></td>
+            <td>HS-CF-03 · HS-CF-05 · HS-CF-06</td>
+            <td>CF7 → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge badge-on">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td><code>F-03</code></td>
+            <td>Mortgage Calculator Quiz</td>
+            <td>Custom JavaScript</td>
+            <td>N/A (JS app)</td>
+            <td><code>/mortgage-calculator/</code></td>
+            <td>HS-CF-06</td>
+            <td>JS submit → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge badge-on">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td><code>F-04</code></td>
+            <td>Assessment Quiz Popup</td>
+            <td>Popup Maker</td>
+            <td><code>#popmake-11791</code> · <code>#popmake-14062</code></td>
+            <td>Multiple (sitewide CTAs)</td>
+            <td>HS-CF-03 · HS-CF-05 · HS-CF-06</td>
+            <td>Popup form → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge badge-on">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td><code>F-05</code></td>
+            <td>LVR Calculator Broker Form</td>
+            <td>Gravity Forms</td>
+            <td><code>#10</code> (gform_wrapper_10)</td>
+            <td><code>/lvr-calculator/</code></td>
+            <td style="color: var(--warning); font-weight: 600;">Not found in HubSpot</td>
+            <td style="color: var(--warning);">Gravity Forms → destination UNKNOWN</td>
+            <td><span class="badge badge-off">Unknown</span></td>
+          </tr>
+          <tr>
+            <td><code>F-06</code></td>
+            <td>YTD Calculator Broker Form</td>
+            <td>Gravity Forms</td>
+            <td><code>#9</code> (gform_9)</td>
+            <td><code>/ytd-calculator/</code></td>
+            <td style="color: var(--warning); font-weight: 600;">Not found in HubSpot</td>
+            <td style="color: var(--warning);">Gravity Forms → destination UNKNOWN</td>
+            <td><span class="badge badge-off">Unknown</span></td>
+          </tr>
+          <tr>
+            <td><code>F-07</code></td>
+            <td>Landing Page Forms</td>
+            <td>Contact Form 7</td>
+            <td>Various</td>
+            <td><code>/mortgage-broker-brisbane/</code> + 4 others</td>
+            <td>HS-CF-04</td>
+            <td>CF7 → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge badge-on">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td><code>F-08</code></td>
+            <td>Mortgage Report Request</td>
+            <td>Contact Form 7</td>
+            <td>TBD</td>
+            <td><code>/mortgage-report/</code></td>
+            <td>HS-CF-07</td>
+            <td>CF7 → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge badge-on">Confirmed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">HubSpot Collected Forms (8 total)</h3>
+    <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">These are the forms visible in HubSpot under Marketing → Forms → Non-HubSpot Forms. Each one is auto-created by the tracking code when it detects a form submission on a specific page.</p>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>HS ID</th><th>HubSpot Name</th><th>WordPress Source</th><th>Used By</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>HS-CF-01</code></td><td>Contact | Hunter Galloway: .init, .crs_custom_form</td><td>CF7 #11830 on /contact/</td><td>F-01</td></tr>
+          <tr><td><code>HS-CF-02</code></td><td>Contact: Form contact page data HG</td><td>CF7 #11830 on /contact/</td><td>F-01</td></tr>
+          <tr><td><code>HS-CF-03</code></td><td>Mortgage Broker Brisbane: Form popup data HG</td><td>Popup form on /mortgage-broker-brisbane/</td><td>F-02, F-04</td></tr>
+          <tr><td><code>HS-CF-04</code></td><td>Award-Winning Mortgage Broker in Brisbane | Hunter Galloway: .wpcf7-form</td><td>CF7 on landing pages</td><td>F-07</td></tr>
+          <tr><td><code>HS-CF-05</code></td><td>Hunter Galloway: Form popup data HG</td><td>Popup/assessment form sitewide</td><td>F-02, F-04</td></tr>
+          <tr><td><code>HS-CF-06</code></td><td>Mortgage calculator: Form popup data HG</td><td>Quiz/popup on /mortgage-calculator/</td><td>F-02, F-03, F-04</td></tr>
+          <tr><td><code>HS-CF-07</code></td><td>Mortgage Report | Hunter Galloway: .wpcf7-form</td><td>CF7 on /mortgage-report/</td><td>F-08</td></tr>
+          <tr><td><code>HS-CF-08</code></td><td>Typeform (hello.huntergalloway.com.au)</td><td>External Typeform</td><td>External</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">External / Non-WordPress Forms</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>System</th><th>Form</th><th>URL / Location</th><th>Feeds Into</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Typeform</td><td>Lead capture</td><td><code>hello.huntergalloway.com.au</code></td><td>HubSpot (HS-CF-08)</td><td>Hosted on Typeform subdomain. Fields TBD.</td></tr>
+          <tr><td>OptinMonster</td><td>PDF download popups</td><td>Sitewide exit-intent popups</td><td>HubSpot via workflows (WF-045, 051, 060-062)</td><td>Triggers PDF email sequences.</td></tr>
+          <tr><td>Calendly</td><td>Booking widget</td><td>Embedded on various pages</td><td>HubSpot (TBD)</td><td>Used for appointment scheduling. Integration path not confirmed.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title" style="color: var(--warning);">Gaps &amp; Risks</h3>
+    <div class="risk-card high">
+      <div class="risk-title"><span class="risk-severity high">High</span> Gravity Forms (F-05, F-06) have no confirmed destination</div>
+      <div class="risk-detail">LVR and YTD calculator broker referral forms don't appear in HubSpot Collected Forms. Leads may be captured only in WordPress <code>wp_posts</code> (Gravity Forms entries) and never reaching the CRM. Submit a test lead and trace it to confirm.</div>
+    </div>
+    <div class="risk-card medium">
+      <div class="risk-title"><span class="risk-severity medium">Medium</span> HS-CF-01 vs HS-CF-02 — two Collected Forms for one contact page</div>
+      <div class="risk-detail">The /contact/ page creates two separate Collected Forms in HubSpot. This likely means the tracking code detects two different form selectors on the same page (<code>.init, .crs_custom_form</code> vs the standard CF7 form). Potential for duplicate contact creation or missed data.</div>
+    </div>
+    <div class="risk-card medium">
+      <div class="risk-title"><span class="risk-severity medium">Medium</span> F-08 Mortgage Report — form fields not catalogued</div>
+      <div class="risk-detail">The /mortgage-report/ form is confirmed to exist and feeds HS-CF-07, but its exact fields, validation rules, and report delivery mechanism haven't been documented yet.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== REFERENCE: ALL WORKFLOWS ==================== -->
+<div class="section" id="sec-ref-workflows">
+  <h2 class="section-title">All Workflows</h2>
+  <p class="section-desc">99 visible HubSpot workflows grouped by function. Click any group to expand. All workflow IDs link to <a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank">HubSpot Workflows</a>.</p>
+
+  <input type="text" class="ref-filter" placeholder="Search workflows..." oninput="filterWorkflowGroups(this.value)" style="margin-bottom: 16px;">
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Lead Processing <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">20 workflows · 17 on · 3 off</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-005</code></a></td><td>((((NEW LEAD)))) MANUAL Process (unqualified leads) - NATHAN</td><td><span class="badge badge-on">On</span></td><td>5,470</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-006</code></a></td><td>((((NEW LEAD)))) MANUAL Process (unqualified leads) - JAYDEN</td><td><span class="badge badge-on">On</span></td><td>5,390</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-008</code></a></td><td>[Website Trigger] HG New Lead SMS from website</td><td><span class="badge badge-on">On</span></td><td>18,645</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-011</code></a></td><td>((((NEW LEAD)))) MANUAL Process (unqualified leads) - TY</td><td><span class="badge badge-on">On</span></td><td>272</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-019</code></a></td><td>02-LEAD-WORKFLOW On Form Submission Home Buying Plan - Form Submit &gt; Mercury (4.0 Free Assessment)</td><td><span class="badge badge-on">On</span></td><td>8,935</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-027</code></a></td><td>((((NEW LEAD)))) MANUAL Process (unqualified leads) - CHRISTIAN</td><td><span class="badge badge-on">On</span></td><td>3,515</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-038</code></a></td><td>[Hubs] New Lead &gt; Set [Broker] Adviser Contact to Contact Owner</td><td><span class="badge badge-on">On</span></td><td>18,246</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-040</code></a></td><td>Send a follow-up email after form submission (New eBook)</td><td><span class="badge badge-on">On</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-045</code></a></td><td>[Website Trigger] HG: How to Buy a House PDF Download (optin monster)</td><td><span class="badge badge-on">On</span></td><td>42</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-051</code></a></td><td>[Website Trigger] HG: FIRST HOME BUYER TOOLS PDF Download (optin monster)</td><td><span class="badge badge-on">On</span></td><td>1,131</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-060</code></a></td><td>[Website Trigger] HG: FIF: New Subscriber</td><td><span class="badge badge-on">On</span></td><td>402</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-061</code></a></td><td>[Website Trigger] HG: Home &amp; Hosed (Website Popup)</td><td><span class="badge badge-on">On</span></td><td>79</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-062</code></a></td><td>[Website Trigger] HG: Guide to Brisbane (Website Popup 2.0)</td><td><span class="badge badge-on">On</span></td><td>632</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-063</code></a></td><td>[Website Trigger] HG: Covid 19 - Brisbane Housing Market during the Coronavirus in 2020</td><td><span class="badge badge-on">On</span></td><td>270</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-069</code></a></td><td>(((((MANUAL)))) HomeBuilder Enquiry [New Lead] send webinar</td><td><span class="badge badge-on">On</span></td><td>94</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-079</code></a></td><td>Information Session - Form Submit &gt; Mercury</td><td><span class="badge badge-on">On</span></td><td>308</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-094</code></a></td><td>HG New Lead SMS from website (facebook)</td><td><span class="badge badge-on">On</span></td><td>6</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-041</code></a></td><td>Send a follow-up email after form submission (pop-up)</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-074</code></a></td><td>Assign new web leads</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-082</code></a></td><td>form submission to Mercury</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Other <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">17 workflows · 9 on · 8 off</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-015</code></a></td><td>Kane Facebook Brokergrow Leads</td><td><span class="badge badge-on">On</span></td><td>38</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-020</code></a></td><td>[Person for Mercury] 4.1 Approval, Pre + Settlement - Ask for Review</td><td><span class="badge badge-on">On</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-023</code></a></td><td>Property Investors Workflow</td><td><span class="badge badge-on">On</span></td><td>111</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-039</code></a></td><td>Remove contact from pre approval email if P2F</td><td><span class="badge badge-on">On</span></td><td>2,951</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-064</code></a></td><td>Mock Flag</td><td><span class="badge badge-on">On</span></td><td>5,519</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-073</code></a></td><td>5 Bullet Finance - Opt in</td><td><span class="badge badge-on">On</span></td><td>4,661</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-078</code></a></td><td>Meeting notification</td><td><span class="badge badge-on">On</span></td><td>181</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-092</code></a></td><td>Enrol if filled out RP Data</td><td><span class="badge badge-on">On</span></td><td>482</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-093</code></a></td><td>Future Opp: Subscribe to 5 Bullet</td><td><span class="badge badge-on">On</span></td><td>11,301</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-009</code></a></td><td>Quick Chat: Meeting Booking with Broker During Lead Process</td><td><span class="badge badge-off">Off</span></td><td>138</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-024</code></a></td><td>6.1.5 SETT (Reprice Trigger) | Josh | 12/05/2023</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-065</code></a></td><td>Settlement Smarts</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-066</code></a></td><td>BID &gt; Goal Assessment Form</td><td><span class="badge badge-off">Off</span></td><td>328</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-071</code></a></td><td>[Hubs] Update Mortgage Broker / Supervisor in Mercury</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-080</code></a></td><td>[Deal] Our Own Compliance Decline</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-081</code></a></td><td>Information Session [pre email]</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-096</code></a></td><td>Hot leads</td><td><span class="badge badge-off">Off</span></td><td>11</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Test/Unused <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">13 workflows · 1 on · 12 off</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-007</code></a></td><td>SMS TEST</td><td><span class="badge badge-on">On</span></td><td>224</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-001</code></a></td><td>Unnamed workflow - 2026-03-24 01:53:19 GMT+0000</td><td><span class="badge badge-off">Off</span></td><td>1,346</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-018</code></a></td><td>Unnamed workflow - 2024-05-28 22:20:43 GMT+0000</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-021</code></a></td><td>Unnamed workflow - 2024-02-19 22:06:19 GMT+0000</td><td><span class="badge badge-off">Off</span></td><td>1</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-035</code></a></td><td>Unnamed workflow - Fri Jul 22 2022 14:35:38 GMT+1000</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-042</code></a></td><td>TEST TEXT Workflow</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-043</code></a></td><td>Unnamed workflow - Wed Feb 16 2022 09:25:19 GMT+1000</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-055</code></a></td><td>Unnamed workflow - Tue Jun 29 2021 12:16:06 GMT+1000</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-067</code></a></td><td>Unnamed workflow - Tue Jun 23 2020 10:05:44 GMT+1000</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-072</code></a></td><td>Unnamed workflow - Thu Jun 11 2020 11:51:37 GMT+1000</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-075</code></a></td><td>Unnamed workflow - Mon Jun 08 2020 09:39:39 GMT+1000</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-083</code></a></td><td>Unnamed Contact workflow (1)</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-084</code></a></td><td>Unnamed Contact workflow (2)</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Deal Management <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">10 workflows · 5 on · 5 off</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-004</code></a></td><td>[Deal] Update deal owner</td><td><span class="badge badge-on">On</span></td><td>103,689</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-052</code></a></td><td>[deal] Not Proceeding No Contact</td><td><span class="badge badge-on">On</span></td><td>9,557</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-086</code></a></td><td>Deal: Move approved and onwards deals</td><td><span class="badge badge-on">On</span></td><td>21,090</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-087</code></a></td><td>[deal] pre to full</td><td><span class="badge badge-on">On</span></td><td>2,724</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-088</code></a></td><td>[Deal] Move 1.2 Lead No answer</td><td><span class="badge badge-on">On</span></td><td>17,729</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-034</code></a></td><td>DATA CLEAN: Update Banks in Deals - Bank Name / Lender Name (Restored on 22/7/2022)</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-037</code></a></td><td>CORRECTED - DATA CLEAN: Update Banks in Deals - Bank Name / Lender Name</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-085</code></a></td><td>[Deal] Update deal owner (cloned)</td><td><span class="badge badge-off">Off</span></td><td>994</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-089</code></a></td><td>Pipeline is Home Loans to Settlement, deal stage is Pre-Settlement</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-090</code></a></td><td>Deal: Assign lost to Declined deals</td><td><span class="badge badge-off">Off</span></td><td>4</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Mercury/CRM Trigger <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">9 workflows · 6 on · 3 off</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-010</code></a></td><td>[Mercury Trigger] 3.0 Pre Approved Workflow 2 of 2 - Blueprint</td><td><span class="badge badge-on">On</span></td><td>2,303</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-022</code></a></td><td>[Mercury Trigger] 2.1 Pre Approved - SATURDAY emails</td><td><span class="badge badge-on">On</span></td><td>2,782</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-028</code></a></td><td>[Mercury Trigger] Future Opportunity Ver 2.0 (&lt;6mth) - Email Workflow (cloned)</td><td><span class="badge badge-on">On</span></td><td>4,357</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-029</code></a></td><td>[Mercury Trigger] Future Opportunity (6-12mth) ver2.0 - Email Workflow (cloned)</td><td><span class="badge badge-on">On</span></td><td>517</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-077</code></a></td><td>[Mercury Trigger] 5.4 sms feedback request</td><td><span class="badge badge-on">On</span></td><td>1,107</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-097</code></a></td><td>[Mercury Trigger] No Contact: workflow</td><td><span class="badge badge-on">On</span></td><td>113</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-056</code></a></td><td>[Mercury Trigger] Future Opportunity (&lt;6mth) - Email Workflow</td><td><span class="badge badge-off">Off</span></td><td>2,526</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-057</code></a></td><td>[Mercury Trigger] 2.1 Pre Approved Workflow</td><td><span class="badge badge-off">Off</span></td><td>528</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-058</code></a></td><td>[Mercury Trigger] 6.1 Settled: Post Settlement Automated Process (Up to 3 years)</td><td><span class="badge badge-off">Off</span></td><td>1,481</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Unsubscribe/Marketing Status <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">8 workflows · 4 on · 4 off</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-046</code></a></td><td>Unsubscribe from all and make non marketing contact</td><td><span class="badge badge-on">On</span></td><td>10,486</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-047</code></a></td><td>Connective Mercury Emails &gt; Make non marketing contacts</td><td><span class="badge badge-on">On</span></td><td>10,098</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-050</code></a></td><td>UNSUBSCRIBE &gt; Opt Out if Not Proceed (No Further Contact) in Mercury</td><td><span class="badge badge-on">On</span></td><td>2,508</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-053</code></a></td><td>Dean unsub all people</td><td><span class="badge badge-on">On</span></td><td>822</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-017</code></a></td><td>breaking template to work out how to fix it</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-048</code></a></td><td>UNSUBSCRIBE &gt; ON OFF (cloned)</td><td><span class="badge badge-off">Off</span></td><td>510</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-049</code></a></td><td>UNSUBSCRIBE &gt; ON OFF</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-054</code></a></td><td>Unsubscribed from All [Remove SMS Phone Number]</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Customer Experience <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">7 workflows · 3 on · 4 off</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-076</code></a></td><td>Customer Loyalty Survey Follow-Up: Promoters 9 - 10</td><td><span class="badge badge-on">On</span></td><td>193</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-098</code></a></td><td>Customer Loyalty Survey Follow-Up: Detractors 0 - 6</td><td><span class="badge badge-on">On</span></td><td>6</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-099</code></a></td><td>Customer Loyalty Survey Follow-Up: Passives 7 - 8</td><td><span class="badge badge-on">On</span></td><td>10</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-044</code></a></td><td>NPS Trigger: 2.0 Post information session</td><td><span class="badge badge-off">Off</span></td><td>3,426</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-059</code></a></td><td>Birthday Message (v2) (cloned)</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-091</code></a></td><td>[1 of 3] Birthday Message with TryCall (v3)</td><td><span class="badge badge-off">Off</span></td><td></td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-095</code></a></td><td>[3 of 3] Birthday Message with TryCall</td><td><span class="badge badge-off">Off</span></td><td>5</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Integration/Webhook <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">5 workflows · 4 on · 1 off</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-012</code></a></td><td>Manual Webhook Test</td><td><span class="badge badge-on">On</span></td><td>8</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-016</code></a></td><td>Process.st updating contact making an offer and plan for auction property</td><td><span class="badge badge-on">On</span></td><td>5,479</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-025</code></a></td><td>ZAPIER &gt; FileInvite Manual Webhook</td><td><span class="badge badge-on">On</span></td><td>23</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-068</code></a></td><td>Unnamed workflow - Sat Jun 20 2020 04:25:49 GMT+1000</td><td><span class="badge badge-on">On</span></td><td>1</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-070</code></a></td><td>Unnamed workflow - Mon Jun 15 2020 21:18:46 GMT+1000</td><td><span class="badge badge-off">Off</span></td><td>2</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Webinar/Events <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">5 workflows · 4 on · 1 off</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-026</code></a></td><td>WEBINAR: Q&amp;A [Week 2] Weekly webinar Trycall + Email</td><td><span class="badge badge-on">On</span></td><td>115</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-030</code></a></td><td>WEBINAR: Q&amp;A Weekly webinar calendar invite for zoom (FIF)</td><td><span class="badge badge-on">On</span></td><td>25</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-032</code></a></td><td>WEBINAR: Q&amp;A Weekly webinar calendar invite for zoom</td><td><span class="badge badge-on">On</span></td><td>117</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-033</code></a></td><td>FIF: Q&amp;A: Enrol to Q&amp;A Subscribers</td><td><span class="badge badge-on">On</span></td><td>14</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-031</code></a></td><td>Q&amp;A Reminder Email</td><td><span class="badge badge-off">Off</span></td><td>8</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Broker Assignment <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">3 workflows · 3 on</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-002</code></a></td><td>[Hubs] Set Broker as Contact Owner (or set default owner)</td><td><span class="badge badge-on">On</span></td><td>39,314</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-003</code></a></td><td>[Hubs] MANUAL Set Broker as Contact Owner (or set default owner)</td><td><span class="badge badge-on">On</span></td><td>221,552</td></tr>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-014</code></a></td><td>00 6.0 Settlement Booked - Broker SMS</td><td><span class="badge badge-on">On</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Broker Notifications <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">1 workflows · 1 on</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-013</code></a></td><td>00 4.2 Loan Approved - Broker SMS</td><td><span class="badge badge-on">On</span></td><td>2,425</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Data Cleanup <span style="font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 8px;">1 workflows · 1 on</span> <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table class="wf-group-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Enrolled</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank" style="color: var(--primary-light); text-decoration: none;"><code>HS-WF-036</code></a></td><td>DATA CLEAN: Correct bank short names for SMS</td><td><span class="badge badge-on">On</span></td><td>71,429</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== REFERENCE: HUBSPOT PROPERTIES ==================== -->
+<div class="section" id="sec-ref-properties">
+  <h2 class="section-title">HubSpot Properties</h2>
+  <p class="section-desc">Key contact properties that receive form data. HubSpot account 4607234 (AP1 region) has 200+ properties, ~120 custom.</p>
+
+  <div class="card">
+    <h3 class="card-title">Properties Populated by Web Forms</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Property</th><th>Label</th><th>Source Form(s)</th><th>Example Values</th></tr></thead>
+        <tbody>
+          <tr><td><code>request_type</code></td><td>Request Type</td><td>F-01 Contact</td><td>"First Home Purchase Inquiry", "Investment Property Financing", "Refinance", "Borrowing Capacity", "General", "Other"</td></tr>
+          <tr><td><code>transaction_type</code></td><td>Transaction Type</td><td>F-02, F-04</td><td>"Purchase A Property", "Refinance A Loan", "Commercial Or Business Loan", "Build"</td></tr>
+          <tr><td><code>message</code></td><td>Message</td><td>F-01 Contact</td><td>Free text</td></tr>
+          <tr><td><code>menu_106</code></td><td>What are you looking to do</td><td>F-03 Quiz</td><td>User-selected quiz option</td></tr>
+          <tr><td><code>source_url</code></td><td>Source URL</td><td>All forms</td><td>Auto-captured page URL</td></tr>
+          <tr><td><code>lead_source</code></td><td>Lead Source</td><td>Auto-set</td><td>"Website" or "Phone"</td></tr>
+          <tr><td><code>branch</code></td><td>Branch</td><td>Form/manual</td><td>"Hunter Galloway" or "LegUp"</td></tr>
+          <tr><td><code>adviser</code></td><td>Mercury/Connective Broker</td><td>Routing</td><td>CA codes: "CA956334", "CA956333", "CA92862", "CA64028"</td></tr>
+          <tr><td><code>consent</code></td><td>Consent</td><td>Form submission</td><td>Boolean</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Extended Assessment Properties (Typeform) <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Property</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>what_are_you_planning_to_do_free_assessment_form_</code></td><td>Options like "Purchase a Home to live in"</td></tr>
+          <tr><td><code>first_home_buyer_free_assessment_</code></td><td>Yes/No flag</td></tr>
+          <tr><td><code>annual_income</code></td><td>Household income (numeric)</td></tr>
+          <tr><td><code>how_much_do_you_have_in_savings_deposit_</code></td><td>Deposit amount</td></tr>
+          <tr><td><code>how_did_you_hear_about_us</code></td><td>Referral source (free text)</td></tr>
+          <tr><td><code>how_many_people_buying_the_property_free_assessment_</code></td><td>Number of applicants</td></tr>
+          <tr><td><code>do_you_have_any_kids_free_assessment_</code></td><td>Dependents flag</td></tr>
+          <tr><td><code>do_you_have_any_credit_card_limits_or_personal_loans_free_assessment_</code></td><td>Existing debt flag</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapsible-header" onclick="toggleCollapsible(this)">
+    Mortgage/Refinance Properties <span class="arrow">▶</span>
+  </div>
+  <div class="collapsible-body">
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Property</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>how_much_do_you_still_owe_on_your_mortgage_</code></td><td>Current mortgage balance</td></tr>
+          <tr><td><code>what_is_your_current_mortgage_interest_rate_</code></td><td>Current interest rate</td></tr>
+          <tr><td><code>what_is_your_remaining_loan_term_</code></td><td>Loan term remaining</td></tr>
+          <tr><td><code>what_s_most_important_to_you_in_refinancing_</code></td><td>Refinance priority</td></tr>
+          <tr><td><code>how_much_is_your_property_worth_</code></td><td>Property valuation</td></tr>
+          <tr><td><code>max_borrowing_capacity</code></td><td>Maximum borrowing capacity (calculated)</td></tr>
+          <tr><td><code>max_purchase_price</code></td><td>Maximum purchase price (calculated)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <h3 class="card-title">HubSpot Team (Active Owners)</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Owner ID</th><th>Name</th></tr></thead>
+        <tbody>
+          <tr><td><code>32318152</code></td><td>Jayden Vecchio</td></tr>
+          <tr><td><code>33309899</code></td><td>Nathan Vecchio</td></tr>
+          <tr><td><code>33310209</code></td><td>Josh Vecchio</td></tr>
+          <tr><td><code>76486008</code></td><td>Ty Farrall</td></tr>
+          <tr><td><code>159743668</code></td><td>Christian Bryant</td></tr>
+          <tr><td><code>32646749</code></td><td>Trav White</td></tr>
+          <tr><td><code>70701693</code></td><td>Simon Heikkila</td></tr>
+          <tr><td><code>39829536</code></td><td>Conversionrate Store</td></tr>
+          <tr><td><code>203507317</code></td><td>Gabrielle Duke</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== REFERENCE: TEST MATRIX ==================== -->
+<div class="section" id="sec-ref-tests">
+  <h2 class="section-title">Test Matrix</h2>
+  <p class="section-desc">67 test cases across 55 automated (Playwright) and 12 manual. Framework: Playwright + TypeScript. Results: 97/97 desktop, 92/96 mobile.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="num" style="color: var(--success);">55</div><div class="label">Automated Pass</div></div>
+    <div class="stat-card"><div class="num" style="color: var(--warning);">12</div><div class="label">Manual TBD</div></div>
+    <div class="stat-card"><div class="num">67</div><div class="label">Total Tests</div></div>
+  </div>
+
+  <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">Test details are included within each journey page under collapsible "Test Coverage" sections. The full matrix is available in <code>docs/sheets/04-test-matrix.csv</code>.</p>
+
+  <div class="card">
+    <h3 class="card-title">What's NOT Tested</h3>
+    <p class="card-subtitle">The biggest gap in test coverage:</p>
+    <div class="risk-card high" style="margin-bottom: 8px;">
+      <div class="risk-title">No end-to-end integration tests</div>
+      <div class="risk-detail">Automated tests verify UI (fields exist, validation works, buttons present) but never submit a real form. There's no test that verifies data reaches HubSpot. A silent failure of the tracking code would not be caught by any automated test.</div>
+    </div>
+    <div class="risk-card medium">
+      <div class="risk-title">No workflow verification tests</div>
+      <div class="risk-detail">There's no automated check that HubSpot workflows are still active, that SMS alerts are being sent, or that broker assignment is working. These rely on manual spot-checks.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== REFERENCE: CALCULATORS ==================== -->
+<div class="section" id="sec-ref-calcs">
+  <h2 class="section-title">Calculators</h2>
+  <p class="section-desc">9 financial calculators on the site. Most are standalone display tools. Two (LVR and YTD) have broker referral forms attached.</p>
+
+  <div class="card" style="padding: 0; overflow: hidden;">
+    <div class="table-wrapper" style="margin: 0;">
+      <table>
+        <thead><tr><th>ID</th><th>Calculator</th><th>URL</th><th>Leads to Form?</th></tr></thead>
+        <tbody>
+          <tr><td><code>C-01</code></td><td>Mortgage Calculator</td><td><code>/mortgage-calculator/</code></td><td>Yes → F-03 Quiz</td></tr>
+          <tr><td><code>C-02</code></td><td>Equity Calculator</td><td><code>/equity-calculator/</code></td><td>No (display only)</td></tr>
+          <tr><td><code>C-03</code></td><td>LVR Calculator</td><td><code>/lvr-calculator/</code></td><td>Yes → F-05 Broker Form</td></tr>
+          <tr><td><code>C-04</code></td><td>YTD Calculator</td><td><code>/ytd-calculator/</code></td><td>Yes → F-06 Broker Form</td></tr>
+          <tr><td><code>C-05</code></td><td>Mortgage vs Rent</td><td><code>/mortgage-vs-rent-calculator/</code></td><td>No (display only)</td></tr>
+          <tr><td><code>C-06</code></td><td>Deposit Calculator</td><td><code>/deposit-calculator/</code></td><td>No (display only)</td></tr>
+          <tr><td><code>C-07</code></td><td>Stamp Duty QLD</td><td><code>/stamp-duty-calculator-queensland/</code></td><td>No (display only)</td></tr>
+          <tr><td><code>C-08</code></td><td>LMI Calculator</td><td><code>/lmi-calculator/</code></td><td>No (display only)</td></tr>
+          <tr><td><code>C-09</code></td><td>Extra Repayments</td><td><code>/home-loan-extra-repayment-calculator/</code></td><td>Redirects to C-06</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== REFERENCE: OPEN QUESTIONS ==================== -->
+<div class="section" id="sec-ref-open">
+  <h2 class="section-title">Open Questions</h2>
+  <p class="section-desc">Remaining items that need investigation. The critical questions (data flow, HubSpot properties, workflows) have been resolved.</p>
+
+  <div class="card" style="border-left: 4px solid var(--success); background: linear-gradient(135deg, rgba(56, 161, 105, 0.03), transparent);">
+    <h3 class="card-title" style="color: var(--success);">Resolved</h3>
+    <p style="font-size: 13px; line-height: 1.8;">
+      <strong>Data flow:</strong> CF7 → HubSpot Collected Forms (not Zapier).<br>
+      <strong>HubSpot properties:</strong> Custom properties mapped including request_type, transaction_type, message, adviser CA codes.<br>
+      <strong>HubSpot workflows:</strong> 99 documented, key lead processing and broker assignment workflows identified.<br>
+      <strong>Team members:</strong> 9 active HubSpot owners identified.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Still Open</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Priority</th><th>Question</th><th>How to Investigate</th></tr></thead>
+        <tbody>
+          <tr><td><span class="risk-severity high">High</span></td><td>Where do Gravity Forms #9 and #10 submissions go?</td><td>Submit a test lead through /lvr-calculator/ and /ytd-calculator/, then search HubSpot for it. Check GF settings for add-ons or Zapier connections.</td></tr>
+          <tr><td><span class="risk-severity high">High</span></td><td>What spam protection is active on forms?</td><td>Inspect CF7 form settings in WordPress admin. Check for reCAPTCHA keys, honeypot plugins, or Akismet.</td></tr>
+          <tr><td><span class="risk-severity medium">Medium</span></td><td>How does Typeform (hello.huntergalloway.com.au) connect to HubSpot?</td><td>Check Typeform admin for HubSpot integration settings or Zapier connections.</td></tr>
+          <tr><td><span class="risk-severity medium">Medium</span></td><td>What happens with partial quiz/popup abandonment?</td><td>Start the F-03 quiz, abandon at step 3, check if any data appears in HubSpot.</td></tr>
+          <tr><td><span class="risk-severity medium">Medium</span></td><td>Are UTM parameters captured as hidden fields?</td><td>Visit a form page with UTM params, submit, check if HubSpot contact has UTM values.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const sec = document.getElementById('sec-' + id);
+  if (sec) {
+    sec.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  // Find and activate the corresponding nav item
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + id + "'")) {
+      n.classList.add('active');
+    }
+  });
+  // Close mobile sidebar
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+function toggleCollapsible(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  if (body) body.classList.toggle('open');
+}
+
+function filterTable(tableId, query) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const rows = table.querySelectorAll('tbody tr');
+  const q = query.toLowerCase();
+  rows.forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function filterWorkflowGroups(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('#sec-ref-workflows .collapsible-header').forEach(header => {
+    const body = header.nextElementSibling;
+    if (!body) return;
+    const rows = body.querySelectorAll('tbody tr');
+    let visible = 0;
+    rows.forEach(row => {
+      const match = row.textContent.toLowerCase().includes(q);
+      row.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    header.style.display = visible === 0 && q ? 'none' : '';
+    body.style.display = visible === 0 && q ? 'none' : '';
+    if (q && visible > 0) { header.classList.add('open'); body.classList.add('open'); }
+    if (!q) { header.classList.remove('open'); body.classList.remove('open'); header.style.display = ''; body.style.display = ''; }
+  });
+}
+
+// Global search
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('global-search');
+  const resultsDiv = document.getElementById('search-results');
+  if (!searchInput) return;
+  const index = [];
+  document.querySelectorAll('.section').forEach(sec => {
+    const id = sec.id.replace('sec-', '');
+    const h = sec.querySelector('.section-title, h2');
+    const title = h ? h.textContent.trim() : id;
+    sec.querySelectorAll('td, .risk-title, .pipe-title, .er-name, .card-title, dd, code').forEach(el => {
+      const t = el.textContent.trim();
+      if (t.length > 3 && t.length < 200) index.push({ s: id, title: title, t: t });
+    });
+  });
+  let timer;
+  searchInput.addEventListener('input', function() {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      const q = this.value.toLowerCase().trim();
+      if (q.length < 2) { resultsDiv.style.display = 'none'; return; }
+      const seen = new Set();
+      const hits = index.filter(i => {
+        if (!i.t.toLowerCase().includes(q)) return false;
+        const key = i.s + i.t.substring(0,30);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      }).slice(0, 8);
+      if (!hits.length) { resultsDiv.innerHTML = '<div style="padding:8px;font-size:11px;opacity:0.4;">No results</div>'; }
+      else { resultsDiv.innerHTML = hits.map(h => '<a class="nav-item" style="padding:5px 12px;font-size:11px;border-left:none;" onclick="showSection(\'' + h.s + '\');document.getElementById(\'global-search\').value=\'\';document.getElementById(\'search-results\').style.display=\'none\';"><strong style="color:rgba(255,255,255,.9);">' + h.title.substring(0,25) + '</strong> <span style="opacity:.5;">' + (h.t.length > 50 ? h.t.substring(0,50) + '...' : h.t) + '</span></a>').join(''); }
+      resultsDiv.style.display = 'block';
+    }, 200);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+Test ID,Form ID,Scenario,Input,Expected Result,Automated?,Pass/Fail,Last Tested,Notes
+T-001,F-01,Contact form loads,Navigate to /contact/,Form visible with textarea,Yes (Playwright),Pass,2026-04-01,critical-pages.spec.ts
+T-002,F-01,Step 1 textarea accepts input,Type message text,Text appears in textarea,Yes (Playwright),Pass,2026-04-01,contact-form.spec.ts
+T-003,F-01,Step 1 → Step 2 transition,Fill message + click Next,Contact fields become visible,Yes (Playwright),Pass,2026-04-01,contact-form.spec.ts
+T-004,F-01,Contact fields present in DOM,Check DOM for name/email/phone,All 3 field types found,Yes (Playwright),Pass,2026-04-01,contact-form.spec.ts
+T-005,F-01,Submit button exists,Check for .crs_custom_submit,Button found in DOM,Yes (Playwright),Pass,2026-04-01,contact-form.spec.ts
+T-006,F-01,Request type options present,Check page text for options,First Home / Investment / Refinance found,Yes (Playwright),Pass,2026-04-01,contact-form.spec.ts
+T-007,F-01,Phone auto-formatting,Type '0412345678',Formatted to '0412 345 678',Yes (Playwright),Pass,2026-04-01,phone-number-validation.spec.ts
+T-008,F-01,Valid submission end-to-end,Fresh email + all fields,Contact created in CRM + notification sent,No (manual),TBD,,NEEDS MANUAL TEST: Would create real lead
+T-009,F-01,Invalid email rejected,Enter 'notanemail',Inline validation error,No (manual),TBD,,Requires form interaction beyond field presence
+T-010,F-01,Duplicate contact handling,Submit with existing email,Contact updated not duplicated,No (manual),TBD,,NEEDS MANUAL TEST + CRM check
+T-011,F-02,Assessment form loads,Navigate to /get-free-assessment/,Form visible,Yes (Playwright),Pass,2026-04-01,free-assessment.spec.ts
+T-012,F-02,Name field accepts input,Type 'Test User',Value accepted,Yes (Playwright),Pass,2026-04-01,free-assessment.spec.ts
+T-013,F-02,Email field present,Check for email input,Field visible,Yes (Playwright),Pass,2026-04-01,free-assessment.spec.ts
+T-014,F-02,Phone field with auto-format,Type AU mobile number,Auto-formatted correctly,Yes (Playwright),Pass,2026-04-01,free-assessment.spec.ts
+T-015,F-02,Transaction type dropdown,Check for dropdown options,Purchase / Refinance / Build found,Yes (Playwright),Pass,2026-04-01,free-assessment.spec.ts
+T-016,F-02,Submit button present,Check for .crs_custom_submit,Button found,Yes (Playwright),Pass,2026-04-01,free-assessment.spec.ts
+T-017,F-02,Empty submission blocked,Click submit without filling,Validation errors shown,Yes (Playwright),Pass,2026-04-01,free-assessment.spec.ts
+T-018,F-02,Valid submission end-to-end,Fresh email + all fields,Contact created in CRM,No (manual),TBD,,NEEDS MANUAL TEST
+T-019,F-03,Mortgage quiz loads,Navigate to /mortgage-calculator/,Quiz shell renders (logo + content),Yes (Playwright),Pass,2026-04-01,mortgage-calculator.spec.ts
+T-020,F-03,Quiz has purpose options,Check page content,Purchase / Refinance options found,Yes (Playwright),Pass,2026-04-01,mortgage-calculator.spec.ts
+T-021,F-03,Contact fields in DOM,Check for name/email/phone in DOM,At least one found,Yes (Playwright),Pass,2026-04-01,mortgage-calculator.spec.ts
+T-022,F-03,Full quiz completion,Complete all steps + submit contact,Lead created with all quiz data,No (manual),TBD,,NEEDS MANUAL TEST
+T-023,F-04,Assessment CTA on homepage,Check / for CTA button,Assessment CTA visible,Yes (Playwright),Pass,2026-04-01,assessment-popups.spec.ts
+T-024,F-04,Assessment CTA on first home buyer,Check /first-home-buyer-loans/,Assessment CTA visible,Yes (Playwright),Pass,2026-04-01,assessment-popups.spec.ts
+T-025,F-04,Assessment CTA on refinance,Check /refinance-home-loan/,Assessment CTA visible,Yes (Playwright),Pass,2026-04-01,assessment-popups.spec.ts
+T-026,F-04,Assessment CTA on mortgage vs rent,Check /mortgage-vs-rent-calculator/,Assessment CTA visible,Yes (Playwright),Pass,2026-04-01,assessment-popups.spec.ts
+T-027,F-04,Assessment CTA on deposit calc,Check /deposit-calculator/,Assessment CTA visible,Yes (Playwright),Pass,2026-04-01,assessment-popups.spec.ts
+T-028,F-04,Assessment CTA on equity calc,Check /equity-calculator/,Assessment CTA visible,Yes (Playwright),Pass,2026-04-01,assessment-popups.spec.ts
+T-029,F-04,CTA opens popup or navigates,Click assessment CTA,Popup opens or navigates to assessment,Yes (Playwright),Pass,2026-04-01,assessment-popups.spec.ts
+T-030,C-01,Mortgage calc page loads,Navigate to /mortgage-calculator/,HTTP 200 + has interactive elements,Yes (Playwright),Pass,2026-04-01,critical-pages.spec.ts
+T-031,C-02,Equity calc page loads,Navigate to /equity-calculator/,HTTP 200 + has inputs,Yes (Playwright),Pass,2026-04-01,critical-pages.spec.ts
+T-032,C-02,Equity calc fields present,Check for inputs + radio buttons,2+ inputs + Investment/Owner Occupier text,Yes (Playwright),Pass,2026-04-01,equity-calculator.spec.ts
+T-033,C-02,Equity calc produces results,Fill 300k/600k + calculate,Results with % and $ values shown,Yes (Playwright),Pass,2026-04-01,equity-calculator.spec.ts
+T-034,C-02,Equity calc empty validation,Click calculate without input,Error or default 0% shown,Yes (Playwright),Pass,2026-04-01,equity-calculator.spec.ts
+T-035,C-03,LVR calc page loads,Navigate to /lvr-calculator/,HTTP 200 + has inputs,Yes (Playwright),Pass,2026-04-01,critical-pages.spec.ts
+T-036,C-03,LVR calc fields present,Check for inputs + broker radio,"Loan amount, property value, broker radio found",Yes (Playwright),Pass,2026-04-01,lvr-calculator.spec.ts
+T-037,C-03,LVR calc produces correct result,Fill 450k/600k + calculate,Shows 75% LVR,Yes (Playwright),Pass,2026-04-01,lvr-calculator.spec.ts
+T-038,C-03,LVR calc empty validation,Click calculate without input,Error or 0% shown,Yes (Playwright),Pass,2026-04-01,lvr-calculator.spec.ts
+T-039,C-04,YTD calc page loads,Navigate to /ytd-calculator/,HTTP 200 + has inputs,Yes (Playwright),Pass,2026-04-01,critical-pages.spec.ts
+T-040,C-04,YTD calc fields present,Check for date + income inputs,2+ inputs visible,Yes (Playwright),Pass,2026-04-01,ytd-calculator.spec.ts
+T-041,C-04,YTD calc produces result,Fill dates + income + calculate,Annualized income shown,Yes (Playwright),Pass,2026-04-01,ytd-calculator.spec.ts
+T-042,C-04,YTD calc button clickable,Click calculate button,Page doesn't crash,Yes (Playwright),Pass,2026-04-01,ytd-calculator.spec.ts
+T-043,C-05,Rent vs mortgage page loads,Navigate to /mortgage-vs-rent-calculator/,HTTP 200 + has input,Yes (Playwright),Pass,2026-04-01,critical-pages.spec.ts
+T-044,C-05,Rent calc has input,Check for weekly rent input,Input visible + 'weekly rent' text,Yes (Playwright),Pass,2026-04-01,mortgage-vs-rent.spec.ts
+T-045,C-05,Rent calc produces results,Enter $500/week + calculate,Dollar amounts in results,Yes (Playwright),Pass,2026-04-01,mortgage-vs-rent.spec.ts
+T-046,C-05,Rent calc CTA present,Check for assessment/loan CTA,CTA text found,Yes (Playwright),Pass,2026-04-01,mortgage-vs-rent.spec.ts
+T-047,C-06,Deposit calc page loads,Navigate to /deposit-calculator/,HTTP 200 + has inputs,Yes (Playwright),Pass,2026-04-01,critical-pages.spec.ts
+T-048,C-06,Deposit calc has inputs,Check for deposit input,Input visible + 'deposit' text,Yes (Playwright),Pass,2026-04-01,deposit-calculator.spec.ts
+T-049,C-06,Deposit calc produces results,Enter value + calculate,Dollar amounts in results,Yes (Playwright),Pass,2026-04-01,deposit-calculator.spec.ts
+T-050,C-07,Stamp duty page loads,Navigate to /stamp-duty-calculator-queensland/,HTTP 200 + has inputs,Yes (Playwright),Pass,2026-04-01,critical-pages.spec.ts
+T-051,C-07,Stamp duty has QLD option,Check page for QLD text,QLD text found,Yes (Playwright),Pass,2026-04-01,stamp-duty-calculator.spec.ts
+T-052,C-07,Stamp duty price input,Enter $750k,Value accepted,Yes (Playwright),Pass,2026-04-01,stamp-duty-calculator.spec.ts
+T-053,C-07,Stamp duty calculate button,Check for calculate button,Button found,Yes (Playwright),Pass,2026-04-01,stamp-duty-calculator.spec.ts
+T-054,C-08,LMI calc page loads,Navigate to /lmi-calculator/,HTTP 200 + has inputs,Yes (Playwright),Pass,2026-04-01,critical-pages.spec.ts
+T-055,C-09,Extra repayments page loads,Navigate to /home-loan-extra-repayment-calculator/,HTTP 200 + has inputs,Yes (Playwright),Pass,2026-04-01,critical-pages.spec.ts
+T-056,NAV,Header navigation present,Check homepage header,"Nav links visible (Home Loans, Calculators, etc.)",Yes (Playwright),Pass,2026-04-01,navigation.spec.ts
+T-057,NAV,Phone CTA visible,Check for 1300 088 065,Phone number found as link or text,Yes (Playwright),Pass,2026-04-01,navigation.spec.ts
+T-058,NAV,Footer present with links,Check homepage footer,Footer visible with 3+ links,Yes (Playwright),Pass,2026-04-01,navigation.spec.ts
+T-059,NAV,Social media links,Check for platform links,Facebook/Instagram/YouTube/LinkedIn found,Yes (Playwright),Pass,2026-04-01,navigation.spec.ts
+T-060,NAV,Mobile menu toggle,Click hamburger on mobile viewport,Mobile menu opens,Yes (Playwright),Pass,2026-04-01,navigation.spec.ts
+T-061,SEO,Homepage title tag,Check <title>,Present and >10 chars,Yes (Playwright),Pass,2026-04-01,seo-meta.spec.ts
+T-062,SEO,Homepage meta description,Check meta[name=description],Present and >10 chars,Yes (Playwright),Pass,2026-04-01,seo-meta.spec.ts
+T-063,SEO,Homepage canonical URL,Check link[rel=canonical],Contains huntergalloway.com.au,Yes (Playwright),Pass,2026-04-01,seo-meta.spec.ts
+T-064,SEO,Homepage OG tags,Check og:title + og:description,Both present,Yes (Playwright),Pass,2026-04-01,seo-meta.spec.ts
+T-065,SEO,Key pages title tags,Check 6 key pages,All have title >10 chars,Yes (Playwright),Pass,2026-04-01,seo-meta.spec.ts
+T-066,SEO,Key pages canonical URLs,Check 6 key pages,All contain huntergalloway.com.au,Yes (Playwright),Pass,2026-04-01,seo-meta.spec.ts
