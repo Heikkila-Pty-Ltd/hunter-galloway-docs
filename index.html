@@ -451,7 +451,7 @@
   <div class="sidebar-header">
     <h1>Hunter Galloway</h1>
     <div class="subtitle">Website & Lead System Docs</div>
-    <div class="updated">Updated 1 April 2026</div>
+    <div class="updated">Updated 2 April 2026</div>
     <div style="font-size: 10px; opacity: 0.3; margin-top: 6px;">/ search &nbsp; ← → navigate &nbsp; Esc close</div>
   </div>
 
@@ -466,6 +466,7 @@
     <a class="nav-item" onclick="showSection('big-picture')">How Leads Work</a>
     <a class="nav-item" onclick="showSection('risks')">What Can Break</a>
     <a class="nav-item" onclick="showSection('ref-forms')">Form Inventory</a>
+    <a class="nav-item" onclick="showSection('flow-diagrams')">Flow Diagrams (5)</a>
   </div>
 
   <div class="nav-section">
@@ -475,9 +476,9 @@
     <a class="nav-item" onclick="showSection('j-quiz')"><span class="nav-id">F-03</span> Mortgage Quiz</a>
     <a class="nav-item" onclick="showSection('j-popup')"><span class="nav-id">F-04</span> Assessment Popup</a>
     <a class="nav-item" onclick="showSection('j-calculator')"><span class="nav-id">F-05/06</span> Calculator Referral</a>
-    <a class="nav-item" onclick="showSection('j-landing')"><span class="nav-id">F-07</span> Landing Pages</a>
+    <a class="nav-item" onclick="showSection('j-landing')"><span class="nav-id">F-07</span> Landing Pages ⚠</a>
     <a class="nav-item" onclick="showSection('j-report')"><span class="nav-id">F-08</span> Mortgage Report</a>
-    <a class="nav-item" onclick="showSection('j-downloads')">PDF Downloads</a>
+    <a class="nav-item" onclick="showSection('j-downloads')">PDF / OptinMonster</a>
   </div>
 
   <div class="nav-section">
@@ -489,7 +490,7 @@
     <div class="nav-section-title">Reference</div>
     <a class="nav-item" onclick="showSection('ref-workflows')">All Workflows (99)</a>
     <a class="nav-item" onclick="showSection('ref-properties')">HubSpot Properties</a>
-    <a class="nav-item" onclick="showSection('ref-tests')">Test Matrix (67)</a>
+    <a class="nav-item" onclick="showSection('ref-tests')">Test Matrix (142)</a>
     <a class="nav-item" onclick="showSection('ref-calcs')">Calculators (9)</a>
     <a class="nav-item" onclick="showSection('ref-open')">Open Questions</a>
   </div>
@@ -497,9 +498,9 @@
   <div class="nav-section">
     <div class="nav-section-title" style="color: #e74c3c;">Active Bug Reports</div>
     <a class="nav-item" href="https://doctorspritz.github.io/hg-quiz-spec/directory.html" target="_blank" style="color: #e74c3c;">Bug Directory &rarr;</a>
-    <a class="nav-item" href="https://doctorspritz.github.io/hg-quiz-spec/" target="_blank">Quiz Flow Spec &rarr;</a>
+    <a class="nav-item" href="https://doctorspritz.github.io/hg-quiz-spec/" target="_blank">Quiz Branching Fix &rarr;</a>
     <a class="nav-item" href="https://doctorspritz.github.io/hg-quiz-spec/cf7-14462-context-loss.html" target="_blank">#14462 Context Loss &rarr;</a>
-    <a class="nav-item" href="https://doctorspritz.github.io/hg-quiz-spec/lower-your-rate-form.html" target="_blank">Refi Data Loss &rarr;</a>
+    <a class="nav-item" href="https://doctorspritz.github.io/hg-quiz-spec/lower-your-rate-form.html" target="_blank">Refi Quiz Data Loss &rarr;</a>
     <a class="nav-item" href="https://doctorspritz.github.io/hg-quiz-spec/test-coverage.html" target="_blank" style="color: #27ae60;">Test Coverage (142) &rarr;</a>
   </div>
 </nav>
@@ -510,7 +511,7 @@
 <!-- ==================== SYSTEM HEALTH ==================== -->
 <div class="section active" id="sec-health">
   <h2 class="section-title">System Health</h2>
-  <p class="section-desc">Live snapshot from HubSpot as of 1 April 2026, 8:00 PM AEST. Data pulled directly from HubSpot API (account 4607234).</p>
+  <p class="section-desc">Live snapshot from HubSpot as of 2 April 2026. Data pulled directly from HubSpot API (account 4607234). Full site sweep completed — 23 unique conversion events across 36,724 contacts.</p>
 
   <div class="stat-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 16px;">
     <div class="stat-card" style="border-top: 3px solid var(--success);"><div class="num" style="color: var(--success);">14</div><div class="label">Contacts Today</div></div>
@@ -595,6 +596,27 @@
     </div>
   </div>
 
+  <div class="card" style="margin-top: 16px;">
+    <h3 class="card-title">All-Time Lead Sources (36,724 contacts with conversion data)</h3>
+    <p style="font-size: 12px; color: var(--text-light); margin-bottom: 12px;">Breakdown by <code>first_conversion_event_name</code> — how each contact first entered HubSpot. 23 unique conversion paths identified.</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Source</th><th>Contacts</th><th>%</th><th>Form Type</th><th>Data Quality</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Call Centre / Phone</strong></td><td>9,367</td><td>25.5%</td><td>Manual entry</td><td>Varies (manual)</td></tr>
+          <tr><td><strong>Popup Quiz ("Form popup data HG")</strong></td><td>6,538</td><td>17.8%</td><td>CF7 #11832 in Popup Maker</td><td><span style="color:var(--success);">Rich</span> — transaction, spending, savings</td></tr>
+          <tr><td><strong>OptinMonster (First Home Buyer Tools)</strong></td><td>5,366</td><td>14.6%</td><td>OptinMonster popup</td><td>Email only (PDF download)</td></tr>
+          <tr><td><strong>CF7 Generic (.wpcf7-form path)</strong></td><td>4,011</td><td>10.9%</td><td>CF7 #14462 + others</td><td><span style="color:var(--danger);">Thin</span> — name/email/phone only</td></tr>
+          <tr><td><strong>Typeform ("JAYDEN FREE ASSESSMENT")</strong></td><td>~3,500</td><td>~9.5%</td><td>External Typeform</td><td>Rich (assessment data)</td></tr>
+          <tr><td><strong>Homepage CF7</strong></td><td>673</td><td>1.8%</td><td>CF7 #68942 on /</td><td>Medium — has transaction_type</td></tr>
+          <tr><td><strong>CRS Phone-Verified (/contact/)</strong></td><td>229</td><td>0.6%</td><td>Custom HTML + SMS OTP</td><td>Medium — request_type, message</td></tr>
+          <tr><td><strong>Other pages (blog posts, hub, reviews)</strong></td><td>~6,600</td><td>~18%</td><td>Mixed (popup quiz + CF7)</td><td>Mixed</td></tr>
+          <tr><td><strong>Legacy Gravity Forms (deposit calc)</strong></td><td>32</td><td>&lt;0.1%</td><td>GF (now removed)</td><td>N/A (historical)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <h3 style="font-size: 16px; font-weight: 600; margin: 28px 0 12px; color: var(--primary);">System Status Checks</h3>
 
   <div class="card" style="border-left: 4px solid var(--success);">
@@ -621,16 +643,32 @@
     <div style="font-size: 13px; line-height: 2;">
       <div>&#10060; <strong>Gravity Forms NOT found on LVR/YTD pages</strong> — Fetched /lvr-calculator/ and /ytd-calculator/ source code on 1 April 2026. Neither page contains Gravity Forms markup (no gform_wrapper, gform_9, gform_10). Both pages use CF7 + Popup Maker popup quiz instead. <strong>The F-05/F-06 "unknown destination" risk is likely resolved</strong> — the forms were replaced with the popup assessment system (F-04) that feeds into HubSpot normally.</div>
       <div>&#10060; <strong>HubSpot tracking code not visible in raw HTML</strong> — The tracking script (js.hs-scripts.com/4607234.js) was not found in the HTML source. However, NitroPack CDN is active on all pages and may be deferring the script load. Since web leads ARE arriving in HubSpot, the tracking code IS working — it's just loaded asynchronously via NitroPack or Google Tag Manager.</div>
+      <div>&#10060; <strong>Landing page form data quality gap</strong> — 24+ landing pages scanned (2 Apr 2026). All use CF7 #14462 "Discovery Session" popup (name/email/phone only — no context) alongside CF7 #11832 assessment quiz (rich data). 4,011 contacts arrived thin via #14462 path. See <a onclick="showSection('j-landing')" style="color: var(--danger); cursor: pointer; text-decoration: underline;">Landing Pages</a> for full analysis.</div>
     </div>
   </div>
 
-  <p style="font-size: 11px; color: var(--text-light); margin-top: 16px; font-style: italic;">This data was pulled from HubSpot API on 1 April 2026. To refresh, re-run the documentation build or check <a href="https://app-ap1.hubspot.com/contacts/4607234/objects/0-1/views/all/list" target="_blank" style="color: var(--info);">HubSpot Contacts</a> directly.</p>
+  <div class="card" style="border-left: 4px solid var(--info); margin-top: 16px;">
+    <h3 class="card-title" style="color: var(--info);">Active Tracking Scripts (Confirmed via DOM Inspection)</h3>
+    <div style="font-size: 13px; line-height: 2;">
+      <div>&#10003; <strong>HubSpot</strong> — js-ap1.hubspot.com + js-ap1.hsadspixel.net (loaded via NitroPack)</div>
+      <div>&#10003; <strong>Google Tag Manager</strong> — www.googletagmanager.com</div>
+      <div>&#10003; <strong>Google Analytics</strong> — www.google-analytics.com</div>
+      <div>&#10003; <strong>Google Ads</strong> — googleads.g.doubleclick.net</div>
+      <div>&#10003; <strong>Facebook Pixel</strong> — connect.facebook.net</div>
+      <div>&#10003; <strong>Hotjar</strong> — static.hotjar.com + script.hotjar.com</div>
+      <div>&#10003; <strong>NitroPack CDN</strong> — nitroscripts.com (defers all script loading)</div>
+      <div>&#10060; <strong>Calendly</strong> — Not detected on any page tested</div>
+      <div>&#10060; <strong>Intercom / Live Chat</strong> — Not detected</div>
+    </div>
+  </div>
+
+  <p style="font-size: 11px; color: var(--text-light); margin-top: 16px; font-style: italic;">Data pulled from HubSpot API on 2 April 2026. Full site sweep: 23 conversion events, 36,724 contacts audited. To refresh, check <a href="https://app-ap1.hubspot.com/contacts/4607234/objects/0-1/views/all/list" target="_blank" style="color: var(--info);">HubSpot Contacts</a> directly.</p>
 </div>
 
 <!-- ==================== HOW LEADS WORK ==================== -->
 <div class="section" id="sec-big-picture">
   <h2 class="section-title">How Leads Work</h2>
-  <p class="section-desc">8 entry points on the website, all feeding into one shared HubSpot pipeline. Click any row to see the full journey.</p>
+  <p class="section-desc">12 entry points (8 web forms + CRS phone-verified form + OptinMonster + call centre + blog posts), all feeding into one shared HubSpot pipeline. Click any row to see the full journey.</p>
 
   <!-- Entry Points -->
   <div class="card" style="padding: 0; overflow: hidden;">
@@ -662,10 +700,10 @@
       <div class="er-body"><div class="er-name">Calculator Referral <span style="font-size: 11px; font-weight: 400; color: var(--success);">✓ resolved — uses popup quiz</span></div><div class="er-path">/lvr-calculator/, /ytd-calculator/ — popup assessment quiz (same as F-04)</div></div>
       <div class="er-right">Popup → <code>HS-CF-03, 05, 06</code></div>
     </div>
-    <div class="entry-row" onclick="showSection('j-landing')">
-      <div class="er-id">F-07</div>
-      <div class="er-body"><div class="er-name">Landing Pages</div><div class="er-path">/mortgage-broker-brisbane/ + 4 others — standard contact form</div></div>
-      <div class="er-right">CF7 → <code>HS-CF-04</code></div>
+    <div class="entry-row" onclick="showSection('j-landing')" style="background: rgba(229,62,62,0.03);">
+      <div class="er-id" style="background: #fed7d7; color: #9b2c2c;">F-07</div>
+      <div class="er-body"><div class="er-name">Landing Pages <span style="font-size: 11px; font-weight: 400; color: var(--danger);">⚠ data quality gap</span></div><div class="er-path">24+ pages — #14462 (thin: name/email/phone only) vs #11832 (rich: + transaction, spending, savings)</div></div>
+      <div class="er-right">CF7 → <code>HS-CF-04, 05</code></div>
     </div>
     <div class="entry-row" onclick="showSection('j-report')">
       <div class="er-id">F-08</div>
@@ -674,8 +712,18 @@
     </div>
     <div class="entry-row" onclick="showSection('j-downloads')">
       <div class="er-id" style="font-size: 10px;">PDF</div>
-      <div class="er-body"><div class="er-name">PDF Downloads</div><div class="er-path">Sitewide exit-intent popups — PDF guides for email</div></div>
-      <div class="er-right">OptinMonster → <code>WF-045+</code></div>
+      <div class="er-body"><div class="er-name">PDF Downloads &amp; OptinMonster <span style="font-size: 11px; font-weight: 400; color: var(--info);">5,366 contacts</span></div><div class="er-path">Sitewide exit-intent popups — PDF guides for email. Also a direct HubSpot collected form.</div></div>
+      <div class="er-right">OptinMonster → <code>HS-CF-10, WF-045+</code></div>
+    </div>
+    <div class="entry-row" style="background: rgba(49,130,206,0.03);">
+      <div class="er-id" style="background: #bee3f8; color: #2a4365;">F-09</div>
+      <div class="er-body"><div class="er-name">Homepage Hero Form <span style="font-size: 11px; font-weight: 400; color: var(--info);">NEW — CRS phone-verified</span></div><div class="er-path">/ (homepage) — name, email, phone with SMS OTP verification</div></div>
+      <div class="er-right">CRS custom → <code>HS-CF-09</code></div>
+    </div>
+    <div class="entry-row" style="background: rgba(221,107,32,0.03);">
+      <div class="er-id" style="background: #feebc8; color: #7b341e;">F-12</div>
+      <div class="er-body"><div class="er-name">Call Centre / Phone <span style="font-size: 11px; font-weight: 400; color: var(--warning);">9,367 contacts · 25.5% of all leads</span></div><div class="er-path">Phone calls — manually entered into HubSpot by team</div></div>
+      <div class="er-right">Manual → <code>HS-CF-11</code></div>
     </div>
   </div>
 
@@ -731,7 +779,7 @@
   <div class="risk-card critical">
     <div class="risk-title"><span class="risk-severity critical">Critical</span> HubSpot tracking code goes down</div>
     <div class="risk-detail">If the HubSpot JavaScript tracking code fails to load (CDN issue, script blocked, WordPress theme update breaks it), <strong>every form submission still succeeds in WordPress but never reaches HubSpot</strong>. The visitor sees a success message. The lead is silently lost. There is no fallback, no error alert, no WordPress-side backup. This is the single biggest risk in the system.</div>
-    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> All forms (F-01 through F-08) &nbsp;·&nbsp; <strong>Detection:</strong> Monitor HubSpot form submission count daily. A sudden drop to zero = tracking code is broken.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> All web forms (F-01 through F-11, excluding F-12 call centre) &nbsp;·&nbsp; <strong>Detection:</strong> Monitor HubSpot form submission count daily. A sudden drop to zero = tracking code is broken.</div>
     <div style="margin-top: 10px; padding: 10px 14px; background: rgba(255,255,255,0.7); border-radius: 6px; font-size: 12px; line-height: 1.8;">
       <strong style="color: var(--primary);">Debug steps:</strong><br>
       1. Open <a href="https://www.huntergalloway.com.au/contact/" target="_blank">any page</a> → DevTools → Console → search for <code>hs-script-loader</code> or <code>HubSpot</code> errors<br>
@@ -798,6 +846,24 @@
     <div class="risk-detail">Investigated 1 April 2026: Gravity Forms #9 and #10 no longer exist on the LVR/YTD calculator pages. Both pages now use the CF7 + Popup Maker assessment quiz system (same as F-04), which feeds into HubSpot via the standard tracking code. <strong>This risk is closed.</strong></div>
   </div>
 
+  <div class="risk-card high">
+    <div class="risk-title"><span class="risk-severity high">High</span> Homepage quiz has no branching — all paths follow identical flow (F-03)</div>
+    <div class="risk-detail">The <code>nextStep()</code> function in the homepage quiz JavaScript does <code>currentStep++</code> with <strong>no conditional branching</strong>. Regardless of selection (Purchase, Build, Commercial, Refinance, Exploring), users see the same 5 steps: situation → finances → contact → borrowing result. Refinance users are asked about deposit and first home buyer status. Build/Commercial users go through the full quiz instead of getting capacity screens.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> F-03, F-09 (homepage quiz on / and /mortgage-calculator/) &nbsp;·&nbsp; <strong>Detection:</strong> Playwright tests in <code>forms/homepage-quiz-branching.spec.ts</code> (4 bug regression tests) &nbsp;·&nbsp; <strong>Fix spec:</strong> <a href="https://doctorspritz.github.io/hg-quiz-spec/" target="_blank">Quiz Flow Specification</a></div>
+  </div>
+
+  <div class="risk-card high">
+    <div class="risk-title"><span class="risk-severity high">High</span> /lower-your-rate/ refinance quiz answers are silently discarded</div>
+    <div class="risk-detail">The refinance quiz at /lower-your-rate/ collects 4 steps of quiz data (interest rate, loan amount, loan term, refinancing priority) but CF7 #14462 has <strong>no hidden fields to capture them</strong>. Only name/email/phone reach HubSpot. All quiz engagement data is lost on submit. This explains 12+ "empty" submissions in HubSpot with no transaction type from this page.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> /lower-your-rate/ page &nbsp;·&nbsp; <strong>Detection:</strong> Playwright tests in <code>forms/lower-your-rate.spec.ts</code> (3 bug regression tests) &nbsp;·&nbsp; <strong>Fix spec:</strong> <a href="https://doctorspritz.github.io/hg-quiz-spec/lower-your-rate-form.html" target="_blank">Form Data Loss Report</a></div>
+  </div>
+
+  <div class="risk-card" style="background: #fffaf0; border-color: var(--warning);">
+    <div class="risk-title"><span class="risk-severity medium">Medium</span> Equity calculator hero banner is broken (C-02)</div>
+    <div class="risk-detail">The /equity-calculator/ page has two calculators. The working one (below fold, <code>#h_equity_calculator</code>) works fine. The hero banner calculator at the top is completely broken: the input has no name/id and no JS reads it, the "Calculate" button is just <code>&lt;a href="/equity-calculator"&gt;</code> which reloads the page, and there's only 1 input where equity calculations need 2 (property value AND loan balance).</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> C-02 Equity Calculator &nbsp;·&nbsp; <strong>Detection:</strong> Playwright tests in <code>calculators/equity-calculator-banner.spec.ts</code> (4 bug regression tests)</div>
+  </div>
+
   <h3 style="font-size: 14px; font-weight: 600; margin: 24px 0 12px; color: #975a16;">Medium — Operational Gaps</h3>
 
   <div class="risk-card medium">
@@ -806,13 +872,230 @@
   </div>
 
   <div class="risk-card medium">
-    <div class="risk-title"><span class="risk-severity medium">Medium</span> No end-to-end automated tests</div>
-    <div class="risk-detail">The Playwright test suite (55 automated tests) validates that form fields exist and UI works, but stops short of actual submission to avoid creating fake leads. There are no automated tests that verify data actually reaches HubSpot. A full integration test with a known test email would catch silent failures.</div>
+    <div class="risk-title"><span class="risk-severity" style="background: #c6f6d5; color: #276749;">Improved</span> End-to-end test coverage expanded</div>
+    <div class="risk-detail">The Playwright test suite has grown from 55 to <strong>142 automated tests</strong> (2 Apr 2026). Now covers all 9 forms, all 9 calculators, 6 landing pages, and includes 13 bug regression tests for known issues. Two dry-run tests (F-01, F-02) verify full submission → HubSpot → Monday.com pipeline. See <a href="https://doctorspritz.github.io/hg-quiz-spec/test-coverage.html" target="_blank">Test Coverage Tracker</a> for full breakdown.</div>
   </div>
 
   <div class="risk-card medium">
     <div class="risk-title"><span class="risk-severity medium">Medium</span> Popup quiz abandonment captures nothing (F-04)</div>
     <div class="risk-detail">If a user starts the popup quiz but abandons partway through, no partial data is captured. The quiz requires all steps to be completed before submission. There's no partial-save or cookie-based progress tracking confirmed.</div>
+  </div>
+</div>
+
+<!-- ==================== FLOW DIAGRAMS ==================== -->
+<div class="section" id="sec-flow-diagrams">
+  <h2 class="section-title">Lead Capture Flow Diagrams</h2>
+  <p class="section-desc">Visual walkthroughs of the top 5 highest-volume lead capture flows, verified via live browser audit on 2 April 2026. Each flow includes screenshots, field inventories, and a Mermaid diagram showing the complete path from CTA to HubSpot contact creation.</p>
+
+  <!-- Flow 1: Assessment Quiz Popup #11832 -->
+  <div class="card" style="margin-bottom: 24px;">
+    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--primary);">Flow 1: Assessment Quiz Popup (CF7 #11832)</h3>
+    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+      <span style="background: #7ed321; color: #000; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;">Highest Volume — 6,538 contacts</span>
+      <span style="background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;">Rich Data</span>
+    </div>
+    <p style="font-size: 13px; margin-bottom: 12px;">Triggered by "Get a Free Assessment" and "Get Your Free Credit Rating Assessment" CTAs across all landing pages. Opens Popup Maker #11791 containing a multi-step quiz with conditional branching based on transaction type.</p>
+
+    <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+      <h4 style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">Quiz Steps</h4>
+      <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+        <tr style="background: var(--primary); color: white;"><th style="padding: 6px 8px; text-align: left;">Step</th><th style="padding: 6px 8px; text-align: left;">Content</th><th style="padding: 6px 8px; text-align: left;">Fields</th></tr>
+        <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">1 (shown)</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">"What are you looking to do?"</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">4 radio: Purchase / Build / Commercial / Refinance</td></tr>
+        <tr style="background: #f7fafc;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">1b (conditional)</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Spending &amp; Savings</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Approximate price, Exact price</td></tr>
+        <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">2b (conditional)</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Property Details</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Property type input</td></tr>
+        <tr style="background: #f7fafc;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">3 (conditional)</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Qualifying Questions</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Bridging loan / Bad credit / Bankruptcy checkboxes</td></tr>
+        <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Final (all paths)</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Value props + Contact form</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Name, Email, Phone + hidden: transaction_type, source_url</td></tr>
+        <tr style="background: #e8f5e9;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Thank you</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">"We will contact you within 4 business hours"</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">—</td></tr>
+      </table>
+    </div>
+
+    <div style="background: #f0fff4; border-radius: 8px; padding: 12px; margin-bottom: 12px; border-left: 4px solid #38a169;">
+      <strong style="font-size: 12px;">Data quality: RICH</strong>
+      <span style="font-size: 12px; display: block; margin-top: 4px;">Collects transaction_type (auto-set from quiz selection), source_url (auto-set from page URL), plus spending/savings on some paths. This is the gold standard form for lead context.</span>
+    </div>
+
+    <details style="margin-bottom: 8px;">
+      <summary style="font-size: 12px; font-weight: 600; cursor: pointer; color: var(--primary-light);">View Mermaid Diagram</summary>
+      <div style="margin-top: 8px; background: #f8fafc; padding: 12px; border-radius: 6px; overflow-x: auto;">
+        <pre style="font-size: 11px; white-space: pre-wrap; font-family: monospace;">flowchart TD
+    A["Landing Page CTA 'Get a Free Assessment'"] --&gt; B["Popup Opens #popmake-11791"]
+    B --&gt; C{"Step 1: What are you looking to do?"}
+    C --&gt;|"Purchase"| D["Value Props + Contact Form"]
+    C --&gt;|"Build"| E["Spending &amp; Savings Questions"]
+    C --&gt;|"Commercial"| F["Property Details"]
+    C --&gt;|"Refinance"| G["Qualifying Questions"]
+    E --&gt; D; F --&gt; D; G --&gt; D
+    D --&gt; H["CF7 #11832: Name, Email, Phone"]
+    H --&gt; I["Hidden: transaction_type, source_url"]
+    I --&gt; J["Submit"] --&gt; K["HubSpot HS-CF-02"] --&gt; L["Contact Created"]</pre>
+        <a href="https://l.mermaid.ai/aOTkUD" target="_blank" style="font-size: 11px; color: var(--primary-light);">Open interactive diagram</a>
+      </div>
+    </details>
+  </div>
+
+  <!-- Flow 2: Discovery Session / Request a Call #14462 -->
+  <div class="card" style="margin-bottom: 24px;">
+    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--danger);">Flow 2: Discovery Session Popup (CF7 #14462)</h3>
+    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+      <span style="background: #ffebee; color: #c62828; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;">Data Gap — 4,011 contacts</span>
+      <span style="background: #fff3e0; color: #e65100; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;">Thin Data</span>
+    </div>
+    <p style="font-size: 13px; margin-bottom: 12px;">Three popup variants (#14461 / #14460 / #14459) all using CF7 #14462. Each shows "You're eligible for a loan!" with different copy but identical thin form. Triggered as quiz result screens or by "Request a Call" CTAs.</p>
+
+    <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+      <h4 style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">Popup Variants</h4>
+      <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+        <tr style="background: var(--primary); color: white;"><th style="padding: 6px 8px; text-align: left;">Popup</th><th style="padding: 6px 8px; text-align: left;">Copy</th><th style="padding: 6px 8px; text-align: left;">Fields</th></tr>
+        <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">#14461</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">"We'll teach you how to negotiate and buy at auction"</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);" rowspan="3">Name, Email, Phone ONLY</td></tr>
+        <tr style="background: #f7fafc;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">#14460</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">"We'll help find the best deal for your budget"</td></tr>
+        <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">#14459</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">"We'll give you a home buying plan"</td></tr>
+      </table>
+    </div>
+
+    <div style="background: #fff5f5; border-radius: 8px; padding: 12px; margin-bottom: 12px; border-left: 4px solid #e53e3e;">
+      <strong style="font-size: 12px;">Data quality: THIN — KEY RISK</strong>
+      <span style="font-size: 12px; display: block; margin-top: 4px;">No hidden fields. No transaction_type, source_url, spending, or savings. 4,011 contacts entered HubSpot with zero context about what they want or how much they can spend. Sales team must manually discover this on first call.</span>
+    </div>
+
+    <details style="margin-bottom: 8px;">
+      <summary style="font-size: 12px; font-weight: 600; cursor: pointer; color: var(--primary-light);">View Mermaid Diagram</summary>
+      <div style="margin-top: 8px; background: #f8fafc; padding: 12px; border-radius: 6px; overflow-x: auto;">
+        <pre style="font-size: 11px; white-space: pre-wrap; font-family: monospace;">flowchart TD
+    A["Multiple CTAs / Quiz Result"] --&gt; B{"3 Popup Variants"}
+    B --&gt;|"#14461"| C1["Negotiate &amp; auction copy"]
+    B --&gt;|"#14460"| C2["Best deal copy"]
+    B --&gt;|"#14459"| C3["Home buying plan copy"]
+    C1 --&gt; D["CF7 #14462: Name, Email, Phone ONLY"]
+    C2 --&gt; D; C3 --&gt; D
+    D --&gt; E["NO hidden fields"] --&gt; F["Submit 'Request a Call'"]
+    F --&gt; G["HubSpot HS-CF-07"] --&gt; H["4,011 contacts — DATA GAP"]</pre>
+        <a href="https://l.mermaid.ai/Xh0Rd2" target="_blank" style="font-size: 11px; color: var(--primary-light);">Open interactive diagram</a>
+      </div>
+    </details>
+  </div>
+
+  <!-- Flow 3: Free Assessment Page #68942 -->
+  <div class="card" style="margin-bottom: 24px;">
+    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--primary);">Flow 3: Free Assessment Page (CF7 #68942)</h3>
+    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+      <span style="background: #e3f2fd; color: #1565c0; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;">Inline Form — /get-free-assessment/</span>
+      <span style="background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;">Medium Data</span>
+    </div>
+    <p style="font-size: 13px; margin-bottom: 12px;">Standalone page with an inline form (no popup). Shows value props, award badges, then a simple 4-field form. The only form that uses a dropdown for transaction type instead of a quiz.</p>
+
+    <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+      <h4 style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">Form Fields</h4>
+      <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+        <tr style="background: var(--primary); color: white;"><th style="padding: 6px 8px; text-align: left;">Field</th><th style="padding: 6px 8px; text-align: left;">Type</th><th style="padding: 6px 8px; text-align: left;">Notes</th></tr>
+        <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Name</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">text</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">—</td></tr>
+        <tr style="background: #f7fafc;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Email</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">email</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">—</td></tr>
+        <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Phone</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">tel</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">—</td></tr>
+        <tr style="background: #fff8e1;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Transaction Type</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">dropdown</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Purchase / Refinance / Commercial / Build</td></tr>
+      </table>
+    </div>
+
+    <div style="background: #fff8e1; border-radius: 8px; padding: 12px; margin-bottom: 12px; border-left: 4px solid #f9a825;">
+      <strong style="font-size: 12px;">Data quality: MEDIUM</strong>
+      <span style="font-size: 12px; display: block; margin-top: 4px;">Collects transaction_type via dropdown but no source_url, spending, or savings. No popup confirmation — uses standard CF7 response. Maps to HubSpot HS-CF-09.</span>
+    </div>
+
+    <details style="margin-bottom: 8px;">
+      <summary style="font-size: 12px; font-weight: 600; cursor: pointer; color: var(--primary-light);">View Mermaid Diagram</summary>
+      <div style="margin-top: 8px; background: #f8fafc; padding: 12px; border-radius: 6px; overflow-x: auto;">
+        <pre style="font-size: 11px; white-space: pre-wrap; font-family: monospace;">flowchart TD
+    A["/get-free-assessment/"] --&gt; B["Value Props + Award Badges"]
+    B --&gt; C["Inline Form CF7 #68942"]
+    C --&gt; D["Name, Email, Phone, Transaction Type dropdown"]
+    D --&gt; E["Submit"] --&gt; F["HubSpot HS-CF-09"] --&gt; G["Contact Created"]</pre>
+        <a href="https://l.mermaid.ai/ZNYNqV" target="_blank" style="font-size: 11px; color: var(--primary-light);">Open interactive diagram</a>
+      </div>
+    </details>
+  </div>
+
+  <!-- Flow 4: Contact Page CF7 #11830 -->
+  <div class="card" style="margin-bottom: 24px;">
+    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--primary);">Flow 4: Contact Page (CF7 #11830 + CRS Wrapper)</h3>
+    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+      <span style="background: #f3e5f5; color: #6a1b9a; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;">CRS Multi-Step UI</span>
+      <span style="background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;">Rich Data</span>
+    </div>
+    <p style="font-size: 13px; margin-bottom: 12px;">The /contact/ page uses a CRS custom form wrapper around CF7 #11830. Two-step flow: message first, then request type + contact details. The CRS wrapper adds the multi-step UI but does NOT include phone verification on this page.</p>
+
+    <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+      <h4 style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">Form Steps</h4>
+      <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+        <tr style="background: var(--primary); color: white;"><th style="padding: 6px 8px; text-align: left;">Step</th><th style="padding: 6px 8px; text-align: left;">Fields</th><th style="padding: 6px 8px; text-align: left;">Notes</th></tr>
+        <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">1/2</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Your message (textarea, required)</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Must fill before proceeding</td></tr>
+        <tr style="background: #f7fafc;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">2/2</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Request Type dropdown, Name, Email, Phone</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">6 request types: First Home Purchase, Investment Property, Refinance, Borrowing Capacity, General Advice, Other</td></tr>
+      </table>
+    </div>
+
+    <details style="margin-bottom: 8px;">
+      <summary style="font-size: 12px; font-weight: 600; cursor: pointer; color: var(--primary-light);">View Mermaid Diagram</summary>
+      <div style="margin-top: 8px; background: #f8fafc; padding: 12px; border-radius: 6px; overflow-x: auto;">
+        <pre style="font-size: 11px; white-space: pre-wrap; font-family: monospace;">flowchart TD
+    A["/contact/"] --&gt; B["CRS Custom Form wrapping CF7 #11830"]
+    B --&gt; C["Step 1/2: Message textarea (required)"]
+    C --&gt; D["Step 2/2: Request Type + Name + Email + Phone"]
+    D --&gt; E["Submit"] --&gt; F["HubSpot HS-CF-02"] --&gt; G["Contact Created"]</pre>
+        <a href="https://l.mermaid.ai/9fcfrG" target="_blank" style="font-size: 11px; color: var(--primary-light);">Open interactive diagram</a>
+      </div>
+    </details>
+  </div>
+
+  <!-- Flow 5: Homepage Hero CRS Phone Verification -->
+  <div class="card" style="margin-bottom: 24px;">
+    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #9b59b6;">Flow 5: Homepage Hero Quiz + CRS Phone Verification</h3>
+    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+      <span style="background: #f3e5f5; color: #6a1b9a; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;">SMS OTP Verified — 673 contacts</span>
+      <span style="background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;">Richest Data</span>
+    </div>
+    <p style="font-size: 13px; margin-bottom: 12px;">The homepage hero contains the most detailed lead capture flow on the entire site. A 5-step quiz collects goal, personal situation, finances, contact details, and verifies the phone number via SMS OTP before showing a borrowing calculator result.</p>
+
+    <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+      <h4 style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">5-Step Quiz Structure</h4>
+      <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+        <tr style="background: var(--primary); color: white;"><th style="padding: 6px 8px; text-align: left;">Step</th><th style="padding: 6px 8px; text-align: left;">Question</th><th style="padding: 6px 8px; text-align: left;">Fields</th></tr>
+        <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">1/5</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">What are you looking to do?</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">5 radios: Purchase / Build / Commercial / Refinance / Just exploring</td></tr>
+        <tr style="background: #f7fafc;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">2/5</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Your situation</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Couple/Single, Dependants (0/1/2/3+), State dropdown (9 AU states)</td></tr>
+        <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">3/5</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Tell us about your finances</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Income (e.g. $50,000), Savings (e.g. $40,000)</td></tr>
+        <tr style="background: #f3e5f5;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">4/5</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Get a Free Assessment</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Full name, Email, Phone + CRS Phone Verify (SMS OTP, 4-digit code)</td></tr>
+        <tr style="background: #e8f5e9;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">5/5</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">Borrowing Calculator Result</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">"You may be able to borrow: $550,000" + upsell</td></tr>
+      </table>
+    </div>
+
+    <div style="background: #f0fff4; border-radius: 8px; padding: 12px; margin-bottom: 12px; border-left: 4px solid #9b59b6;">
+      <strong style="font-size: 12px;">Data quality: RICHEST + VERIFIED</strong>
+      <span style="font-size: 12px; display: block; margin-top: 4px;">This is the highest-quality lead path on the site. Collects goal, relationship status, dependants, state, income, savings, contact details, AND verifies phone via SMS. Maps to HubSpot HS-CF-01 / HS-CF-09. Only 673 contacts — high-friction but highest-intent leads.</span>
+    </div>
+
+    <details style="margin-bottom: 8px;">
+      <summary style="font-size: 12px; font-weight: 600; cursor: pointer; color: var(--primary-light);">View Mermaid Diagram</summary>
+      <div style="margin-top: 8px; background: #f8fafc; padding: 12px; border-radius: 6px; overflow-x: auto;">
+        <pre style="font-size: 11px; white-space: pre-wrap; font-family: monospace;">flowchart TD
+    A["Homepage Hero"] --&gt; B["Step 1/5: What are you looking to do?"]
+    B --&gt; C["Step 2/5: Your situation (Couple/Single, Dependants, State)"]
+    C --&gt; D["Step 3/5: Your finances (Income + Savings)"]
+    D --&gt; E["Step 4/5: Contact Details + CRS Phone Verification (SMS OTP)"]
+    E --&gt; F["Phone Verified"] --&gt; G["Submit"]
+    G --&gt; H["Step 5/5: Borrowing Result ($550K)"]
+    G --&gt; I["HubSpot HS-CF-01 — 673 phone-verified contacts"]</pre>
+        <a href="https://l.mermaid.ai/fAy61B" target="_blank" style="font-size: 11px; color: var(--primary-light);">Open interactive diagram</a>
+      </div>
+    </details>
+  </div>
+
+  <!-- Data Quality Comparison -->
+  <div class="card" style="background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);">
+    <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">Data Quality Comparison Across Flows</h3>
+    <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+      <tr style="background: var(--primary); color: white;"><th style="padding: 6px 8px; text-align: left;">Flow</th><th style="padding: 6px 8px; text-align: left;">Form</th><th style="padding: 6px 8px; text-align: center;">Contacts</th><th style="padding: 6px 8px; text-align: center;">Name</th><th style="padding: 6px 8px; text-align: center;">Email</th><th style="padding: 6px 8px; text-align: center;">Phone</th><th style="padding: 6px 8px; text-align: center;">Type</th><th style="padding: 6px 8px; text-align: center;">URL</th><th style="padding: 6px 8px; text-align: center;">Finances</th><th style="padding: 6px 8px; text-align: center;">Verified</th></tr>
+      <tr style="background: #e8f5e9;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">5. Homepage Hero</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">CRS Quiz</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">673</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004; SMS</td></tr>
+      <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">1. Quiz Popup</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">CF7 #11832</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">6,538</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">some</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td></tr>
+      <tr style="background: #f7fafc;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">4. Contact Page</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">CF7 #11830</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td></tr>
+      <tr><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">3. Free Assessment</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">CF7 #68942</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td></tr>
+      <tr style="background: #fff5f5;"><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">2. Discovery Popup</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border);">CF7 #14462</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">4,011</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">&#10004;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center; color: #e53e3e; font-weight: 700;">&#10008;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center; color: #e53e3e; font-weight: 700;">&#10008;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center; color: #e53e3e; font-weight: 700;">&#10008;</td><td style="padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: center;">—</td></tr>
+    </table>
   </div>
 </div>
 
@@ -1157,20 +1440,95 @@
 <!-- ==================== JOURNEY: LANDING PAGES ==================== -->
 <div class="section" id="sec-j-landing">
   <h2 class="section-title">Landing Page Forms</h2>
-  <p class="section-desc">CF7 forms on dedicated landing pages like /mortgage-broker-brisbane/. Same data flow as the main contact form but on different URLs.</p>
+  <p class="section-desc">24+ landing pages verified via Playwright scan (2 Apr 2026). All share the same WordPress template with <strong>12 CF7 forms</strong> loaded per page — 3× "Discovery Session" popup (#14462), 4× assessment quiz popup (#11832), and 5 other popup forms. No inline forms exist on any landing page.</p>
 
   <div class="journey-header">
     <dl>
-      <dt>Form ID</dt><dd><code>F-07</code> · Contact Form 7</dd>
-      <dt>Pages</dt><dd><code>/mortgage-broker-brisbane/</code> and 4+ other landing pages</dd>
-      <dt>HubSpot Form</dt><dd>HS-CF-04 "Award-Winning Mortgage Broker in Brisbane | Hunter Galloway: .wpcf7-form"</dd>
-      <dt>Data flow</dt><dd>CF7 → HubSpot Tracking Code → Collected Form → Contact → Standard lead routing</dd>
+      <dt>Form IDs</dt><dd><code>F-07a</code> CF7 #14462 (Discovery Session) · <code>F-07b</code> CF7 #11832 (Quiz Popup)</dd>
+      <dt>Pages</dt><dd>24 landing pages across 7 categories (see table below)</dd>
+      <dt>HubSpot Forms</dt><dd>#14462 → <code>HS-CF-04</code> "{page}: .wpcf7-form, .submitting" · #11832 → <code>HS-CF-05</code> "{page}: Form popup data HG"</dd>
+      <dt>Data flow</dt><dd>Both: CF7 → Popup Maker popup → HubSpot Tracking Code → Collected Form → Contact</dd>
     </dl>
   </div>
 
   <div class="card">
-    <h3 class="card-title">What Happens</h3>
-    <p style="font-size: 14px;">Same flow as the Contact Form (F-01) but on landing pages. Visitor fills out a CF7 form, HubSpot tracking code captures it as Collected Form HS-CF-04, and standard lead routing workflows fire. These pages typically have higher conversion intent since they're targeted landing pages for SEO/SEM traffic.</p>
+    <h3 class="card-title" style="color: var(--danger);">⚠ Critical Finding: Data Quality Gap Between Forms</h3>
+    <p style="font-size: 14px; margin-bottom: 12px;">Every landing page has two competing lead capture paths. One captures rich qualification data, the other captures almost nothing:</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Form</th><th>CF7 ID</th><th>Trigger</th><th>Fields Captured</th><th>HubSpot Contacts</th><th>Data Quality</th></tr></thead>
+        <tbody>
+          <tr style="background: rgba(229,62,62,0.05);">
+            <td><strong>"Discovery Session"</strong></td>
+            <td><code>#14462</code></td>
+            <td>"Claim Your Free Discovery Session" buttons (3× per page, in popups #14461, #14460, #14459)</td>
+            <td>Name, email, phone <strong>only</strong></td>
+            <td>Part of <strong>4,011</strong> (via .wpcf7-form path)</td>
+            <td><span class="risk-severity high">Thin</span> — no transaction type, no page source, no financial data</td>
+          </tr>
+          <tr style="background: rgba(56,161,105,0.05);">
+            <td><strong>Assessment Quiz</strong></td>
+            <td><code>#11832</code></td>
+            <td>Quiz/assessment CTAs (4× per page, in popups #11791, #11790, #11789, #11784)</td>
+            <td>Name, email, phone + <code>transaction_type</code> + <code>source_url</code> + spending + savings/deposit</td>
+            <td><strong>6,538</strong> (via "Form popup data HG" path)</td>
+            <td><span class="badge badge-on">Rich</span> — pre-qualified with financial context</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 13px; color: var(--text-light); margin-top: 8px;"><strong>Impact:</strong> When a lead fills the "Discovery Session" form (#14462) instead of the quiz (#11832), HubSpot receives no context about what they want or what they can afford. Brokers have to manually qualify these leads. Some contacts later re-engage via Typeform ("JAYDEN FREE ASSESSMENT") to get properly qualified.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">All 12 Forms Per Landing Page (Identical Template)</h3>
+    <p style="font-size: 13px; color: var(--text-light); margin-bottom: 12px;">Verified on /lower-your-rate/, /first-home-buyer-loans/, and /teachers/ — all load the exact same 12 CF7 forms inside Popup Maker containers. Zero inline forms.</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>#</th><th>CF7 ID</th><th>Popup ID</th><th>Purpose</th><th>User-Facing Fields</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><code>#14462</code></td><td>popmake-14461</td><td>Discovery Session</td><td>name, email, phone</td></tr>
+          <tr><td>2</td><td><code>#14462</code></td><td>popmake-14460</td><td>Discovery Session</td><td>name, email, phone</td></tr>
+          <tr><td>3</td><td><code>#14462</code></td><td>popmake-14459</td><td>Discovery Session</td><td>name, email, phone</td></tr>
+          <tr><td>4</td><td><code>#14422</code></td><td>popmake-14423</td><td>CMA Contact</td><td>name, email, phone</td></tr>
+          <tr><td>5</td><td><code>#14296</code></td><td>popmake-14297</td><td>Landing Page Contact</td><td>name, email, phone</td></tr>
+          <tr><td>6</td><td><code>#14061</code></td><td>popmake-14064</td><td>Discover Capacity</td><td>name, email, phone, dropdown, textarea</td></tr>
+          <tr><td>7</td><td><code>#14060</code></td><td>popmake-14063</td><td>Find a Loan</td><td>name, email, phone, dropdown, textarea</td></tr>
+          <tr><td>8</td><td><code>#14059</code></td><td>popmake-14062</td><td>Check a Loan</td><td>name, email, phone, dropdown, textarea</td></tr>
+          <tr><td>9</td><td><code>#11832</code></td><td>popmake-11791</td><td>Assessment Quiz</td><td>name, email, phone, transaction_type, source_url, spending, savings</td></tr>
+          <tr><td>10</td><td><code>#11832</code></td><td>popmake-11790</td><td>Assessment Quiz</td><td>name, email, phone, transaction_type, source_url, spending, savings</td></tr>
+          <tr><td>11</td><td><code>#11832</code></td><td>popmake-11789</td><td>Assessment Quiz</td><td>name, email, phone, transaction_type, source_url, spending, savings</td></tr>
+          <tr><td>12</td><td><code>#11832</code></td><td>popmake-11784</td><td>Assessment Quiz</td><td>name, email, phone, transaction_type, source_url, spending, savings</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">24 Landing Pages by Category</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Category</th><th>Count</th><th>Example URLs</th></tr></thead>
+        <tbody>
+          <tr><td>First Home Buyer</td><td>2</td><td><code>/first-home-buyer-loans/</code> · <code>/get-a-stress-free-first-home-loan/</code></td></tr>
+          <tr><td>Refinance &amp; Upgrade</td><td>3</td><td><code>/refinance-home-loan/</code> · <code>/lower-your-rate/</code> · <code>/upgrade-my-home/</code></td></tr>
+          <tr><td>Investment</td><td>3</td><td><code>/investment-loans-queensland/</code> · <code>/your-property-investment-journey/</code> · <code>/property-investor-portfolio/</code></td></tr>
+          <tr><td>Professional Programs</td><td>5</td><td><code>/home-loans-for-doctors/</code> · <code>/nurse-home-loan/</code> · <code>/teachers/</code> · <code>/nurses-midwives/</code> · <code>/kiwi-first-home-buyers/</code></td></tr>
+          <tr><td>Guarantor</td><td>1</td><td><code>/guarantor-home-loan/</code></td></tr>
+          <tr><td>Geographic</td><td>5+</td><td><code>/mortgage-broker-brisbane/</code> · <code>/mortgage-broker-perth/</code> · <code>/home-loans-brisbane/</code></td></tr>
+          <tr><td>Suburb Pages</td><td>30+</td><td><code>/mortgage-broker-paddington/</code> · <code>/mortgage-broker-toowong/</code> · etc.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 12px; color: var(--text-light); margin-top: 8px;">All pages confirmed to use the same WordPress template. No unique per-page forms exist.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title" style="color: var(--warning);">Recommendation</h3>
+    <div class="risk-card high">
+      <div class="risk-title"><span class="risk-severity high">High</span> CF7 #14462 "Discovery Session" form lacks context fields</div>
+      <div class="risk-detail">The "Claim Your Free Discovery Session" popup collects only name/email/phone — no transaction type, no source URL, no financial data. This accounts for a significant portion of the 4,011 contacts arriving via the generic <code>.wpcf7-form, .submitting</code> collected form path. <strong>Fix:</strong> Either add hidden fields to #14462 (transaction_type, source_url) or redirect its CTA buttons to trigger the assessment quiz popup (#11832) instead, which already captures rich qualification data.</div>
+    </div>
   </div>
 </div>
 
@@ -1312,14 +1670,24 @@
         </thead>
         <tbody>
           <tr>
-            <td><code>F-01</code></td>
-            <td>Contact Us (2-step)</td>
+            <td><code>F-01a</code></td>
+            <td>Contact Us — CF7 Form</td>
             <td>Contact Form 7</td>
             <td><code>#11830</code></td>
             <td><code>/contact/</code></td>
-            <td>HS-CF-01 · HS-CF-02</td>
+            <td>HS-CF-02</td>
             <td>CF7 → HubSpot Tracking → Collected Form → Contact</td>
             <td><span class="badge badge-on">Confirmed</span></td>
+          </tr>
+          <tr style="background: rgba(49,130,206,0.04);">
+            <td><code>F-01b</code></td>
+            <td>Contact Us — CRS Phone-Verified</td>
+            <td>Custom HTML + CRS JS</td>
+            <td>N/A (custom)</td>
+            <td><code>/contact/</code></td>
+            <td>HS-CF-01</td>
+            <td>Custom form (SMS OTP verify) → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge" style="background: var(--info); color: white;">229 contacts · NEW</span></td>
           </tr>
           <tr>
             <td><code>F-02</code></td>
@@ -1372,14 +1740,24 @@
             <td><span class="badge badge-on">Resolved</span></td>
           </tr>
           <tr>
-            <td><code>F-07</code></td>
-            <td>Landing Page Forms</td>
-            <td>Contact Form 7</td>
-            <td>Various</td>
-            <td><code>/mortgage-broker-brisbane/</code> + 4 others</td>
-            <td>HS-CF-04</td>
-            <td>CF7 → HubSpot Tracking → Collected Form → Contact</td>
-            <td><span class="badge badge-on">Confirmed</span></td>
+            <td><code>F-07a</code></td>
+            <td>Landing Page — Discovery Session</td>
+            <td>CF7 + Popup Maker</td>
+            <td><code>#14462</code></td>
+            <td>24+ landing pages (3× popup per page)</td>
+            <td>HS-CF-04 (.wpcf7-form)</td>
+            <td>CF7 → Popup → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge" style="background: var(--warning); color: white;">⚠ Thin data</span></td>
+          </tr>
+          <tr>
+            <td><code>F-07b</code></td>
+            <td>Landing Page — Assessment Quiz</td>
+            <td>CF7 + Popup Maker</td>
+            <td><code>#11832</code></td>
+            <td>24+ landing pages (4× popup per page)</td>
+            <td>HS-CF-05 (popup data HG)</td>
+            <td>CF7 → Popup quiz → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge badge-on">Rich data</span></td>
           </tr>
           <tr>
             <td><code>F-08</code></td>
@@ -1391,13 +1769,53 @@
             <td>CF7 → HubSpot Tracking → Collected Form → Contact</td>
             <td><span class="badge badge-on">Confirmed</span></td>
           </tr>
+          <tr style="background: rgba(49,130,206,0.04);">
+            <td><code>F-09</code></td>
+            <td>Homepage Hero — CRS Phone-Verified</td>
+            <td>Custom HTML + CRS JS</td>
+            <td>N/A (custom)</td>
+            <td><code>/</code> (homepage)</td>
+            <td>HS-CF-09 (homepage .wpcf7-form path)</td>
+            <td>Custom form (SMS OTP) → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge" style="background: var(--info); color: white;">673 contacts · NEW</span></td>
+          </tr>
+          <tr style="background: rgba(49,130,206,0.04);">
+            <td><code>F-10</code></td>
+            <td>OptinMonster — First Home Buyer Tools</td>
+            <td>OptinMonster</td>
+            <td>N/A (OM campaign)</td>
+            <td>Sitewide (exit-intent popup)</td>
+            <td>HS-CF-10 (OptinMonster FORM)</td>
+            <td>OptinMonster popup → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge" style="background: var(--info); color: white;">5,366 contacts · NEW</span></td>
+          </tr>
+          <tr style="background: rgba(49,130,206,0.04);">
+            <td><code>F-11</code></td>
+            <td>Blog Post CF7 Forms</td>
+            <td>Contact Form 7</td>
+            <td>Various</td>
+            <td>Blog posts (3+ confirmed)</td>
+            <td>HS-CF-04 (generic .wpcf7-form)</td>
+            <td>CF7 → HubSpot Tracking → Collected Form → Contact</td>
+            <td><span class="badge" style="background: var(--info); color: white;">NEW</span></td>
+          </tr>
+          <tr style="background: rgba(221,107,32,0.05);">
+            <td><code>F-12</code></td>
+            <td>Call Centre / Phone (Manual Entry)</td>
+            <td>N/A — manual</td>
+            <td>N/A</td>
+            <td>N/A (phone leads)</td>
+            <td>"NEW LEAD: Call Centre / Phone"</td>
+            <td>Phone call → Manual HubSpot entry → Contact</td>
+            <td><span class="badge" style="background: var(--warning); color: white;">9,367 contacts · 25.5%</span></td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="card">
-    <h3 class="card-title">HubSpot Collected Forms (8 total)</h3>
+    <h3 class="card-title">HubSpot Collected Forms (10+ total)</h3>
     <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">These are the forms visible in HubSpot under Marketing → Forms → Non-HubSpot Forms. Each one is auto-created by the tracking code when it detects a form submission on a specific page.</p>
     <div class="table-wrapper">
       <table>
@@ -1405,14 +1823,17 @@
           <tr><th>HS ID</th><th>HubSpot Name</th><th>WordPress Source</th><th>Used By</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>HS-CF-01</code></td><td>Contact | Hunter Galloway: .init, .crs_custom_form</td><td>CF7 #11830 on /contact/</td><td>F-01</td></tr>
-          <tr><td><code>HS-CF-02</code></td><td>Contact: Form contact page data HG</td><td>CF7 #11830 on /contact/</td><td>F-01</td></tr>
+          <tr><td><code>HS-CF-01</code></td><td>Contact | Hunter Galloway: .init, .crs_custom_form, .crs-contact-form</td><td><strong>CRS custom phone-verified form</strong> on /contact/ (NOT CF7)</td><td>F-01b <span style="color:var(--info);">✓ resolved</span></td></tr>
+          <tr><td><code>HS-CF-02</code></td><td>Contact: Form contact page data HG</td><td>CF7 #11830 on /contact/</td><td>F-01a</td></tr>
           <tr><td><code>HS-CF-03</code></td><td>Mortgage Broker Brisbane: Form popup data HG</td><td>Popup form on /mortgage-broker-brisbane/</td><td>F-02, F-04</td></tr>
           <tr><td><code>HS-CF-04</code></td><td>Award-Winning Mortgage Broker in Brisbane | Hunter Galloway: .wpcf7-form</td><td>CF7 on landing pages</td><td>F-07</td></tr>
           <tr><td><code>HS-CF-05</code></td><td>Hunter Galloway: Form popup data HG</td><td>Popup/assessment form sitewide</td><td>F-02, F-04</td></tr>
           <tr><td><code>HS-CF-06</code></td><td>Mortgage calculator: Form popup data HG</td><td>Quiz/popup on /mortgage-calculator/</td><td>F-02, F-03, F-04</td></tr>
           <tr><td><code>HS-CF-07</code></td><td>Mortgage Report | Hunter Galloway: .wpcf7-form</td><td>CF7 on /mortgage-report/</td><td>F-08</td></tr>
-          <tr><td><code>HS-CF-08</code></td><td>Typeform (hello.huntergalloway.com.au)</td><td>External Typeform</td><td>External</td></tr>
+          <tr><td><code>HS-CF-08</code></td><td>Typeform (hello.huntergalloway.com.au)</td><td>External Typeform <span style="color:var(--danger);">⚠ subdomain returns 404</span></td><td>External</td></tr>
+          <tr style="background: rgba(49,130,206,0.04);"><td><code>HS-CF-09</code></td><td>Mortgage and Home Loan Brokers | Hunter Galloway: .wpcf7-form</td><td>Homepage CF7 #68942 + CRS custom form</td><td>F-02, F-09</td></tr>
+          <tr style="background: rgba(49,130,206,0.04);"><td><code>HS-CF-10</code></td><td>First Home Buyer Tools | Hunter Galloway: OptinMonster FORM</td><td>OptinMonster exit-intent popup</td><td>F-10</td></tr>
+          <tr style="background: rgba(49,130,206,0.04);"><td><code>HS-CF-11</code></td><td>NEW LEAD: Call Centre / Phone</td><td>Manual entry (not a web form)</td><td>F-12</td></tr>
         </tbody>
       </table>
     </div>
@@ -1426,9 +1847,10 @@
           <tr><th>System</th><th>Form</th><th>URL / Location</th><th>Feeds Into</th><th>Notes</th></tr>
         </thead>
         <tbody>
-          <tr><td>Typeform</td><td>Lead capture</td><td><code>hello.huntergalloway.com.au</code></td><td>HubSpot (HS-CF-08)</td><td>Hosted on Typeform subdomain. Fields TBD.</td></tr>
-          <tr><td>OptinMonster</td><td>PDF download popups</td><td>Sitewide exit-intent popups</td><td>HubSpot via workflows (WF-045, 051, 060-062)</td><td>Triggers PDF email sequences.</td></tr>
-          <tr><td>Calendly</td><td>Booking widget</td><td>Embedded on various pages</td><td>HubSpot (TBD)</td><td>Used for appointment scheduling. Integration path not confirmed.</td></tr>
+          <tr><td>Typeform</td><td>"JAYDEN FREE ASSESSMENT"</td><td><code>hello.huntergalloway.com.au</code> <span style="color:var(--danger);">⚠ 404</span></td><td>HubSpot (HS-CF-08)</td><td>Subdomain returns 404 as of 2 Apr 2026. Contacts still show Typeform as recent conversion — likely direct Typeform→HubSpot integration or moved URL.</td></tr>
+          <tr><td>OptinMonster</td><td>First Home Buyer Tools + PDF popups</td><td>Sitewide exit-intent popups</td><td>HubSpot (HS-CF-10 + WF-045, 051, 060-062)</td><td><strong>5,366 contacts</strong> via collected form. Also triggers PDF email sequences.</td></tr>
+          <tr><td>CRS Phone Verify</td><td>SMS OTP verification on forms</td><td><code>/contact/</code> + homepage hero</td><td>HubSpot (HS-CF-01, HS-CF-09)</td><td>Custom JS library. Sends SMS code, 4-digit verification input, timer. 229 contacts on /contact/, 673 on homepage.</td></tr>
+          <tr><td>Calendly</td><td>Booking widget</td><td>Not found on any page checked</td><td>HubSpot (TBD)</td><td>Not detected on homepage, /contact/, /get-free-assessment/, /mortgage-calculator/, or landing pages. May only appear on specific pages or was removed.</td></tr>
         </tbody>
       </table>
     </div>
@@ -1437,12 +1859,20 @@
   <div class="card">
     <h3 class="card-title" style="color: var(--warning);">Gaps &amp; Risks</h3>
     <div class="risk-card high">
-      <div class="risk-title"><span class="risk-severity high">High</span> Gravity Forms (F-05, F-06) have no confirmed destination</div>
-      <div class="risk-detail">LVR and YTD calculator broker referral forms don't appear in HubSpot Collected Forms. Leads may be captured only in WordPress <code>wp_posts</code> (Gravity Forms entries) and never reaching the CRM. Submit a test lead and trace it to confirm.</div>
+      <div class="risk-title"><span class="risk-severity high">High</span> CF7 #14462 "Discovery Session" sends thin data to HubSpot (4,011 contacts affected)</div>
+      <div class="risk-detail">The "Claim Your Free Discovery Session" popup on all 24+ landing pages captures only name/email/phone — no <code>transaction_type</code>, no <code>source_url</code>, no financial data. These leads arrive in HubSpot via the generic <code>.wpcf7-form, .submitting</code> collected form and require manual qualification. By contrast, the assessment quiz popup (#11832) on the same pages captures rich data. See the <a onclick="showSection('j-landing')" style="color: var(--primary-light); cursor: pointer;">Landing Pages</a> section for the full comparison.</div>
+    </div>
+    <div class="risk-card" style="border-left-color: var(--success); background: rgba(56,161,105,0.03);">
+      <div class="risk-title"><span class="risk-severity" style="background: var(--success);">Resolved</span> HS-CF-01 vs HS-CF-02 — mystery solved (2 Apr 2026)</div>
+      <div class="risk-detail">They're two <strong>genuinely different forms</strong>. HS-CF-01 (<code>.init, .crs_custom_form, .crs-contact-form</code>) = CRS phone-verified custom HTML form with SMS OTP (229 contacts). HS-CF-02 (<code>Form contact page data HG</code>) = standard CF7 #11830 form. Not duplicates.</div>
     </div>
     <div class="risk-card medium">
-      <div class="risk-title"><span class="risk-severity medium">Medium</span> HS-CF-01 vs HS-CF-02 — two Collected Forms for one contact page</div>
-      <div class="risk-detail">The /contact/ page creates two separate Collected Forms in HubSpot. This likely means the tracking code detects two different form selectors on the same page (<code>.init, .crs_custom_form</code> vs the standard CF7 form). Potential for duplicate contact creation or missed data.</div>
+      <div class="risk-title"><span class="risk-severity medium">Medium</span> Typeform subdomain (hello.huntergalloway.com.au) returns 404</div>
+      <div class="risk-detail">The Typeform at <code>hello.huntergalloway.com.au</code> is dead as of 2 Apr 2026. However, contacts still show "JAYDEN FREE ASSESSMENT" Typeform as recent conversion events. The Typeform likely moved to a different URL or has a direct Typeform→HubSpot API integration independent of the website.</div>
+    </div>
+    <div class="risk-card medium">
+      <div class="risk-title"><span class="risk-severity medium">Medium</span> Gravity Forms legacy on deposit calculator (32 contacts)</div>
+      <div class="risk-detail">HubSpot shows 32 contacts via <code>#assessment-form .gf-assessment__form</code> on the deposit calculator page (most recent: 14 Mar 2026). No GF markup found on the page today — the form was silently removed/replaced. This was a different GF form from #9/#10 on LVR/YTD calculators.</div>
     </div>
     <div class="risk-card medium">
       <div class="risk-title"><span class="risk-severity medium">Medium</span> F-08 Mortgage Report — form fields not catalogued</div>
@@ -1865,7 +2295,10 @@
       <strong>HubSpot properties:</strong> Custom properties mapped including request_type, transaction_type, message, adviser CA codes.<br>
       <strong>HubSpot workflows:</strong> 99 documented, key lead processing and broker assignment workflows identified.<br>
       <strong>Team members:</strong> 9 active HubSpot owners identified.<br>
-      <strong style="color: var(--success);">Gravity Forms mystery (F-05/F-06):</strong> Resolved 1 Apr 2026. Gravity Forms #9 and #10 no longer exist on the LVR/YTD calculator pages. Both pages now use CF7 + Popup Maker assessment quiz, feeding into HubSpot via the standard tracking code path.
+      <strong style="color: var(--success);">Gravity Forms mystery (F-05/F-06):</strong> Resolved 1 Apr 2026. Gravity Forms #9 and #10 no longer exist on the LVR/YTD calculator pages. Both pages now use CF7 + Popup Maker assessment quiz, feeding into HubSpot via the standard tracking code path.<br>
+      <strong style="color: var(--success);">Landing page form audit (F-07):</strong> Resolved 2 Apr 2026. 24+ landing pages scanned via Playwright + Chrome DOM inspection. All use identical WordPress template with 12 CF7 forms in Popup Maker containers. Two primary forms identified: CF7 #14462 ("Discovery Session" — thin data, name/email/phone only) and CF7 #11832 (assessment quiz — rich data with transaction_type, source_url, spending, savings). Both confirmed reaching HubSpot. 4,011 contacts via thin path vs 6,538 via rich path.<br>
+      <strong style="color: var(--success);">HS-CF-01 vs HS-CF-02 mystery:</strong> Resolved 2 Apr 2026. Two genuinely different forms on /contact/ — HS-CF-01 is a CRS phone-verified custom HTML form with SMS OTP (229 contacts), HS-CF-02 is CF7 #11830.<br>
+      <strong style="color: var(--success);">Full site sweep (23 conversion events):</strong> Completed 2 Apr 2026. Identified 36,724 contacts across 23 unique conversion event names. Found: CRS phone-verified forms (homepage + contact), OptinMonster as collected form (5,366), call centre manual entry (9,367 = 25.5%), blog post CF7 leads, legacy GF deposit calculator (32, now removed).
     </p>
   </div>
 
@@ -1879,6 +2312,10 @@
           <tr><td><span class="risk-severity medium">Medium</span></td><td>How does Typeform (hello.huntergalloway.com.au) connect to HubSpot?</td><td>Check Typeform admin for HubSpot integration settings or Zapier connections.</td></tr>
           <tr><td><span class="risk-severity medium">Medium</span></td><td>What happens with partial quiz/popup abandonment?</td><td>Start the F-03 quiz, abandon at step 3, check if any data appears in HubSpot.</td></tr>
           <tr><td><span class="risk-severity medium">Medium</span></td><td>Are UTM parameters captured as hidden fields?</td><td>Visit a form page with UTM params, submit, check if HubSpot contact has UTM values.</td></tr>
+          <tr><td><span class="risk-severity high">High</span></td><td>Where did the Typeform "JAYDEN FREE ASSESSMENT" move to?</td><td>hello.huntergalloway.com.au returns 404 but contacts still show this Typeform. Check Typeform admin for the live URL, or check if there's a direct Typeform→HubSpot API integration bypassing the website.</td></tr>
+          <tr><td><span class="risk-severity medium">Medium</span></td><td>What does the CRS phone verification JS library do with the verified phone data?</td><td>The CRS system sends an SMS code and verifies the phone number before form submission. Does it store verification status in HubSpot? Is the SMS sent via Twilio or another provider? Check /wp-content/ for crs_ scripts.</td></tr>
+          <tr><td><span class="risk-severity medium">Medium</span></td><td>How many blog posts have active CF7 lead forms?</td><td>3 confirmed (21 Expert Tips, Loan Declined, Home Equity). But the site has 100+ blog posts. Run a full crawl to find all posts with CF7 shortcodes in WordPress.</td></tr>
+          <tr><td><span class="risk-severity low">Low</span></td><td>What happened to Calendly?</td><td>Not found on any page tested. Was it removed, or is it only on specific team member profiles or booking confirmation pages?</td></tr>
         </tbody>
       </table>
     </div>
