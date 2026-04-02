@@ -841,9 +841,10 @@
     <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> F-02 Free Assessment (primary lead funnel) &nbsp;·&nbsp; <strong>Detection:</strong> Playwright test T-015 checks dropdown options are present.</div>
   </div>
 
-  <div class="risk-card" style="background: #f0fff4; border-color: var(--success);">
-    <div class="risk-title"><span class="risk-severity" style="background: #c6f6d5; color: #276749;">Resolved</span> Gravity Forms destination — no longer applicable (F-05/F-06)</div>
-    <div class="risk-detail">Investigated 1 April 2026: Gravity Forms #9 and #10 no longer exist on the LVR/YTD calculator pages. Both pages now use the CF7 + Popup Maker assessment quiz system (same as F-04), which feeds into HubSpot via the standard tracking code. <strong>This risk is closed.</strong></div>
+  <div class="risk-card medium">
+    <div class="risk-title"><span class="risk-severity medium">Medium</span> Gravity Forms #9 and #10 still exist — destination unknown (F-05/F-06)</div>
+    <div class="risk-detail"><strong>Correction (2 Apr 2026):</strong> Previously marked as "Resolved" but Playwright scan confirmed <code>gform_wrapper_9</code> (YTD) and <code>gform_wrapper_10</code> (LVR) are still present in the DOM. Both Gravity Forms are live on their respective calculator pages. <strong>TBD:</strong> Where do these forms submit to? Do they reach HubSpot, or do they go to a different destination (email, Zapier, etc.)?</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> F-05, F-06 &nbsp;·&nbsp; <strong>Detection:</strong> No Playwright tests currently cover the conditional broker form trigger.</div>
   </div>
 
   <div class="risk-card high">
