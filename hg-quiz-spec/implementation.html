@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hunter Galloway Quiz — Implementation Code Changes</title>
+<style>
+  :root {
+    --hg-gold: #FDB948;
+    --hg-gold-light: #FEF7EA;
+    --hg-dark: #1a1a2e;
+    --hg-red: #e74c3c;
+    --hg-green: #27ae60;
+    --hg-blue: #2E75B6;
+    --hg-gray: #f8f9fa;
+    --hg-border: #e0e0e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6; color: #333; background: #fff;
+    max-width: 1200px; margin: 0 auto; padding: 40px 24px;
+  }
+  h1 { font-size: 32px; color: var(--hg-dark); margin-bottom: 8px; }
+  h2 { font-size: 24px; color: var(--hg-dark); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 3px solid var(--hg-gold); }
+  h3 { font-size: 18px; color: var(--hg-dark); margin: 28px 0 12px; }
+  h4 { font-size: 14px; color: #555; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: #666; font-size: 16px; margin-bottom: 32px; }
+  .meta { display: flex; gap: 24px; margin-bottom: 40px; font-size: 13px; color: #888; flex-wrap: wrap; }
+  .meta span { background: var(--hg-gray); padding: 4px 12px; border-radius: 4px; }
+
+  .nav-top { float: right; font-size: 13px; margin: -8px 0 0 0; }
+  .nav-top a { color: var(--hg-blue); text-decoration: none; padding: 4px 12px; border-radius: 4px; background: var(--hg-gray); transition: all 0.2s; }
+  .nav-top a:hover { background: #e0e0e0; }
+
+  /* Code blocks */
+  pre {
+    background: #1e1e2e; color: #cdd6f4; padding: 16px 20px; border-radius: 8px;
+    overflow-x: auto; font-size: 13px; margin: 12px 0 20px; line-height: 1.5;
+  }
+  code { font-family: 'Fira Code', 'Consolas', monospace; }
+  .inline-code { background: #eee; padding: 2px 6px; border-radius: 3px; font-size: 13px; font-weight: 600; }
+
+  /* Boxes */
+  .section-box {
+    background: var(--hg-gold-light); border: 1px solid #fdb948; border-left: 4px solid var(--hg-gold);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .section-box h3 { color: var(--hg-dark); margin: 0 0 8px; }
+
+  .info-box {
+    background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid var(--hg-blue);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+
+  .warning-box {
+    background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid var(--hg-red);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+
+  .success-box {
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid var(--hg-green);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  th { background: var(--hg-dark); color: #fff; text-align: left; padding: 12px 14px; font-weight: 600; }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--hg-border); }
+  tr:nth-child(even) { background: var(--hg-gray); }
+
+  /* Inline highlights */
+  .highlight { background: #fff9e6; padding: 2px 6px; border-radius: 3px; font-weight: 600; }
+
+  /* TOC */
+  .toc { background: var(--hg-gray); border-radius: 12px; padding: 24px; margin: 24px 0; }
+  .toc h3 { margin: 0 0 12px; font-size: 16px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin: 6px 0; }
+  .toc a { color: var(--hg-blue); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Diff styling */
+  .diff { font-family: 'Courier New', monospace; font-size: 13px; margin: 16px 0; line-height: 1.5; }
+  .diff-add { background: #e8f5e9; padding: 8px 12px; margin: 2px 0; border-left: 3px solid var(--hg-green); color: #27ae60; }
+  .diff-remove { background: #fef2f2; padding: 8px 12px; margin: 2px 0; border-left: 3px solid var(--hg-red); color: #c0392b; }
+  .diff-context { background: #f5f5f5; padding: 8px 12px; margin: 2px 0; border-left: 3px solid #ccc; color: #666; }
+  .diff-file { background: var(--hg-dark); color: #fff; padding: 8px 12px; margin: 12px 0 4px; border-radius: 4px; font-weight: 600; }
+
+  hr { border: none; border-top: 1px solid var(--hg-border); margin: 48px 0; }
+
+  @media (max-width: 700px) {
+    h1 { font-size: 24px; }
+    h2 { font-size: 20px; }
+    .nav-top { float: none; margin-bottom: 16px; }
+  }
+</style>
+</head>
+<body><script>(function(){var k="hg_audit_auth",p="huntergalloway2026";if(sessionStorage.getItem(k)===p)return;var v=prompt("Access code:");if(v===p){sessionStorage.setItem(k,p)}else{document.write("<div style=\"text-align:center;padding:100px;font-family:sans-serif;color:\#999\">Access denied.</div>");document.close()}})()</script>
+
+<div class="nav-top"><a href="index.html">Back to Specification</a></div>
+<h1>Hunter Galloway Quiz — Implementation Code Changes</h1>
+<p class="subtitle">Complete, copy-pasteable code to fix the quiz branching logic and flows</p>
+<div class="meta">
+  <span>Updated: 1 April 2026</span>
+  <span>Status: Ready for Implementation</span>
+  <span>Approach: Flow-based step arrays (Recommended)</span>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#section1">Section 1: New HTML to Add</a></li>
+    <li><a href="#section2">Section 2: HTML to Remove</a></li>
+    <li><a href="#section3">Section 3: Complete Replacement JavaScript</a></li>
+    <li><a href="#section4">Section 4: Contact Form 7 Changes</a></li>
+    <li><a href="#section5">Section 5: Quick Reference & Diffs</a></li>
+  </ol>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="section1">Section 1: New HTML to Add</h2>
+
+<p>Add these new step divs inside <span class="inline-code">div.quiz_card</span> alongside the existing steps. They use the same CSS classes and structure as existing steps.</p>
+
+<div class="section-box">
+  <h3>Key Assumptions</h3>
+  <ul>
+    <li>Existing Step 1 (looking selection) stays unchanged</li>
+    <li>Existing Step 4 (contact details) can be reused for Purchase and Refinance flows</li>
+    <li>New dead-end and redirect screens use the same visual style</li>
+    <li>OTP verification is handled by Contact Form 7 or custom JS (out of scope)</li>
+  </ul>
+</div>
+
+<h3>1a. Refinance Step 2 — Refinancing Goal</h3>
+
+<pre><code>&lt;!-- NEW: Refinance Step 2 (ask refiGoal) --&gt;
+&lt;div class="step step_refi_2"&gt;
+  &lt;p class="title"&gt;What's your main refinancing goal?&lt;/p&gt;
+  &lt;p class="subtitle"&gt;This helps us match you with the right broker.&lt;/p&gt;
+
+  &lt;label&gt;
+    &lt;input type="radio" name="refiGoal" value="lower-rate"&gt;
+    &lt;p&gt;Get a lower interest rate&lt;/p&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;
+    &lt;input type="radio" name="refiGoal" value="access-equity"&gt;
+    &lt;p&gt;Access equity / cash out&lt;/p&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;
+    &lt;input type="radio" name="refiGoal" value="consolidate-debts"&gt;
+    &lt;p&gt;Consolidate debts&lt;/p&gt;
+  &lt;/label&gt;
+
+  &lt;label&gt;
+    &lt;input type="radio" name="refiGoal" value="other"&gt;
+    &lt;p&gt;Other / not sure&lt;/p&gt;
+  &lt;/label&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>1b. Build — At Capacity Redirect Screen</h3>
+
+<pre><code>&lt;!-- NEW: Build dead-end screen (at capacity) --&gt;
+&lt;div class="step dead-end dead-end-build"&gt;
+  &lt;div style="text-align: center; margin: 32px 0 24px;"&gt;
+    &lt;p style="font-size: 32px; margin: 0;"&gt;🏗️&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;p class="title"&gt;Build Loans — Currently at Capacity&lt;/p&gt;
+
+  &lt;p style="text-align: center; color: #666; margin-bottom: 24px; line-height: 1.6;"&gt;
+    Due to the complexity of construction and build loans, we have a &lt;strong&gt;limited capacity&lt;/strong&gt; for these applications.
+    Unfortunately, we're &lt;strong&gt;currently at capacity&lt;/strong&gt; and unable to take on new build loan clients at this time.&lt;br&gt;&lt;br&gt;
+    We'd still love to help if you're looking to &lt;strong&gt;purchase an existing property&lt;/strong&gt; or &lt;strong&gt;refinance&lt;/strong&gt; —
+    that's our bread and butter!
+  &lt;/p&gt;
+
+  &lt;button type="button" class="cta-button cta-primary" onclick="handleBuildRedirectToPurchase()"&gt;
+    I'm Looking to Buy a Property Instead →
+  &lt;/button&gt;
+
+  &lt;button type="button" class="cta-button cta-secondary" onclick="window.location.href='/mortgage-broker-brisbane/'"&gt;
+    Get in Touch Anyway
+  &lt;/button&gt;
+
+  &lt;div style="text-align: center; margin-top: 16px;"&gt;
+    &lt;button type="button" class="cta-back-link" onclick="handleStartOver()"&gt;← Start over&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>1c. Commercial — At Capacity Redirect Screen</h3>
+
+<pre><code>&lt;!-- NEW: Commercial dead-end screen (at capacity) --&gt;
+&lt;div class="step dead-end dead-end-commercial"&gt;
+  &lt;div style="text-align: center; margin: 32px 0 24px;"&gt;
+    &lt;p style="font-size: 32px; margin: 0;"&gt;🏢&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;p class="title"&gt;Commercial Loans — Currently at Capacity&lt;/p&gt;
+
+  &lt;p style="text-align: center; color: #666; margin-bottom: 24px; line-height: 1.6;"&gt;
+    Due to the complexity of commercial and business loans, we have a &lt;strong&gt;limited capacity&lt;/strong&gt; for these applications.
+    Unfortunately, we're &lt;strong&gt;currently at capacity&lt;/strong&gt; and unable to take on new commercial loan clients at this time.&lt;br&gt;&lt;br&gt;
+    We'd still love to help if you're looking to &lt;strong&gt;buy a home or investment property&lt;/strong&gt;, or &lt;strong&gt;refinance an existing loan&lt;/strong&gt; —
+    that's where we really shine!
+  &lt;/p&gt;
+
+  &lt;button type="button" class="cta-button cta-primary" onclick="handleCommercialRedirectToPurchase()"&gt;
+    I'm Also Looking to Buy a Home →
+  &lt;/button&gt;
+
+  &lt;button type="button" class="cta-button cta-secondary" onclick="window.location.href='/mortgage-broker-brisbane/'"&gt;
+    Get in Touch Anyway
+  &lt;/button&gt;
+
+  &lt;div style="text-align: center; margin-top: 16px;"&gt;
+    &lt;button type="button" class="cta-back-link" onclick="handleStartOver()"&gt;← Start over&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>1d. Exploring — Finance in Five Redirect Screen</h3>
+
+<pre><code>&lt;!-- NEW: Exploring redirect screen (Finance in Five nurture) --&gt;
+&lt;div class="step dead-end dead-end-exploring"&gt;
+  &lt;div style="text-align: center; margin: 32px 0 24px;"&gt;
+    &lt;p style="font-size: 32px; margin: 0;"&gt;📚&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;p class="title"&gt;Not Ready Yet? No Worries.&lt;/p&gt;
+  &lt;p class="subtitle" style="text-align: center;"&gt;We've got something perfect for you.&lt;/p&gt;
+
+  &lt;p style="text-align: center; color: #666; margin-bottom: 24px; line-height: 1.6;"&gt;
+    Check out &lt;strong&gt;Finance in Five&lt;/strong&gt; — our free series that breaks down everything you need to know about
+    home loans, buying your first property, and getting mortgage-ready.&lt;br&gt;&lt;br&gt;
+    Short, simple, no jargon. Get up to speed at your own pace.
+  &lt;/p&gt;
+
+  &lt;button type="button" class="cta-button cta-primary" onclick="window.location.href='/finance-in-five/'"&gt;
+    Take Me to Finance in Five →
+  &lt;/button&gt;
+
+  &lt;button type="button" class="cta-button cta-secondary" onclick="handleExploringToPurchase()"&gt;
+    Actually, I'm Ready to Buy a Property
+  &lt;/button&gt;
+
+  &lt;div style="text-align: center; margin-top: 16px;"&gt;
+    &lt;button type="button" class="cta-back-link" onclick="handleStartOver()"&gt;← Start over&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>1e. Refinance Confirmation Screen</h3>
+
+<div class="warning-box">
+  <h4>Important: Purchase Does NOT Use This</h4>
+  <p>The <code>step_purchase_confirmation</code> screen is NOT used for Purchase. Purchase keeps the existing Step 5 (borrowing result with calculator). This section covers the confirmation screen used by the Refinance flow only.</p>
+</div>
+
+<pre><code>&lt;!-- NEW: Refinance confirmation screen (Refinance flow completion) --&gt;
+&lt;div class="step step_refi_confirmation"&gt;
+  &lt;div style="text-align: center; margin: 32px 0 24px;"&gt;
+    &lt;p style="font-size: 32px; margin: 0;"&gt;✅&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;p class="title"&gt;You're All Set!&lt;/p&gt;
+
+  &lt;p style="text-align: center; color: #666; margin-bottom: 24px; line-height: 1.6;"&gt;
+    One of our mortgage brokers will review your situation and reach out within &lt;strong&gt;1 business day&lt;/strong&gt;
+    with a personalised borrowing assessment.&lt;br&gt;&lt;br&gt;
+    &lt;strong&gt;What happens next:&lt;/strong&gt;&lt;br&gt;
+    1. We compare rates across 30+ lenders for your situation&lt;br&gt;
+    2. We contact you to discuss your options&lt;br&gt;
+    3. We handle the whole process — at no cost to you
+  &lt;/p&gt;
+
+  &lt;button type="button" class="cta-button cta-primary" onclick="window.location.href='/book-a-call/'"&gt;
+    Book a Call Now (Optional)
+  &lt;/button&gt;
+
+  &lt;div style="text-align: center; margin-top: 16px;"&gt;
+    &lt;button type="button" class="cta-back-link" onclick="handleStartOver()"&gt;← Start over&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>1f. CSS for New Buttons & Dead-End Screens</h3>
+
+<p>Add this CSS to the existing quiz stylesheet:</p>
+
+<pre><code>/* Dead-end and redirect screens */
+.dead-end {
+  display: none; /* Hidden by default, shown via JS */
+  text-align: center;
+}
+
+.dead-end.active {
+  display: block;
+}
+
+.dead-end .title {
+  color: var(--hg-dark);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.dead-end .subtitle {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* CTA buttons for redirect screens */
+.cta-button {
+  display: block;
+  width: 100%;
+  padding: 14px 24px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cta-button.cta-primary {
+  background: var(--hg-gold);
+  color: var(--hg-dark);
+}
+
+.cta-button.cta-primary:hover {
+  background: #f5b828;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(253, 185, 72, 0.3);
+}
+
+.cta-button.cta-secondary {
+  background: #eee;
+  color: #555;
+}
+
+.cta-button.cta-secondary:hover {
+  background: #ddd;
+}
+
+.cta-back-link {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+}
+
+.cta-back-link:hover {
+  color: #666;
+  text-decoration: underline;
+}</code></pre>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="section2">Section 2: HTML to Remove</h2>
+
+<div class="success-box">
+  <h3>Implementation: Option A (Borrowing Calculator — Keep All 5 Steps)</h3>
+  <p>The Purchase flow uses <span class="highlight">Option A</span> and retains all existing steps including the situation, finances, and borrowing calculator.</p>
+</div>
+
+<p><span class="highlight">Do NOT remove</span> these steps. They are KEPT for the Purchase flow:</p>
+
+<table>
+  <tr><th>Step</th><th>Class Name</th><th>Status</th><th>Purpose</th></tr>
+  <tr><td>Step 2</td><td><code>step_2</code> (situation)</td><td>KEEP</td><td>Collects situation data (marital status, first-time buyer); feeds <code>calculateLoanCapacity()</code> client-side</td></tr>
+  <tr><td>Step 3</td><td><code>step_3</code> (finances)</td><td>KEEP</td><td>Collects financial data (income, deposit, max property value); feeds <code>calculateLoanCapacity()</code> client-side</td></tr>
+  <tr><td>Step 5</td><td><code>step_5</code> (result with calculator)</td><td>KEEP</td><td>Displays borrowing capacity calculation; exclusive to Purchase flow</td></tr>
+</table>
+
+<div class="info-box">
+  <h3>Important: Situation &amp; Finance Data</h3>
+  <p>Situation (step_2) and Finance (step_3) data are <strong>NOT submitted to the backend</strong>. They are used <strong>client-side only</strong> to calculate the borrowing capacity in step_5. Only name, email, and phone are sent to the backend via Contact Form 7.</p>
+</div>
+
+<p>The Purchase flow array must include all 5 steps:</p>
+
+<pre><code>// IMPLEMENTATION (Option A): Keep borrowing calculator with full 5-step flow
+const FLOWS = {
+  purchase: [1, 2, 3, 4, 5],  // Select → Situation → Finances → Contact → Borrowing Result
+  refinance: [1, 'refi_2', 4, 'refi_confirmation'],
+  build: [1, 'dead-end-build'],
+  commercial: [1, 'dead-end-commercial'],
+  exploring: [1, 'dead-end-exploring'],
+};</code></pre>
+
+<p><strong>Do not comment out or delete these step divs from your quiz HTML.</strong> They are essential for the Purchase flow.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="section3">Section 3: Complete Replacement JavaScript</h2>
+
+<div class="section-box">
+  <h3>Overview</h3>
+  <p>Replace your entire quiz JavaScript with this refactored version. It implements:</p>
+  <ul>
+    <li>Flow-based step arrays for clean branching</li>
+    <li>Conditional step advancement based on <span class="inline-code">answers.looking</span></li>
+    <li>Dead-end and redirect screen handlers</li>
+    <li>CTA handlers for "redirect to purchase", "go to Finance in Five", etc.</li>
+    <li>Flow-aware progress indicator updates</li>
+    <li>Simplified form submission with only relevant fields</li>
+  </ul>
+</div>
+
+<pre><code>// ============================================================
+// HUNTER GALLOWAY QUIZ — REFACTORED JAVASCRIPT
+// ============================================================
+// Implementation: Flow-based step arrays (Approach B from spec)
+// Handles branching logic for 5 different user paths
+
+// Initialize quiz
+(function() {
+  // ---- CONFIGURATION ----
+  // Define step sequences for each flow
+  // IMPLEMENTATION: Option A - Purchase keeps borrowing calculator with full 5-step flow
+  const FLOWS = {
+    purchase: [1, 2, 3, 4, 5],  // Select → Situation → Finances → Contact → Borrowing Result (calculator)
+
+    refinance: [1, 'refi_2', 4, 'refi_confirmation'],
+
+    build: [1, 'dead-end-build'],
+    commercial: [1, 'dead-end-commercial'],
+    exploring: [1, 'dead-end-exploring'],
+  };
+
+  // ---- STATE ----
+  let currentFlow = null;        // Current flow type (purchase, refinance, etc.)
+  let flowStepIndex = 0;         // Current position within the flow array
+  let answers = {
+    looking: null,
+    refiGoal: null,
+    name: null,
+    email: null,
+    phone: null,
+  };
+
+  // ---- DOM REFERENCES ----
+  let stepElements = {};         // Map of step ID to DOM element
+  let mainButton, backButton, currentStepIndicator;
+
+  // Initialize on page load
+  function init() {
+    // Build step element map
+    const allSteps = document.querySelectorAll('.quiz_card .step');
+    allSteps.forEach(step => {
+      const classes = step.className.split(' ');
+      const stepId = classes.find(c => c.startsWith('step_') || c === 'dead-end');
+      if (stepId) {
+        stepElements[stepId] = step;
+      }
+      // Also map by class for backwards compatibility
+      classes.forEach(cls => {
+        if (cls.startsWith('step_') || cls.startsWith('dead-end-')) {
+          stepElements[cls] = step;
+        }
+      });
+    });
+
+    // Get button and indicator elements
+    mainButton = document.querySelector('.quiz_card .button-next');
+    backButton = document.querySelector('.quiz_card .button-back');
+    currentStepIndicator = document.querySelector('.quiz_card .current-step');
+
+    // Attach event listeners to Step 1 radio buttons
+    document.querySelectorAll('.quiz_card input[name="looking"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        answers.looking = e.target.value;
+      });
+    });
+
+    // Attach event listeners to Refinance goal radio buttons
+    document.querySelectorAll('.quiz_card input[name="refiGoal"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        answers.refiGoal = e.target.value;
+      });
+    });
+
+    // Show initial step (Step 1)
+    showStep(1);
+    updateButton();
+  }
+
+  // Main navigation: advance to next step in current flow
+  function nextStep() {
+    // Step 1: Determine flow based on answer
+    if (flowStepIndex === 0) {
+      const looking = answers.looking;
+
+      if (!looking) {
+        alert('Please select an option to continue.');
+        return;
+      }
+
+      // Route based on selection
+      if (!(looking in FLOWS)) {
+        console.error('Unknown flow:', looking);
+        return;
+      }
+
+      currentFlow = looking;
+      console.log('Starting flow:', currentFlow);
+    }
+
+    // Advance within the current flow
+    flowStepIndex++;
+    const flowSteps = FLOWS[currentFlow];
+
+    // Check if we've completed the flow
+    if (flowStepIndex >= flowSteps.length) {
+      console.log('Flow complete:', currentFlow);
+      handleFlowComplete();
+      return;
+    }
+
+    // Show next step in flow
+    const nextStepId = flowSteps[flowStepIndex];
+    showStep(nextStepId);
+    updateButton();
+  }
+
+  // Navigate back to previous step in current flow
+  function handleBackButton() {
+    if (flowStepIndex <= 0) {
+      // At the beginning of a flow; go back to Step 1
+      resetQuiz();
+      return;
+    }
+
+    // For dead-end screens, back button goes to Step 1
+    const flowSteps = FLOWS[currentFlow];
+    if (flowSteps[flowStepIndex].startsWith('dead-end-')) {
+      resetQuiz();
+      return;
+    }
+
+    flowStepIndex--;
+    const prevStepId = flowSteps[flowStepIndex];
+    showStep(prevStepId);
+    updateButton();
+  }
+
+  // Show a specific step (by ID or numeric step number)
+  function showStep(stepId) {
+    // Hide all steps
+    Object.values(stepElements).forEach(el => {
+      if (el) el.classList.remove('active');
+    });
+
+    // Show the target step
+    let stepEl = null;
+
+    if (typeof stepId === 'number') {
+      // Numeric step ID (Step 1, 4, etc.)
+      stepEl = stepElements[`step_${stepId}`];
+    } else {
+      // String step ID (purchase_confirmation, refi_2, dead-end-build, etc.)
+      // Try direct lookup first
+      stepEl = stepElements[stepId];
+
+      // Try with 'step_' prefix
+      if (!stepEl) stepEl = stepElements[`step_${stepId}`];
+
+      // Try with 'dead-end-' prefix if not found
+      if (!stepEl) {
+        const deadEndEl = document.querySelector(`.dead-end.dead-end-${stepId}`);
+        if (deadEndEl) stepEl = deadEndEl;
+      }
+    }
+
+    if (stepEl) {
+      stepEl.classList.add('active');
+    } else {
+      console.warn('Step not found:', stepId);
+    }
+
+    updateProgressIndicator();
+  }
+
+  // Capture field data when advancing
+  function captureFormData() {
+    // Capture contact form fields (name, email, phone)
+    const nameField = document.querySelector('.quiz_card input[name="name"]');
+    const emailField = document.querySelector('.quiz_card input[name="email"]');
+    const phoneField = document.querySelector('.quiz_card input[name="phone"]');
+
+    if (nameField) answers.name = nameField.value;
+    if (emailField) answers.email = emailField.value;
+    if (phoneField) answers.phone = phoneField.value;
+  }
+
+  // Update button text and visibility based on flow position
+  function updateButton() {
+    const flowSteps = FLOWS[currentFlow];
+    const isDeadEnd = flowSteps && flowSteps[flowStepIndex].startsWith('dead-end-');
+
+    if (!mainButton || !backButton) return;
+
+    // Determine button text
+    if (isDeadEnd) {
+      // Dead-end screens don't have a main next button
+      mainButton.classList.add('hidden');
+    } else if (flowStepIndex === flowSteps.length - 1) {
+      // Last step in flow
+      mainButton.textContent = 'Submit';
+      mainButton.classList.remove('hidden');
+    } else {
+      // Middle steps
+      mainButton.textContent = 'Continue';
+      mainButton.classList.remove('hidden');
+    }
+
+    // Back button visibility
+    if (flowStepIndex === 0 || isDeadEnd) {
+      backButton.classList.add('hidden');
+    } else {
+      backButton.classList.remove('hidden');
+    }
+  }
+
+  // Update progress indicator (step X of Y)
+  function updateProgressIndicator() {
+    if (!currentStepIndicator) return;
+
+    const flowSteps = FLOWS[currentFlow];
+    if (!flowSteps) return;
+
+    // Count non-dead-end steps for display
+    const displaySteps = flowSteps.filter(s => !s.startsWith('dead-end-'));
+    const currentDisplayIndex = flowSteps
+      .slice(0, flowStepIndex + 1)
+      .filter(s => !s.startsWith('dead-end-')).length;
+
+    currentStepIndicator.textContent = `${currentDisplayIndex} / ${displaySteps.length}`;
+  }
+
+  // Handle flow completion (submission or redirect)
+  function handleFlowComplete() {
+    captureFormData();
+
+    switch (currentFlow) {
+      case 'purchase':
+        submitForm('purchase');
+        break;
+      case 'refinance':
+        submitForm('refinance');
+        break;
+      case 'build':
+      case 'commercial':
+      case 'exploring':
+        // These are handled by CTA buttons; shouldn't reach here
+        console.log('Dead-end flow completed (button should handle navigation)');
+        break;
+    }
+  }
+
+  // Submit form with relevant fields only
+  function submitForm(flowType) {
+    const payload = {
+      looking: answers.looking,
+      name: answers.name,
+      email: answers.email,
+      phone: answers.phone,
+    };
+
+    if (flowType === 'refinance') {
+      payload.refiGoal = answers.refiGoal;
+    }
+
+    console.log('Submitting form:', payload);
+
+    // Find Contact Form 7 form and populate hidden fields
+    const form = document.querySelector('.quiz_card form.wpcf7-form');
+    if (form) {
+      // Set form fields
+      const inputs = {
+        'quiz-looking': answers.looking,
+        'quiz-name': answers.name,
+        'quiz-email': answers.email,
+        'quiz-phone': answers.phone,
+        'quiz-refi-goal': answers.refiGoal || '',
+      };
+
+      Object.entries(inputs).forEach(([name, value]) => {
+        const field = form.querySelector(`[name="${name}"]`);
+        if (field) field.value = value;
+      });
+
+      // Submit the form
+      form.submit();
+    }
+  }
+
+  // Reset quiz to Step 1
+  function resetQuiz() {
+    currentFlow = null;
+    flowStepIndex = 0;
+    answers = {
+      looking: null,
+      refiGoal: null,
+      name: null,
+      email: null,
+      phone: null,
+    };
+
+    // Clear all radio selections
+    document.querySelectorAll('.quiz_card input[type="radio"]').forEach(radio => {
+      radio.checked = false;
+    });
+
+    // Clear form fields
+    document.querySelectorAll('.quiz_card input[type="text"], .quiz_card input[type="email"], .quiz_card input[type="tel"]').forEach(input => {
+      input.value = '';
+    });
+
+    showStep(1);
+    updateButton();
+  }
+
+  // ============================================================
+  // CTA HANDLERS (for dead-end and redirect screens)
+  // ============================================================
+
+  window.handleBuildRedirectToPurchase = function() {
+    answers.looking = 'purchase';
+    currentFlow = 'purchase';
+    flowStepIndex = 1;
+    showStep(4); // Contact step
+    updateButton();
+  };
+
+  window.handleCommercialRedirectToPurchase = function() {
+    answers.looking = 'purchase';
+    currentFlow = 'purchase';
+    flowStepIndex = 1;
+    showStep(4); // Contact step
+    updateButton();
+  };
+
+  window.handleExploringToPurchase = function() {
+    answers.looking = 'purchase';
+    currentFlow = 'purchase';
+    flowStepIndex = 1;
+    showStep(4); // Contact step
+    updateButton();
+  };
+
+  window.handleStartOver = function() {
+    resetQuiz();
+  };
+
+  // ============================================================
+  // PUBLIC API (attach to window for onclick handlers)
+  // ============================================================
+
+  window.quizNextStep = nextStep;
+  window.quizHandleBack = handleBackButton;
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();</code></pre>
+
+<h3>Important Notes on the JavaScript</h3>
+
+<ul>
+  <li><span class="highlight">FLOWS object:</span> Defines step sequences for each path. Purchase uses <span class="inline-code">[1, 2, 3, 4, 5]</span> to keep the full 5-step flow with borrowing calculator. Other flows branch to dead-end or confirmation screens.</li>
+  <li><span class="highlight">Step IDs:</span> Can be numeric (1, 2, 3, 4, 5) or string IDs ('refi_2', 'refi_confirmation', 'dead-end-build', etc.).</li>
+  <li><span class="highlight">CTA handlers:</span> Called from onclick attributes on redirect screen buttons. They reset the flow and navigate to the appropriate step.</li>
+  <li><span class="highlight">Form submission:</span> Captures only name, email, phone (from Contact step). Situation and Finance data are used client-side only for the calculator; they are NOT submitted to the backend.</li>
+  <li><span class="highlight">Backwards compatibility:</span> Step elements are mapped by multiple naming patterns to work with existing HTML structure.</li>
+</ul>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="section4">Section 4: Contact Form 7 Changes</h2>
+
+<div class="info-box">
+  <h3>What Needs to Change in Contact Form 7</h3>
+  <p>The quiz now submits fewer fields because situation and finance data is collected in the Typeform instead. Update your CF7 form to match.</p>
+</div>
+
+<h3>4a. New CF7 Form Fields</h3>
+
+<p>Your CF7 form should have these fields (add if missing):</p>
+
+<table>
+  <tr><th>Field Name (in CF7)</th><th>Label</th><th>Type</th><th>Required</th></tr>
+  <tr><td><code>quiz-looking</code></td><td>Looking (Quiz)</td><td>Text (hidden)</td><td>No</td></tr>
+  <tr><td><code>quiz-refi-goal</code></td><td>Refi Goal (Quiz)</td><td>Text (hidden)</td><td>No</td></tr>
+  <tr><td><code>quiz-name</code></td><td>Name (Quiz)</td><td>Text</td><td>Yes</td></tr>
+  <tr><td><code>quiz-email</code></td><td>Email (Quiz)</td><td>Email</td><td>Yes</td></tr>
+  <tr><td><code>quiz-phone</code></td><td>Phone (Quiz)</td><td>Tel</td><td>Yes</td></tr>
+</table>
+
+<h3>4b. CF7 Form Code Snippet</h3>
+
+<p>Add these fields to your CF7 form (Contact Form 7 shortcode):</p>
+
+<pre><code>[hidden quiz-looking ""]
+[hidden quiz-refi-goal ""]
+[text quiz-name id:quiz-name placeholder "Full Name" required]
+[email quiz-email id:quiz-email placeholder "Email" required]
+[tel quiz-phone id:quiz-phone placeholder "Phone Number" required]</code></pre>
+
+<h3>4c. Remove Old Fields (Optional)</h3>
+
+<p>If you have CF7 fields for maritalStatus, isFirstOwner, state, dependants, income, deposit, propertyValue, loanBalance — you can remove them from the quiz form. These fields should still exist in the Typeform for post-conversion data collection.</p>
+
+<h3>4d. Form Action & Redirect</h3>
+
+<p>Keep your existing CF7 settings for:</p>
+<ul>
+  <li>Form action (POST to Typeform or internal endpoint)</li>
+  <li>Success message and redirect URL</li>
+  <li>Mail notifications (adjust if needed to reflect fewer fields)</li>
+  <li>Conditional field logic (if any)</li>
+</ul>
+
+<p>No changes needed unless you want to customize the post-quiz experience.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="section5">Section 5: Quick Reference & Diffs</h2>
+
+<h3>5a. Flow Array Quick Reference</h3>
+
+<p><span class="highlight">IMPLEMENTATION (Option A): Keep Borrowing Calculator for Purchase</span></p>
+<pre><code>const FLOWS = {
+  purchase: [1, 2, 3, 4, 5],        // Select → Situation → Finances → Contact → Borrowing Result
+  refinance: [1, 'refi_2', 4, 'refi_confirmation'],
+  build: [1, 'dead-end-build'],
+  commercial: [1, 'dead-end-commercial'],
+  exploring: [1, 'dead-end-exploring'],
+};</code></pre>
+
+
+<h3>5b. HTML Changes Summary</h3>
+
+<table>
+  <tr><th>Action</th><th>Elements</th><th>Status</th></tr>
+  <tr><td>KEEP</td><td><code>step_1</code></td><td>Initial selection (used by all flows)</td></tr>
+  <tr><td>KEEP</td><td><code>step_2</code>, <code>step_3</code>, <code>step_4</code>, <code>step_5</code></td><td>Purchase flow: Situation → Finances → Contact → Borrowing Result</td></tr>
+  <tr><td>ADD</td><td><code>step_refi_2</code></td><td>Refinance goal radio step</td></tr>
+  <tr><td>ADD</td><td><code>step_refi_confirmation</code></td><td>Refinance completion screen</td></tr>
+  <tr><td>ADD</td><td><code>dead-end-build</code></td><td>Build at-capacity screen</td></tr>
+  <tr><td>ADD</td><td><code>dead-end-commercial</code></td><td>Commercial at-capacity screen</td></tr>
+  <tr><td>ADD</td><td><code>dead-end-exploring</code></td><td>Finance in Five redirect screen</td></tr>
+  <tr><td>NOTE</td><td><code>step_purchase_confirmation</code></td><td>Not used (Purchase uses existing step_5 calculator instead)</td></tr>
+</table>
+
+<h3>5c. JavaScript Key Changes</h3>
+
+<div class="diff">
+  <div class="diff-file">nextStep() function</div>
+  <div class="diff-remove">// OLD: Always increment currentStep</div>
+  <div class="diff-remove">if (currentStep < totalSteps) {</div>
+  <div class="diff-remove">  currentStep++;</div>
+  <div class="diff-remove">}</div>
+
+  <div class="diff-add">// NEW: Branch based on currentFlow</div>
+  <div class="diff-add">if (flowStepIndex === 0) {</div>
+  <div class="diff-add">  currentFlow = answers.looking;</div>
+  <div class="diff-add">}</div>
+  <div class="diff-add">flowStepIndex++;</div>
+  <div class="diff-add">const nextStepId = FLOWS[currentFlow][flowStepIndex];</div>
+  <div class="diff-add">showStep(nextStepId);</div>
+</div>
+
+<div class="diff" style="margin-top: 20px;">
+  <div class="diff-file">updateButton() function</div>
+  <div class="diff-remove">// OLD: All paths have same button text</div>
+  <div class="diff-remove">if (currentStep < totalSteps - 1) {</div>
+  <div class="diff-remove">  mainButton.textContent = 'Continue';</div>
+  <div class="diff-remove">}</div>
+
+  <div class="diff-add">// NEW: Flow-aware button behavior</div>
+  <div class="diff-add">if (isDeadEnd) {</div>
+  <div class="diff-add">  mainButton.classList.add('hidden');</div>
+  <div class="diff-add">} else if (flowStepIndex === flowSteps.length - 1) {</div>
+  <div class="diff-add">  mainButton.textContent = 'Submit';</div>
+  <div class="diff-add">}</div>
+</div>
+
+<div class="diff" style="margin-top: 20px;">
+  <div class="diff-file">Form submission payload</div>
+  <div class="diff-remove">// OLD: All fields submitted</div>
+  <div class="diff-remove">{</div>
+  <div class="diff-remove">  looking, maritalStatus, isFirstOwner, state,</div>
+  <div class="diff-remove">  dependants, income, deposit, maxPropertyValue</div>
+  <div class="diff-remove">}</div>
+
+  <div class="diff-add">// NEW: Only essential fields</div>
+  <div class="diff-add">{</div>
+  <div class="diff-add">  looking, refiGoal (optional), name, email, phone</div>
+  <div class="diff-add">}</div>
+</div>
+
+<h3>5d. Step Element Naming Convention</h3>
+
+<table>
+  <tr><th>Numeric Steps</th><th>String Step IDs</th><th>Purpose</th></tr>
+  <tr><td><code>.step_1</code></td><td>—</td><td>Initial selection (used by all flows)</td></tr>
+  <tr><td><code>.step_2</code></td><td>—</td><td>Situation questions (Purchase flow; feeds client-side calculator)</td></tr>
+  <tr><td><code>.step_3</code></td><td>—</td><td>Finance questions (Purchase flow; feeds client-side calculator)</td></tr>
+  <tr><td><code>.step_4</code></td><td>—</td><td>Contact details (used by Purchase, Refinance)</td></tr>
+  <tr><td><code>.step_5</code></td><td>—</td><td>Borrowing capacity result with calculator (Purchase flow only)</td></tr>
+  <tr><td>—</td><td><code>.step_refi_2</code></td><td>Refinance goal (Refinance flow)</td></tr>
+  <tr><td>—</td><td><code>.step_refi_confirmation</code></td><td>Refinance confirmation (Refinance flow)</td></tr>
+  <tr><td>—</td><td><code>.dead-end-build</code></td><td>Build at-capacity screen (Build flow)</td></tr>
+  <tr><td>—</td><td><code>.dead-end-commercial</code></td><td>Commercial at-capacity screen (Commercial flow)</td></tr>
+  <tr><td>—</td><td><code>.dead-end-exploring</code></td><td>Finance in Five redirect (Exploring flow)</td></tr>
+</table>
+
+<h3>5e. Implementation Checklist</h3>
+
+<pre><code>☐ 1. Add new HTML step divs (Section 1a–1g)
+☐ 2. Add new CSS for dead-end screens and CTA buttons (Section 1g)
+☐ 3. Replace quiz JavaScript with new code (Section 3) — use Option A FLOWS
+☐ 4. Update Contact Form 7 form fields (Section 4a–4b)
+☐ 5. Test each flow path:
+      ☐ Purchase: Step 1 → Situation → Finances → Contact → Borrowing Result
+      ☐ Refinance: Step 1 → Refi Goal → Contact → Confirmation
+      ☐ Build: Step 1 → At Capacity → Redirect to Purchase (or Contact)
+      ☐ Commercial: Step 1 → At Capacity → Redirect to Purchase (or Contact)
+      ☐ Exploring: Step 1 → Finance in Five → Go to Finance in Five or Purchase
+☐ 6. Verify form submissions with correct payload (name, email, phone only)
+☐ 7. Verify situation &amp; finance data used client-side only, NOT submitted to backend
+☐ 8. Check borrowing capacity calculation on step_5 (Purchase flow)
+☐ 9. Check progress indicator updates per flow
+☐ 10. Test back button behavior on each flow
+☐ 11. Verify CTA button redirects work (Finance in Five URL, etc.)</code></pre>
+
+<h3>5f. Testing URLs & Redirects</h3>
+
+<p>Update these URLs in the CTA button onclick handlers to match your site:</p>
+
+<table>
+  <tr><th>CTA Button</th><th>Current Redirect</th><th>Update To</th></tr>
+  <tr><td>"Get in Touch Anyway"</td><td><code>/mortgage-broker-brisbane/</code></td><td>Your contact page URL</td></tr>
+  <tr><td>"Take Me to Finance in Five"</td><td><code>/finance-in-five/</code></td><td>Your Finance in Five page or external link</td></tr>
+  <tr><td>"Book a Call Now"</td><td><code>/book-a-call/</code></td><td>Your calendar booking URL (Calendly, etc.)</td></tr>
+</table>
+
+<hr>
+
+<div class="success-box">
+  <h3>Implementation Complete!</h3>
+  <p>You now have all the code needed to fix the quiz. Start with Section 1 (HTML), then Section 3 (JavaScript), then Section 4 (CF7). Test thoroughly across all 5 user paths.</p>
+  <p><strong>Questions?</strong> Refer back to the <a href="index.html">main specification document</a> for detailed flow diagrams and wireframes.</p>
+</div>
+
+</body>
+</html>
+
+(function(){

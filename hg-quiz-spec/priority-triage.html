@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hunter Galloway — Priority Triage: Lead Flow Risks</title>
+<style>
+  :root {
+    --hg-dark: #1a1a2e;
+    --hg-red: #e74c3c;
+    --hg-gold: #FDB948;
+    --hg-green: #27ae60;
+    --hg-blue: #2E75B6;
+    --hg-gray: #f8f9fa;
+    --hg-border: #e0e0e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: #333; background: #fff; max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: 28px; color: var(--hg-dark); margin-bottom: 8px; }
+  h2 { font-size: 22px; color: var(--hg-dark); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--hg-gold); }
+  h3 { font-size: 18px; color: var(--hg-dark); margin: 32px 0 12px; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: #666; font-size: 16px; margin-bottom: 32px; }
+  .meta { display: flex; gap: 24px; margin-bottom: 40px; font-size: 13px; color: #888; flex-wrap: wrap; }
+  .meta span { background: var(--hg-gray); padding: 4px 12px; border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  th { background: var(--hg-dark); color: #fff; text-align: left; padding: 10px 14px; font-weight: 600; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--hg-border); vertical-align: top; }
+  tr:nth-child(even) { background: var(--hg-gray); }
+  code { font-family: 'Fira Code', 'Consolas', monospace; background: #eee; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+  a { color: var(--hg-blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  hr { border: none; border-top: 1px solid var(--hg-border); margin: 48px 0; }
+  pre { background: #1e1e2e; color: #cdd6f4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 12px 0 20px; line-height: 1.5; }
+  .p0 { background: #fef2f2; border: 1px solid #fecaca; border-left: 6px solid #dc2626; padding: 20px 24px; border-radius: 8px; margin: 24px 0; }
+  .p0 h3 { color: #dc2626; margin: 0 0 8px; font-size: 16px; }
+  .p1 { background: #fffbeb; border: 1px solid #fde68a; border-left: 6px solid #d97706; padding: 20px 24px; border-radius: 8px; margin: 24px 0; }
+  .p1 h3 { color: #d97706; margin: 0 0 8px; font-size: 16px; }
+  .p2 { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 6px solid var(--hg-blue); padding: 20px 24px; border-radius: 8px; margin: 24px 0; }
+  .p2 h3 { color: var(--hg-blue); margin: 0 0 8px; font-size: 16px; }
+  .wont { background: #f3f4f6; border: 1px solid #d1d5db; border-left: 6px solid #9ca3af; padding: 20px 24px; border-radius: 8px; margin: 24px 0; }
+  .wont h3 { color: #6b7280; margin: 0 0 8px; font-size: 16px; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 3px; }
+  .badge-p0 { background: #dc2626; color: #fff; }
+  .badge-p1 { background: #d97706; color: #fff; }
+  .badge-p2 { background: var(--hg-blue); color: #fff; }
+  .badge-wont { background: #9ca3af; color: #fff; }
+  .badge-react { background: #8b5cf6; color: #fff; }
+  .incident { background: #450a0a; color: #fca5a5; padding: 20px 24px; border-radius: 12px; margin: 24px 0; }
+  .incident h3 { color: #fca5a5; margin: 0 0 8px; }
+  .incident strong { color: #fff; }
+  .qa-check { background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 6px solid var(--hg-green); padding: 20px 24px; border-radius: 8px; margin: 24px 0; }
+  .qa-check h3 { color: var(--hg-green); margin: 0 0 8px; font-size: 16px; }
+</style>
+</head>
+<body><script>(function(){var k="hg_audit_auth",p="huntergalloway2026";if(sessionStorage.getItem(k)===p)return;var v=prompt("Access code:");if(v===p){sessionStorage.setItem(k,p)}else{document.write("<div style=\"text-align:center;padding:100px;font-family:sans-serif;color:\#999\">Access denied.</div>");document.close()}})()</script>
+
+<div style="float: right; font-size: 13px; margin-top: -4px;">
+<a href="hubspot-damage-report.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #dc2626; margin-right: 6px;">Damage Report</a>
+<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #555; margin-right: 6px;">System Docs</a>
+<a href="directory.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: var(--hg-dark); margin-right: 6px;">Directory</a>
+<a href="test-coverage.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #27ae60;">Tests (142)</a>
+</div>
+
+<h1>Priority Triage: Lead Flow Risks</h1>
+<p class="subtitle">What's actively losing leads vs. what can wait for the React rebuild.</p>
+
+<div class="meta">
+  <span>Date: 2 April 2026</span>
+  <span>Context: React migration planned</span>
+  <span>Incident: 80+ leads lost, $50k+ revenue impact</span>
+</div>
+
+<!-- INCIDENT CONTEXT -->
+<div class="incident">
+  <h3>Recent Incident — Why This Matters</h3>
+  <p>On 1-2 April 2026, <strong>80+ leads were found lost</strong> due to CRS development work:</p>
+  <p>&bull; <strong>88 leads</strong> had email address stored as first name in HubSpot (field mapping bug)</p>
+  <p>&bull; <strong>Refinance quiz webhook</strong> was never connected — leads not captured at all</p>
+  <p>&bull; <strong>30+ leads lost in March alone</strong>, some dating back to October 2025</p>
+  <p>&bull; Estimated <strong>$50,000+ revenue loss</strong> — leads not contacted within 24 hours go to competitors</p>
+  <p style="margin-top: 12px; color: #fef2f2;">The forms showed success messages to users. The leads just never arrived in HubSpot. <strong>Silent failure is the worst kind of failure.</strong></p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>Priority Definitions</h2>
+
+<table>
+  <tr><th>Priority</th><th>Definition</th><th>Action</th></tr>
+  <tr><td><span class="badge badge-p0">P0</span></td><td><strong>Leads are being lost RIGHT NOW.</strong> Forms appear to work but data doesn't reach HubSpot, or arrives corrupted. Every day this stays broken = lost revenue.</td><td>Fix immediately on current WordPress site. Cannot wait for React.</td></tr>
+  <tr><td><span class="badge badge-p1">P1</span></td><td><strong>Leads arrive but with missing/wrong context.</strong> The lead exists in HubSpot but the team can't tell what they want, which page they came from, or how to route them. Requires manual qualification on every call.</td><td>Fix on WordPress if quick. Otherwise, ensure React build gets it right from day 1.</td></tr>
+  <tr><td><span class="badge badge-p2">P2</span></td><td><strong>UX/conversion issues.</strong> The quiz shows wrong questions, the flow is confusing, or the calculator breaks. Leads still arrive, but conversion rate suffers.</td><td>Fix in React rebuild. Don't waste time on WordPress.</td></tr>
+  <tr><td><span class="badge badge-wont">Won't Fix (WP)</span></td><td><strong>WordPress-specific issues.</strong> DOM structure, inline JS, CSS quirks. These go away entirely with React.</td><td>Document for React. Ignore on WordPress.</td></tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="p0">P0 — Leads Being Lost (Fix Now)</h2>
+
+<div class="p0">
+  <h3>P0-1: Verify ALL form submissions reach HubSpot after CRS changes</h3>
+  <p><strong>What happened:</strong> CRS dev work broke field mappings (email as first name) and left the refinance webhook disconnected. 80+ leads silently lost.</p>
+  <p><strong>Risk:</strong> Other forms may have the same issue. We haven't verified every form end-to-end since the CRS changes.</p>
+  <p><strong>Action:</strong> Run dry-run E2E tests on every lead capture form. Submit test data → verify HubSpot contact appears → verify field mapping is correct (name is name, email is email, phone is phone).</p>
+  <p><strong>Test:</strong> <code>npx playwright test --grep @dry-run</code> (existing tests for F-01, F-02). Need to add dry-runs for F-04, F-07, F-09.</p>
+  <p><strong>Acceptance:</strong> Every form produces a correctly-mapped HubSpot contact within 5 minutes of submission.</p>
+</div>
+
+<div class="p0">
+  <h3>P0-2: Refinance quiz on /lower-your-rate/ — quiz data silently discarded</h3>
+  <p><strong>What:</strong> CF7 #14462 captures name/email/phone but all 5 quiz steps (interest rate, loan amount, term, priority) are thrown away. 12+ "empty" submissions in HubSpot.</p>
+  <p><strong>Revenue impact:</strong> These leads arrive with zero context. Broker has no idea what rate they're on or how much they owe — has to ask everything from scratch on the call, reducing close rate.</p>
+  <p><strong>Fix:</strong> Add hidden fields to CF7 #14462 for quiz answers. JS populates them before submit. See <a href="lower-your-rate-form.html">full fix spec</a>.</p>
+  <p><strong>Acceptance:</strong> Submit refinance quiz → HubSpot contact has interest rate, loan amount, term, and priority fields populated.</p>
+</div>
+
+<div class="p0">
+  <h3>P0-3: Homepage quiz submitToContactForm7() sends refinance fields as dashes</h3>
+  <p><strong>What:</strong> The homepage quiz already sends <code>mortgage-rate</code>, <code>still-owe</code>, <code>loan-term</code>, <code>important</code> to CF7 #72896 — but hardcoded to <code>"-"</code>. Even when a user goes through the purchase flow and these fields could have values, they're dashes.</p>
+  <p><strong>Fix:</strong> Populate these fields from the <code>answers</code> object instead of hardcoding dashes.</p>
+  <p><strong>Acceptance:</strong> Submit homepage quiz → HubSpot contact has actual quiz answers, not dashes.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="p1">P1 — Leads Arrive But Missing Context (Fix Soon)</h2>
+
+<div class="p1">
+  <h3>P1-1: CF7 #14462 on 24+ landing pages — no source URL or transaction type</h3>
+  <p><strong>What:</strong> The primary inline CTA form (3x per landing page, 72+ instances) captures name/email/phone with zero context. A lead from <code>/first-home-buyer-loans/</code> looks identical to one from <code>/home-loans-for-doctors/</code> in HubSpot.</p>
+  <p><strong>Impact:</strong> 4,011 contacts arrived via this form with no transaction type. Sales team must manually discover what each lead wants.</p>
+  <p><strong>Fix:</strong> Add <code>source_url</code> and <code>transaction_type</code> hidden fields (same pattern as CF7 #11832 which already does this). See <a href="cf7-14462-context-loss.html">full fix spec</a>.</p>
+  <p><strong>React note:</strong> Must be included in React rebuild. Every form must capture source page and lead intent.</p>
+</div>
+
+<div class="p1">
+  <h3>P1-2: CF7 #14422 and #14296 — same context loss</h3>
+  <p><strong>What:</strong> Two other simple forms on every landing page (1x each) also capture only name/email/phone with no context.</p>
+  <p><strong>Fix:</strong> Same as P1-1 — add hidden fields for source_url and transaction_type.</p>
+</div>
+
+<div class="wont">
+  <h3>P1-3: Gravity Forms #9 and #10 — Resolved (not CRS)</h3>
+  <p><strong>Investigated 3 Apr 2026:</strong> Both forms are 100% spam. GF #10 (LVR): 91 spam entries. GF #9 (LMI, mislabelled "YTD"): 249 spam entries. Zero real leads. Not connected to HubSpot. Predates CRS. No leads were lost.</p>
+  <p><strong>Action:</strong> Disable both. Replace with popup quiz trigger (#11832) if desired.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="p2">P2 — UX/Conversion Issues (Fix in React)</h2>
+
+<div class="p2">
+  <h3>P2-1: Homepage quiz has no branching — all paths identical</h3>
+  <p><strong>What:</strong> <code>nextStep()</code> does <code>currentStep++</code> with no branching. Refinance users asked about deposit. Commercial users go through full quiz. Exploring users forced through borrowing calculator.</p>
+  <p><strong>Impact:</strong> Leads still arrive, but wrong questions reduce trust and conversion rate.</p>
+  <p><strong>React:</strong> Build with proper branching from day 1. See <a href="index.html">quiz flow spec</a> for all 5 paths.</p>
+</div>
+
+<div class="p2">
+  <h3>P2-2: Equity calculator hero banner is broken</h3>
+  <p><strong>What:</strong> Orphaned input with no name/id, "Calculate" button reloads the page, only 1 input where 2 are needed. Working calculator is below the fold.</p>
+  <p><strong>Impact:</strong> Users see a fake calculator that does nothing. Confusing but doesn't lose leads.</p>
+  <p><strong>React:</strong> Build one working calculator, not two.</p>
+</div>
+
+<div class="p2">
+  <h3>P2-3: No analytics on quiz interactions</h3>
+  <p><strong>What:</strong> Zero GTM/GA/Pixel events on quiz steps. No way to measure drop-off rates, which paths users take, or conversion per flow.</p>
+  <p><strong>React:</strong> Add step-level analytics events from day 1.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="wont">Won't Fix on WordPress (React Handles It)</h2>
+
+<div class="wont">
+  <h3>WordPress-specific technical debt — dies with the migration</h3>
+  <table>
+    <tr><th>Issue</th><th>Why It Dies With WP</th></tr>
+    <tr><td><code>disableMainButton()</code> hardcodes step numbers</td><td>New React quiz will use state management, not step number checks</td></tr>
+    <tr><td><code>totalSteps = 5</code> hardcoded</td><td>React component will derive step count from flow config</td></tr>
+    <tr><td><code>stepElements</code> captured once at page load</td><td>React re-renders components, no static NodeList</td></tr>
+    <tr><td>Progress indicator <code>/ 5</code> in HTML</td><td>React renders dynamic progress from state</td></tr>
+    <tr><td>Step heights jump without animation</td><td>React + CSS transitions handle this naturally</td></tr>
+    <tr><td>Steps use <code>display: none</code> toggling</td><td>React conditionally renders steps, no DOM hiding</td></tr>
+    <tr><td>Pseudocode uses string IDs vs DOM has <code>.step_1</code></td><td>React uses component composition, not CSS class querying</td></tr>
+    <tr><td><code>answers</code> vs <code>formAnswers</code> split</td><td>React uses single state object for all form data</td></tr>
+    <tr><td>Event listeners bound by element ID</td><td>React uses controlled components with onChange handlers</td></tr>
+  </table>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="react">React Rebuild — Must-Have Checklist</h2>
+
+<p>Every item below is a lesson from what went wrong on WordPress. The React rebuild must get these right or we repeat the same $50k mistake.</p>
+
+<div class="qa-check">
+  <h3>React Launch QA Checklist (Non-Negotiable)</h3>
+  <table>
+    <tr><th>#</th><th>Check</th><th>How to Verify</th></tr>
+    <tr><td>1</td><td><strong>Every form submits to HubSpot correctly</strong></td><td>Dry-run test: submit → wait 5 min → search HubSpot by email → verify contact exists with correct fields</td></tr>
+    <tr><td>2</td><td><strong>First name is first name, not email</strong></td><td>Check HubSpot contact — firstname field contains a name, not an email address</td></tr>
+    <tr><td>3</td><td><strong>Transaction type is captured</strong></td><td>Check HubSpot contact — transaction_type field is populated (not blank, not "-")</td></tr>
+    <tr><td>4</td><td><strong>Source URL is captured</strong></td><td>Check HubSpot contact — source_url shows which page the lead came from</td></tr>
+    <tr><td>5</td><td><strong>Phone number is valid AU format</strong></td><td>Check HubSpot contact — phone is formatted as 04XX XXX XXX or +61</td></tr>
+    <tr><td>6</td><td><strong>Quiz answers are not lost</strong></td><td>For refinance: interest rate, loan amount, term, priority in HubSpot. For purchase: income, deposit in HubSpot (or at least not dashes).</td></tr>
+    <tr><td>7</td><td><strong>Webhook/Zapier connections work</strong></td><td>If any form uses webhooks, verify the endpoint receives data (check Zapier task history)</td></tr>
+    <tr><td>8</td><td><strong>Broker notification fires</strong></td><td>Submit lead → broker receives SMS/email notification within 5 minutes (HubSpot WF-008)</td></tr>
+    <tr><td>9</td><td><strong>Contact owner is assigned</strong></td><td>Check HubSpot contact — contact_owner is not blank (HubSpot WF-002/003)</td></tr>
+    <tr><td>10</td><td><strong>Error state is visible</strong></td><td>Disconnect HubSpot tracking → submit form → user sees an error, not a fake success message</td></tr>
+  </table>
+</div>
+
+<div class="p0" style="background: #fef2f2;">
+  <h3>The #1 Rule for React Launch</h3>
+  <p style="font-size: 18px; font-weight: 700; color: #dc2626;">Never show a success message unless you've confirmed the data reached HubSpot.</p>
+  <p>The WordPress site shows "Thank you! We'll be in touch" the moment CF7 accepts the POST — even if HubSpot tracking is broken and the lead is lost. The React site must verify the submission reached HubSpot (or at minimum, a backend endpoint that guarantees delivery) before showing success.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>Summary Table</h2>
+
+<table>
+  <tr><th>ID</th><th>Issue</th><th>Priority</th><th>Fix Where?</th><th>Leads Lost?</th></tr>
+  <tr><td>P0-1</td><td>Verify all forms post-CRS changes</td><td><span class="badge badge-p0">P0</span></td><td>WordPress NOW</td><td>Possibly — unverified</td></tr>
+  <tr><td>P0-2</td><td>/lower-your-rate/ quiz data discarded</td><td><span class="badge badge-p0">P0</span></td><td>WordPress NOW</td><td>Data lost, leads thin</td></tr>
+  <tr><td>P0-3</td><td>Homepage quiz sends dashes for refi fields</td><td><span class="badge badge-p0">P0</span></td><td>WordPress NOW</td><td>Data lost on every submit</td></tr>
+  <tr><td>P1-1</td><td>#14462 no source_url/transaction_type (72+ forms)</td><td><span class="badge badge-p1">P1</span></td><td>WordPress + React</td><td>No — but no context</td></tr>
+  <tr><td>P1-2</td><td>#14422/#14296 same context loss</td><td><span class="badge badge-p1">P1</span></td><td>WordPress + React</td><td>No — but no context</td></tr>
+  <tr><td>P1-3</td><td>Gravity Forms #9/#10 — resolved, 100% spam, pre-CRS</td><td><span class="badge badge-wont">Resolved</span></td><td>Disable when convenient</td><td>No — zero real leads ever</td></tr>
+  <tr><td>P2-1</td><td>Quiz branching (all paths identical)</td><td><span class="badge badge-p2">P2</span></td><td><span class="badge badge-react">React</span></td><td>No — UX issue</td></tr>
+  <tr><td>P2-2</td><td>Equity calculator banner broken</td><td><span class="badge badge-p2">P2</span></td><td><span class="badge badge-react">React</span></td><td>No — UX issue</td></tr>
+  <tr><td>P2-3</td><td>No quiz analytics</td><td><span class="badge badge-p2">P2</span></td><td><span class="badge badge-react">React</span></td><td>No — visibility issue</td></tr>
+  <tr><td>—</td><td>9 WordPress JS edge cases (#1-#12)</td><td><span class="badge badge-wont">Won't Fix</span></td><td><span class="badge badge-react">React</span></td><td>No — dies with WP</td></tr>
+</table>
+
+<hr>
+
+<div style="background: var(--hg-gray); border-radius: 12px; padding: 24px; margin-top: 48px;">
+  <h3 style="margin-top: 0;">Related Documents</h3>
+  <table>
+    <tr><th>Document</th><th>What It Covers</th></tr>
+    <tr><td><a href="directory.html">Forms & Calculators Directory</a></td><td>Full inventory with status and bug flags</td></tr>
+    <tr><td><a href="index.html">Quiz Flow Specification</a></td><td>Branching fix spec with all 5 paths, wireframes, pseudocode</td></tr>
+    <tr><td><a href="cf7-14462-context-loss.html">CF7 #14462 Context Loss</a></td><td>72+ forms across 24+ pages with no source/transaction data</td></tr>
+    <tr><td><a href="lower-your-rate-form.html">Refinance Quiz Data Loss</a></td><td>/lower-your-rate/ quiz answers silently discarded</td></tr>
+    <tr><td><a href="test-coverage.html">Test Coverage (142 tests)</a></td><td>Playwright test mapping for every form and calculator</td></tr>
+    <tr><td><a href="index-uk.html">Quiz Spec (Ukrainian)</a></td><td>Ukrainian translation for dev team</td></tr>
+  </table>
+</div>
+
+</body>
+</html>
+
+(function(){

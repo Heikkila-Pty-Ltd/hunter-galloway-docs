@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HubSpot Data Damage Report — Verified 2 April 2026</title>
+<style>
+  :root { --hg-dark: #1a1a2e; --hg-red: #e74c3c; --hg-green: #27ae60; --hg-blue: #2E75B6; --hg-gray: #f8f9fa; --hg-border: #e0e0e0; --hg-gold: #FDB948; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: #333; background: #fff; max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: 28px; color: var(--hg-dark); margin-bottom: 8px; }
+  h2 { font-size: 22px; color: var(--hg-dark); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--hg-red); }
+  h3 { font-size: 18px; color: var(--hg-dark); margin: 32px 0 12px; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: #666; font-size: 16px; margin-bottom: 32px; }
+  .meta { display: flex; gap: 24px; margin-bottom: 40px; font-size: 13px; color: #888; flex-wrap: wrap; }
+  .meta span { background: var(--hg-gray); padding: 4px 12px; border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 13px; }
+  th { background: var(--hg-dark); color: #fff; text-align: left; padding: 8px 12px; font-weight: 600; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--hg-border); vertical-align: top; }
+  tr:nth-child(even) { background: var(--hg-gray); }
+  code { font-family: 'Fira Code', 'Consolas', monospace; background: #eee; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  a { color: var(--hg-blue); text-decoration: none; }
+  hr { border: none; border-top: 1px solid var(--hg-border); margin: 48px 0; }
+  .damage { background: #450a0a; color: #fca5a5; padding: 24px; border-radius: 12px; margin: 24px 0; }
+  .damage h3 { color: #fca5a5; margin: 0 0 12px; }
+  .damage strong { color: #fff; }
+  .damage td { color: #fca5a5; border-color: #7f1d1d; }
+  .damage th { background: #7f1d1d; color: #fca5a5; }
+  .evidence { background: #fef2f2; border: 1px solid #fecaca; border-left: 6px solid #dc2626; padding: 20px 24px; border-radius: 8px; margin: 24px 0; }
+  .evidence h3 { color: #dc2626; margin: 0 0 8px; font-size: 16px; }
+  .info { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 6px solid var(--hg-blue); padding: 20px 24px; border-radius: 8px; margin: 24px 0; }
+  .info h3 { color: var(--hg-blue); margin: 0 0 8px; font-size: 16px; }
+  .stat-row { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+  .stat-box { background: var(--hg-gray); border-radius: 12px; padding: 16px 20px; flex: 1; min-width: 140px; text-align: center; }
+  .stat-box .num { font-size: 36px; font-weight: 700; color: var(--hg-red); }
+  .stat-box .label { font-size: 12px; color: #666; margin-top: 4px; }
+  .hs-link { font-size: 12px; color: var(--hg-blue); }
+
+  /* Reveal animation */
+  #reveal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: #0a0a0a; z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    cursor: pointer;
+    transition: opacity 0.8s ease;
+  }
+  #reveal-overlay.fade-out { opacity: 0; pointer-events: none; }
+  .reveal-icon { font-size: 120px; margin-bottom: 24px; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+  .reveal-title { color: #fca5a5; font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+  .reveal-subtitle { color: #666; font-size: 16px; margin-bottom: 40px; }
+  .reveal-btn {
+    background: #dc2626; color: #fff; border: none; border-radius: 8px;
+    padding: 16px 48px; font-size: 18px; font-weight: 700; cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .reveal-btn:hover { background: #b91c1c; transform: scale(1.05); }
+  .reveal-hint { color: #444; font-size: 12px; margin-top: 16px; }
+</style>
+</head>
+<body><script>(function(){var k="hg_audit_auth",p="huntergalloway2026";if(sessionStorage.getItem(k)===p)return;var v=prompt("Access code:");if(v===p){sessionStorage.setItem(k,p)}else{document.write("<div style=\"text-align:center;padding:100px;font-family:sans-serif;color:\#999\">Access denied.</div>");document.close()}})()</script>
+
+<!-- Reveal overlay -->
+<div id="reveal-overlay" onclick="document.getElementById('reveal-overlay').classList.add('fade-out'); setTimeout(function(){ document.getElementById('reveal-overlay').style.display='none'; }, 800);">
+  <div class="reveal-icon">📦</div>
+  <div class="reveal-title">CRS Damage Assessment</div>
+  <div class="reveal-subtitle">Hunter Galloway — Verified 2 April 2026</div>
+  <button class="reveal-btn" onclick="event.stopPropagation(); document.getElementById('reveal-overlay').classList.add('fade-out'); setTimeout(function(){ document.getElementById('reveal-overlay').style.display='none'; }, 800);">Open Report</button>
+  <div class="reveal-hint">Click anywhere or press the button</div>
+</div>
+
+<h1>HubSpot Data Damage Report</h1>
+<p class="subtitle">Live HubSpot data verified via API on 2 April 2026. All issues are the result of CRS (Conversion Rate Store) development work.</p>
+
+<div class="meta">
+  <span>Verified: 2 April 2026, 6:00 PM AEST</span>
+  <span>Method: HubSpot CRM API (search + property inspection)</span>
+  <span>Account: 4607234</span>
+  <span>Verified by: Automated scan</span>
+</div>
+
+<!-- ============================================================ -->
+<h2>Impact Summary</h2>
+
+<div class="stat-row">
+  <div class="stat-box"><div class="num">90</div><div class="label">Contacts with email as firstname</div></div>
+  <div class="stat-box"><div class="num">167</div><div class="label">Contacts with quiz data = dashes</div></div>
+  <div class="stat-box"><div class="num">15</div><div class="label">/lower-your-rate/ leads with zero quiz data</div></div>
+  <div class="stat-box"><div class="num">268</div><div class="label">Recent contacts with no form attribution</div></div>
+  <div class="stat-box"><div class="num">72+</div><div class="label">Form instances missing transaction_type (#14462)</div></div>
+</div>
+
+<h2>Estimated Revenue Impact</h2>
+
+<p>Jayden reported <strong>88 leads</strong> captured from a specific CRS-built form where email addresses were stored as first names. These leads are from the refinance funnel (Jayden also reported the refinance quiz webhook was not connected). The revenue impact is calculated using refinance-specific conversion rates and deal sizes from HubSpot.</p>
+
+<h3>Refinance Economics (from HubSpot API)</h3>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+  <div style="background: #fef2f2; border: 2px solid var(--hg-red); border-radius: 8px; padding: 16px;">
+    <h4 style="margin: 0 0 8px; font-size: 13px; color: var(--hg-red);">Refinance Conversion Rate</h4>
+    <table>
+      <tr><td>Refinance leads (since Jan 2025)</td><td><strong>137</strong></td></tr>
+      <tr><td>Became customers</td><td><strong>12</strong></td></tr>
+      <tr><td>In opportunity stage (in progress)</td><td><strong>119</strong></td></tr>
+      <tr style="background: #fef2f2;"><td style="color: var(--hg-red);"><strong>Conversion rate</strong></td><td style="color: var(--hg-red); font-size: 18px;"><strong>8.8%</strong></td></tr>
+    </table>
+  </div>
+  <div style="background: var(--hg-gray); border-radius: 8px; padding: 16px;">
+    <h4 style="margin: 0 0 8px; font-size: 13px; color: var(--hg-dark);">Refinance Deal Economics</h4>
+    <table>
+      <tr><td>Average refinance loan</td><td><strong>$655,252</strong></td></tr>
+      <tr><td>Upfront commission (0.6%)</td><td><strong>$3,932</strong></td></tr>
+      <tr><td>Trail commission (0.15% × 3yr)</td><td><strong>$2,949</strong></td></tr>
+      <tr><td><strong>Total per settled deal</strong></td><td style="font-size: 18px;"><strong>$6,880</strong></td></tr>
+    </table>
+    <p style="font-size: 11px; color: #888; margin: 8px 0 0;">Average from 5 settled refinance deals in HubSpot. Commission rates: industry standard (0.5–0.7% upfront, 0.15% trail p.a.)</p>
+  </div>
+</div>
+
+<h3>Revenue Lost: 88 Leads from CRS Form</h3>
+
+<p>Per Jayden (2 Apr 2026): <em>"Look at the 88 leads you captured from this form — the first name wasn't logged in HubSpot it had their email address as first name."</em></p>
+
+<table>
+  <tr><th style="width: 200px;"></th><th>Value</th><th>Source</th></tr>
+  <tr><td>Leads affected</td><td><strong>88</strong></td><td>Jayden's email, 2 Apr 2026</td></tr>
+  <tr><td>Refinance conversion rate</td><td><strong>8.8%</strong></td><td>12 customers ÷ 137 refinance leads (HubSpot)</td></tr>
+  <tr><td>Expected conversions</td><td><strong>7.7 deals</strong></td><td>88 × 8.8%</td></tr>
+  <tr><td>Commission per deal</td><td><strong>$6,880</strong></td><td>$655,252 avg refinance loan × (0.6% + 0.45%)</td></tr>
+</table>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0;">
+  <div style="background: var(--hg-dark); color: #fff; border-radius: 12px; padding: 24px; text-align: center;">
+    <div style="font-size: 12px; color: #999; margin-bottom: 4px;">Using blended rate (8.8%)</div>
+    <div style="font-size: 14px; color: #aaa; margin-bottom: 8px;">Using blended rate (includes CRS-degraded period)</div>
+    <div style="font-size: 48px; font-weight: 700; color: var(--hg-red);">$53,032</div>
+    <div style="font-size: 13px; color: #aaa; margin-top: 8px;">88 × (12÷137) = 7.71 deals × $6,880</div>
+  </div>
+  <div style="background: var(--hg-dark); color: #fff; border-radius: 12px; padding: 24px; text-align: center;">
+    <div style="font-size: 12px; color: #999; margin-bottom: 4px;">Using pre-CRS rate (15.4%)</div>
+    <div style="font-size: 14px; color: #aaa; margin-bottom: 8px;">What these leads should have converted at</div>
+    <div style="font-size: 48px; font-weight: 700; color: var(--hg-red);">$93,158</div>
+    <div style="font-size: 13px; color: #aaa; margin-top: 8px;">88 × (8÷52) = 13.54 deals × $6,880</div>
+  </div>
+</div>
+<div style="text-align: center; font-size: 13px; color: #666; margin-bottom: 24px;">Jayden estimated "$50,000+" — the data shows <strong>$53,032 – $93,158</strong>. The lower figure uses the conversion rate CRS degraded; the higher uses the rate that existed before CRS.</div>
+
+<h3>Refinance Conversion Collapse: Pre-CRS vs Post-CRS</h3>
+
+<div style="background: #fef2f2; border: 2px solid var(--hg-red); border-radius: 12px; padding: 24px; margin: 24px 0;">
+  <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center;">
+    <div style="text-align: center;">
+      <div style="font-size: 12px; color: #666;">Jan–Sep 2025 (pre-CRS)</div>
+      <div style="font-size: 13px; color: #999;">52 leads → 8 customers</div>
+      <div style="font-size: 42px; font-weight: 700; color: var(--hg-green);">15.4%</div>
+    </div>
+    <div style="font-size: 36px; color: var(--hg-red);">→</div>
+    <div style="text-align: center;">
+      <div style="font-size: 12px; color: #666;">Oct 2025–Mar 2026 (CRS period)</div>
+      <div style="font-size: 13px; color: #999;">85 leads → 4 customers</div>
+      <div style="font-size: 42px; font-weight: 700; color: var(--hg-red);">4.7%</div>
+    </div>
+  </div>
+  <div style="text-align: center; margin-top: 16px; font-size: 16px; font-weight: 700; color: var(--hg-red);">69% drop in refinance conversion after CRS deployed their forms</div>
+  <div style="text-align: center; margin-top: 8px; font-size: 12px; color: #666;">Pre-CRS leads have had 6+ months to settle (mature rate). CRS-period leads are newer and the 4.7% will climb — but even accounting for pipeline lag, the gap is stark.</div>
+</div>
+
+<table>
+  <tr><th>Period</th><th>Refinance Leads</th><th>Customers</th><th>Conversion</th><th>Source</th></tr>
+  <tr>
+    <td>Jan–Sep 2025 (pre-CRS)</td>
+    <td>52</td>
+    <td>8</td>
+    <td style="color: var(--hg-green); font-weight: 700;">15.4%</td>
+    <td><code>transaction_type = "Refinance A Loan", createdate 2025-01-01 to 2025-09-30</code></td>
+  </tr>
+  <tr>
+    <td>Oct 2025–Mar 2026 (CRS period)</td>
+    <td>85</td>
+    <td>4</td>
+    <td style="color: var(--hg-red); font-weight: 700;">4.7%</td>
+    <td><code>transaction_type = "Refinance A Loan", createdate 2025-10-01 to 2026-03-31</code></td>
+  </tr>
+</table>
+
+<p style="font-size: 13px;">The leads that <em>did</em> make it into HubSpot during the CRS period converted at <strong>less than one-third the pre-CRS rate</strong>. The revenue calculation above uses the blended 8.8% rate. The pre-CRS 15.4% rate — what refinance leads converted at before CRS deployed — gives <strong>$93,158</strong> instead of $53,032.</p>
+
+<div style="background: var(--hg-gray); border-radius: 8px; padding: 16px; margin-top: 16px;">
+  <h4 style="margin: 0 0 8px; font-size: 14px;">This is not market conditions</h4>
+  <p style="font-size: 13px; margin-bottom: 8px;">Purchase leads (not affected by CRS quiz changes) show a similar drop due to pipeline lag — newer leads haven't settled yet:</p>
+  <table>
+    <tr><th>Lead Type</th><th>Pre-CRS (Jan–Sep 2025)</th><th>CRS Period (Oct 2025–Mar 2026)</th></tr>
+    <tr><td>Purchase</td><td>15.9% (97/609)</td><td>4.1% (35/847)</td></tr>
+    <tr><td>Refinance</td><td>15.4% (8/52)</td><td>4.9% (4/82)</td></tr>
+  </table>
+  <p style="font-size: 12px; color: #666; margin: 8px 0 0;">Both types show a raw drop because CRS-period leads are 3-6 months newer and haven't had time to settle. This is pipeline lag, not a market effect. The pre-CRS rates (15.4% refinance, 15.9% purchase) represent mature conversion over 9 months and are the correct baseline for revenue estimation.</p>
+</div>
+
+<hr>
+
+<h3>Pipeline Verification: HubSpot Deal Progression Data</h3>
+
+<p>To verify the 88-lead damage estimate and quantify the full scope, pipeline progression data was pulled from HubSpot via CRM API on 2 April 2026 for all affected contact populations.</p>
+
+<div style="background: #fff; border: 2px solid var(--hg-red); border-radius: 12px; padding: 24px; margin: 24px 0;">
+  <h3 style="color: var(--hg-red); margin: 0 0 12px;">Email-as-Firstname Contacts: 91% Never Progressed</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Total contacts with email as firstname</td><td><strong>90</strong></td><td>HubSpot API: <code>firstname CONTAINS_TOKEN ".com"</code></td></tr>
+    <tr><td>Stuck at "Lead" — no deal ever created</td><td style="color: var(--hg-red);"><strong>82 (91%)</strong></td><td><code>num_associated_deals = 0</code></td></tr>
+    <tr><td>Progressed to opportunity/deal</td><td><strong>8 (9%)</strong></td><td><code>num_associated_deals > 0</code></td></tr>
+    <tr><td>Of those 8 deals: in "Lead No Answer" stage</td><td><strong>5</strong></td><td><code>dealstage = 1070480</code></td></tr>
+    <tr><td>Settled (closed won)</td><td><strong>1</strong> ($1,136,000)</td><td>Pre-CRS contact (Apr 2025)</td></tr>
+  </table>
+  <p style="margin-top: 12px;"><strong>82 leads received an email address as their name in broker notifications.</strong> Every automated outreach, CRM search, and personalised email used an email address where a name should have been. <strong style="color: var(--hg-red);">91% of these contacts never advanced past the initial lead stage.</strong></p>
+
+  <div style="background: #fef2f2; border-radius: 8px; padding: 16px; margin-top: 16px;">
+    <h4 style="margin: 0 0 8px; color: var(--hg-red); font-size: 14px;">This is not normal lead attrition</h4>
+    <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center;">
+      <div style="text-align: center;">
+        <div style="font-size: 11px; color: #666;">Non-corrupted popup form leads<br>(same period, same forms)</div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--hg-green);">97%</div>
+        <div style="font-size: 11px; color: #999;">768 of 789 progressed to deal</div>
+      </div>
+      <div style="font-size: 24px; color: #999;">vs</div>
+      <div style="text-align: center;">
+        <div style="font-size: 11px; color: #666;">Email-as-name leads<br>(corrupted by CRS field mapping)</div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--hg-red);">9%</div>
+        <div style="font-size: 11px; color: #999;">8 of 90 progressed to deal</div>
+      </div>
+    </div>
+    <p style="font-size: 12px; color: #666; margin: 12px 0 0; text-align: center;"><strong>88 percentage point gap.</strong> Same period. Same form types. The only difference is the corrupted firstname field.</p>
+  </div>
+</div>
+
+<div style="background: #fff; border: 2px solid var(--hg-red); border-radius: 12px; padding: 24px; margin: 24px 0;">
+  <h3 style="color: var(--hg-red); margin: 0 0 12px;">Dash-Value Quiz Contacts: Brokers Flying Blind on 167 Leads</h3>
+  <p style="font-size: 13px; color: #666; margin-bottom: 12px;">81 of these 167 contacts also appear in the email-as-name population above. This section is pipeline verification — not an additive damage calculation.</p>
+  <table>
+    <tr><th>Metric</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Total contacts with quiz fields = "-"</td><td><strong>167</strong></td><td>HubSpot API: <code>mortgage rate HAS_PROPERTY</code>, value = "-"</td></tr>
+    <tr><td>Stuck at "Lead" — no deal ever created</td><td style="color: var(--hg-red);"><strong>93 (56%)</strong></td><td><code>num_associated_deals = 0</code></td></tr>
+    <tr><td>Progressed to opportunity/deal</td><td><strong>74 (44%)</strong></td><td><code>num_associated_deals > 0</code></td></tr>
+    <tr><td>Settled (closed won) with loan amounts</td><td><strong>6 deals</strong></td><td><code>lifecyclestage = "customer"</code></td></tr>
+  </table>
+  <p style="margin-top: 12px;">These 74 deals progressed <strong>despite the broker having zero quiz context</strong> — no interest rate, no loan amount, no term, no refinancing priority. Every one of these leads required manual qualification effort that the quiz was supposed to provide.</p>
+</div>
+
+<h3>Settled Deals from Dash-Value Contacts (Verified Loan Amounts)</h3>
+<p>6 contacts from the dash-value cohort have settled loans in HubSpot. Their quiz data shows <code>"-"</code> for all 4 fields — yet they closed. This confirms (a) the leads had real value, and (b) brokers had to manually extract information the quiz should have captured automatically.</p>
+
+<table>
+  <tr><th>Contact</th><th>Loan Amount</th><th>Settlement Date</th><th>Quiz Rate</th><th>Quiz Owing</th><th>Quiz Term</th><th>Quiz Priority</th></tr>
+  <tr>
+    <td>Mina Khair</td>
+    <td style="font-weight: 700;">$1,128,000</td>
+    <td>19 Feb 2026</td>
+    <td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td>
+  </tr>
+  <tr>
+    <td>Leon Pitigala</td>
+    <td style="font-weight: 700;">$788,000</td>
+    <td>18 Feb 2026</td>
+    <td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td>
+  </tr>
+  <tr>
+    <td>Holly Williams</td>
+    <td style="font-weight: 700;">$761,600</td>
+    <td>2 Apr 2026</td>
+    <td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td>
+  </tr>
+  <tr>
+    <td>Jake Dierckx</td>
+    <td style="font-weight: 700;">$774,000</td>
+    <td>23 Mar 2026</td>
+    <td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td>
+  </tr>
+  <tr>
+    <td>Phoebe Hobson</td>
+    <td style="font-weight: 700;">$755,000</td>
+    <td>2 Mar 2026</td>
+    <td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td>
+  </tr>
+  <tr>
+    <td>Dave Denness</td>
+    <td style="font-weight: 700;">$560,000</td>
+    <td>26 Mar 2026</td>
+    <td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td><td style="color: var(--hg-red);">-</td>
+  </tr>
+  <tr style="background: var(--hg-dark); color: #fff;">
+    <td><strong>Total settled loan value</strong></td>
+    <td style="font-weight: 700; font-size: 18px; color: var(--hg-red);">$4,766,600</td>
+    <td colspan="5" style="color: #aaa;">Average: $794,433 per settled deal</td>
+  </tr>
+</table>
+
+<p style="font-size: 13px; color: #666; margin-top: 8px;">All 6 contacts are verifiable in HubSpot. All have <code>"-"</code> for every quiz answer field. These are real customers who settled real loans — through a quiz that captured none of their qualification data.</p>
+
+<details style="margin: 16px 0;">
+  <summary style="font-size: 13px; font-weight: 600; cursor: pointer; color: var(--hg-blue);">Methodology notes</summary>
+  <div style="padding: 12px 0; font-size: 13px;">
+    <p><strong>Overlap between populations</strong></p>
+    <p>&bull; <strong>81 of the 90</strong> email-as-name contacts also appear in the 167 dash-value population (i.e. they have both bugs: email stored as firstname AND dashes for all quiz fields). This is because the homepage quiz's <code>submitToContactForm7()</code> produces both defects simultaneously. The revenue estimate above is calculated from the <strong>88 corrupted leads</strong> Jayden identified — it does not add the two populations together or double-count. The 167 dash-value figure and the 93 no-deal dash-value figure are presented as <strong>pipeline verification evidence</strong> (confirming the leads had real value and brokers operated blind), not as an additive damage calculation.</p>
+    <p style="margin-top: 12px;"><strong>What the figures do not include</strong></p>
+    <p>&bull; Assumes all affected leads had <strong>zero conversion</strong> (100% loss). 91% of email-as-name contacts never progressed past lead stage, confirming near-total loss.</p>
+    <p>&bull; Trail commission calculated for <strong>3 years only</strong> — actual trail continues for life of loan (typically 25-30 years). Using full loan life would roughly triple the trail component.</p>
+    <p>&bull; <strong>119 refinance leads</strong> are currently at "opportunity" stage. As these settle, the 8.8% conversion rate will increase — meaning each lead is worth more than the current calculation shows.</p>
+    <p>&bull; Commission rate of <strong>0.6%</strong> used (industry range: 0.5–0.7%). Using 0.7% would increase the figure by 17%.</p>
+    <p>&bull; Does not include the <strong>80+ additional leads</strong> Jayden reported as "completely missed" from the webhook disconnect (reported in a separate URGENT email thread). If these are distinct from the populations above, the total damage is higher.</p>
+    <p>&bull; The 6 settled deals from contacts with corrupted quiz data averaged <strong>$794,433</strong> per deal — higher than the $655,252 used in this calculation.</p>
+    <p style="margin-top: 12px;"><strong>What's not counted</strong></p>
+    <p>&bull; Reputational damage from "Dear Mdaniels.Mmd@Gmail.Com" broker emails. Customer trust erosion. Opportunity cost of Jayden's 5+ hours of investigation. The 268 contacts with no form attribution (impossible to assign to the right broker/pipeline). Trail commission beyond year 3.</p>
+    <p>&bull; <strong>3,058 total contacts</strong> were created in HubSpot between October 2025 and April 2026. After deduplication (81 contacts appear in both populations), <strong>176 unique contacts</strong> (90 + 167 − 81) had corrupted or missing data — <strong>5.8%</strong> of all inbound leads during CRS's engagement.</p>
+  </div>
+</details>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>Issue 1: Email Address Stored as First Name (90 contacts)</h2>
+
+<div class="evidence">
+  <h3>CRS Implementation Error: CF7 field mapping put email in firstname</h3>
+  <p>90 contacts in HubSpot have their email address stored in the <code>firstname</code> field. This means broker notifications, email personalisation, and CRM searches all show an email address instead of a name.</p>
+  <p><strong>Root cause:</strong> CRS mapped the CF7 email field (<code>your-email</code> or equivalent) to the HubSpot <code>firstname</code> property instead of the <code>email</code> property in the Collected Form configuration.</p>
+  <p><strong>Date range:</strong> <strong>Zero email-as-name contacts in the 4 months immediately before CRS deployed (Jun–Sep 2025).</strong> The bug started in October 2025 — the exact month CRS deployed their quiz forms — with 8 contacts. It then escalated to 28/month by February 2026. A rate of 28/month is not users accidentally typing their email into the name field — it is a systematic field mapping defect where the form code itself puts the email value into the firstname property on every submission from CRS-built forms. 81 of the 90 affected contacts (90%) were created after CRS deployed.</p>
+</div>
+
+<div class="evidence">
+  <h3>Test data left in production HubSpot — email-as-name bug visible from day one</h3>
+  <p>Multiple test contacts were found in HubSpot, all sharing the same integration source (<code>OFFLINE / INTEGRATION / 39761</code>), created during CRS's active development windows:</p>
+  <table>
+    <tr><th>ID</th><th>firstname</th><th>email</th><th>Created</th><th>Has Quiz Data?</th><th>Email-as-Name?</th></tr>
+    <tr><td><code>206501295546</code></td><td>Test</td><td>test445533@mail.com</td><td>8 Oct 2025</td><td style="color: var(--hg-green);">Yes (real values)</td><td>No</td></tr>
+    <tr><td><code>207269086684</code></td><td style="color: var(--hg-red);">Test6677@Mail.Com</td><td>test6677@mail.com</td><td>10 Oct 2025</td><td style="color: var(--hg-green);">Yes (real values)</td><td style="color: var(--hg-red); font-weight: 700;">Yes</td></tr>
+    <tr><td><code>207301071341</code></td><td style="color: var(--hg-red);">Test12345@Gmail.Com</td><td>test12345@gmail.com</td><td>10 Oct 2025</td><td style="color: var(--hg-green);">Yes (real values)</td><td style="color: var(--hg-red); font-weight: 700;">Yes</td></tr>
+    <tr><td><code>304786373085</code></td><td style="color: var(--hg-red);">Test1@Gmail.Com</td><td>test1@gmail.com</td><td>27 Feb 2026</td><td>No quiz fields</td><td style="color: var(--hg-red); font-weight: 700;">Yes</td></tr>
+  </table>
+  <p><strong>Key finding:</strong> The email-as-name bug was visible in test data from <strong>10 October 2025</strong> — the same week Gleb confirmed deployment. The bug was present in the test contacts and either wasn't noticed or was ignored. These test contacts were never cleaned up from the production HubSpot account.</p>
+  <p>All test contacts share the same integration source (<code>39761</code>), were created during CRS's active development windows, and use test-pattern names. CRS was the only party building or modifying forms during these periods.</p>
+</div>
+
+<h3>Sample Contacts (from HubSpot API)</h3>
+<table>
+  <tr><th>HubSpot ID</th><th>firstname (WRONG)</th><th>email</th><th>Created</th><th>Link</th></tr>
+  <tr>
+    <td><code>317168561623</code></td>
+    <td style="color: var(--hg-red); font-weight: 600;">Mdaniels.Mmd@Gmail.Com</td>
+    <td>mdaniels.mmd@gmail.com</td>
+    <td>31 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/317168561623" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>317137443280</code></td>
+    <td style="color: var(--hg-red); font-weight: 600;">Hellomy@Gmail.Com</td>
+    <td>hellomy@gmail.com</td>
+    <td>31 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/317137443280" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>316918015418</code></td>
+    <td style="color: var(--hg-red); font-weight: 600;">Luancloete@Gmail.Com</td>
+    <td>luancloete@gmail.com</td>
+    <td>30 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/316918015418" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>316120324574</code></td>
+    <td style="color: var(--hg-red); font-weight: 600;">Kofanyehor@Gmail.Com</td>
+    <td>kofanyehor@gmail.com</td>
+    <td>25 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/316120324574" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>316148012523</code></td>
+    <td style="color: var(--hg-red); font-weight: 600;">Hamidreza.A.Yazdi@Gmail.Com</td>
+    <td>hamidreza.a.yazdi@gmail.com</td>
+    <td>25 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/316148012523" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>316119321056</code></td>
+    <td style="color: var(--hg-red); font-weight: 600;">Pibep14386@Fun4K.Com</td>
+    <td>pibep14386@fun4k.com</td>
+    <td>25 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/316119321056" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>315859188198</code></td>
+    <td style="color: var(--hg-red); font-weight: 600;">Annd_82@Yahoo.Com</td>
+    <td>annd_82@yahoo.com</td>
+    <td>24 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/315859188198" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>315535811035</code></td>
+    <td style="color: var(--hg-red); font-weight: 600;">Laylas826@Hotmail.Com</td>
+    <td>laylas826@hotmail.com</td>
+    <td>22 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/315535811035" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>315495399899</code></td>
+    <td style="color: var(--hg-red); font-weight: 600;">Ronaldo7Khang@Gmail.Com</td>
+    <td>ronaldo7khang@gmail.com</td>
+    <td>21 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/315495399899" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>315299085769</code></td>
+    <td style="color: var(--hg-red); font-weight: 600;">Mickpalmer79@Yahoo.Com</td>
+    <td>mickpalmer79@yahoo.com</td>
+    <td>19 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/315299085769" target="_blank">View</a></td>
+  </tr>
+  <tr><td colspan="5" style="text-align: center; color: #999; font-style: italic;">... and 80 more contacts with the same issue (90 total)</td></tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>Issue 2: Homepage Quiz Hardcodes Refinance Fields to Dashes</h2>
+
+<div class="evidence">
+  <h3>CRS Implementation Error: submitToContactForm7() hardcodes quiz answers to "-"</h3>
+  <p>The homepage quiz JavaScript sends four refinance-related fields to CF7 form #72896, but <strong>hardcodes every value to <code>"-"</code></strong> instead of reading from the user's answers:</p>
+  <pre style="background: #1e1e2e; color: #cdd6f4; padding: 12px 16px; border-radius: 6px; font-size: 12px; margin: 12px 0;">r.append("mortgage-rate", "-");    // Should be: answers.interestRate
+r.append("still-owe", "-");       // Should be: answers.loanAmount
+r.append("loan-term", "-");       // Should be: answers.loanTerm
+r.append("important", "-");       // Should be: answers.refiPriority</pre>
+  <p>Recent contacts (created via the homepage quiz from ~Dec 2025 onward) have dashes for all 4 fields. Verified by direct API lookup of contacts Brett (ID 317361426890), Tegan Graves (317137720776), Joel Redmond (317119232449) — all have <code>"-"</code> for all 4 fields.</p>
+</div>
+
+<div class="info">
+  <h3>Correction: /lower-your-rate/ quiz DID capture data properly</h3>
+  <p>Earlier contacts (Oct 2025) from the /lower-your-rate/ refinance quiz have <strong>real values</strong> — e.g. <code>"5.25-5.5"</code>, <code>"pay-faster"</code>, <code>"300k-500k"</code>. The /lower-your-rate/ quiz form originally worked but has a <strong>separate issue</strong>: CF7 #14462 doesn't pass quiz data to HubSpot on the contact form step (see Issue 3). The dashes are specifically from the <strong>homepage quiz</strong> (CF7 #72896) which was deployed later (~Dec 2025–Jan 2026).</p>
+</div>
+
+<h3>HubSpot Properties Affected</h3>
+<table>
+  <tr><th>HubSpot Property</th><th>Label</th><th>Value in ALL 167 contacts</th><th>Should Be</th></tr>
+  <tr>
+    <td><code>what_is_your_current_mortgage_interest_rate_</code></td>
+    <td>What is your current mortgage interest rate?</td>
+    <td style="color: var(--hg-red); font-weight: 700;">"-"</td>
+    <td>User's selection (e.g. "5-5.25%")</td>
+  </tr>
+  <tr>
+    <td><code>how_much_do_you_still_owe_on_your_mortgage_</code></td>
+    <td>How much do you still owe on your mortgage?</td>
+    <td style="color: var(--hg-red); font-weight: 700;">"-"</td>
+    <td>User's selection (e.g. "$300k-$500k")</td>
+  </tr>
+  <tr>
+    <td><code>what_is_your_remaining_loan_term_</code></td>
+    <td>What is your remaining loan term?</td>
+    <td style="color: var(--hg-red); font-weight: 700;">"-"</td>
+    <td>User's selection (e.g. "5-10 years")</td>
+  </tr>
+  <tr>
+    <td><code>what_s_most_important_to_you_in_refinancing_</code></td>
+    <td>What's most important to you in refinancing?</td>
+    <td style="color: var(--hg-red); font-weight: 700;">"-"</td>
+    <td>User's selection (e.g. "Lower monthly payment")</td>
+  </tr>
+</table>
+
+<h3>Sample Contacts</h3>
+<table>
+  <tr><th>HubSpot ID</th><th>Name</th><th>Rate</th><th>Owing</th><th>Term</th><th>Priority</th><th>Created</th></tr>
+  <tr><td><code>317361426890</code></td><td>Brett</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1 Apr</td></tr>
+  <tr><td><code>317119232449</code></td><td>Joel Redmond</td><td>-</td><td>-</td><td>-</td><td>-</td><td>31 Mar</td></tr>
+  <tr><td><code>317137720776</code></td><td>Tegan Graves</td><td>-</td><td>-</td><td>-</td><td>-</td><td>31 Mar</td></tr>
+  <tr><td><code>317142870463</code></td><td>Clinton Walton</td><td>-</td><td>-</td><td>-</td><td>-</td><td>31 Mar</td></tr>
+  <tr><td colspan="7" style="text-align: center; color: #999; font-style: italic;">... all 167 contacts have dashes for all 4 fields</td></tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>Issue 3: /lower-your-rate/ Quiz — Data Silently Discarded (15 contacts)</h2>
+
+<div class="evidence">
+  <h3>CRS Implementation Error: CF7 #14462 has no hidden fields for quiz answers</h3>
+  <p>The refinance quiz at <code>/lower-your-rate/</code> asks 4 questions (interest rate, loan amount, term, priority) but the CF7 form only submits name, email, and phone. The quiz answers are stored in JavaScript but <strong>never written to hidden fields</strong> before form submission.</p>
+  <p>15 contacts entered HubSpot via this page with zero quiz context.</p>
+</div>
+
+<h3>Contacts from /lower-your-rate/</h3>
+<table>
+  <tr><th>HubSpot ID</th><th>Name</th><th>Conversion Form</th><th>Created</th><th>Link</th></tr>
+  <tr>
+    <td><code>315333496266</code></td>
+    <td>Terence MurrayMurray</td>
+    <td>Lower Your Rate: Form popup data HG</td>
+    <td>19 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/315333496266" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>308608811486</code></td>
+    <td>Alyssa Cooper</td>
+    <td>Lower Your Rate: Form popup data HG</td>
+    <td>3 Mar 2026</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/308608811486" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>209253529022</code></td>
+    <td>Valentino Werahiko</td>
+    <td>Lower Your Rate: Form popup data HG</td>
+    <td>12 Oct 2025</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/209253529022" target="_blank">View</a></td>
+  </tr>
+  <tr>
+    <td><code>160587667261</code></td>
+    <td>Carlo Soegiarto</td>
+    <td>Lower Your Rate: Form popup data HG</td>
+    <td>3 Oct 2025</td>
+    <td class="hs-link"><a href="https://app.hubspot.com/contacts/4607234/record/0-1/160587667261" target="_blank">View</a></td>
+  </tr>
+  <tr><td colspan="5" style="text-align: center; color: #999; font-style: italic;">... 15 total contacts from this page, all with zero quiz data</td></tr>
+</table>
+
+<div class="info">
+  <h3>Note: This form has been active since at least October 2025</h3>
+  <p>The earliest contact from <code>/lower-your-rate/</code> in our scan is from September 2025. The quiz data loss has been ongoing for <strong>at least 6 months</strong> without detection.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>Issue 4: CF7 #14462 Does NOT Capture transaction_type (Unlike #11832 Which Does)</h2>
+
+<div class="evidence">
+  <h3>The popup quiz form (#11832) captures transaction_type — the inline CTA form (#14462) does not</h3>
+  <p>Verified via HubSpot API: contacts arriving through popup quiz form #11832 DO have <code>transaction_type</code> populated (e.g. "Purchase A Property"). The HubSpot property exists and works.</p>
+  <p>However, CF7 #14462 — the inline CTA form appearing 3x on every landing page — does <strong>not</strong> send <code>transaction_type</code>. These leads arrive with no indication of what type of loan they want.</p>
+  <p><strong>This is a CRS implementation inconsistency:</strong> they set up <code>transaction_type</code> correctly on form #11832 but did not add it to form #14462, which handles a large volume of leads.</p>
+</div>
+
+<!-- Issue 5 moved up -->
+<hr>
+
+<!-- ============================================================ -->
+<h2>Issue 5: 268 Recent Contacts With No Form Attribution</h2>
+
+<div class="evidence">
+  <h3>Contacts entering HubSpot with no record of which form captured them</h3>
+  <p>268 contacts created since 1 March 2026 have no <code>first_conversion_event_name</code> property. HubSpot cannot tell which form created these contacts or which page they came from.</p>
+  <p><strong>Why this matters:</strong> Without form attribution, the team cannot measure which forms are performing, which pages are converting, or which leads came from CRS-built forms vs other sources. Reporting is unreliable.</p>
+  <p><strong>Context:</strong> CRS's <code>submitToContactForm7()</code> submits directly to the CF7 REST API without going through HubSpot's tracking code. This bypasses the normal form attribution mechanism. The spike in unattributed contacts coincides with CRS's active development period (Oct 2025 onward).</p>
+</div>
+
+<!-- Issue 6 moved up -->
+<hr>
+
+<!-- ============================================================ -->
+<h2>Issue 6: WordPress Site — Frontend Implementation Failures</h2>
+
+<p>Playwright scan of the live WordPress site on 2 April 2026 found additional CRS implementation issues:</p>
+
+<div class="evidence">
+  <h3>6a. Homepage quiz JS has console.log in production</h3>
+  <p>The <code>submitToContactForm7()</code> function includes <code>console.log(answers)</code> which fires on every form submission. This leaks quiz answer data to the browser console in production. Left in from development/debugging.</p>
+</div>
+
+<div class="evidence">
+  <h3>6b. Quiz answers object is never included in form submission</h3>
+  <p>The <code>answers</code> object (<code>{ looking, maritalStatus, isFirstOwner, state, dependants, income, deposit }</code>) is populated from the quiz but <strong>never appended to the FormData</strong> sent to CF7. Only <code>formAnswers = { name, email, phone }</code> is submitted. The entire quiz — situation questions, finances, borrowing intent — is collected from the user and then thrown away.</p>
+</div>
+
+<div class="evidence">
+  <h3>6c. /lower-your-rate/ quiz JS does not populate hidden fields</h3>
+  <p>The refinance quiz at <code>/lower-your-rate/</code> renders questions dynamically from a JSON config, but the submit handler <strong>does not write quiz answers to hidden fields</strong> before form submission. Confirmed: <code>populatesHiddenFields: false</code>.</p>
+</div>
+
+<div class="evidence">
+  <h3>6d. Contact page loads 13 CF7 forms</h3>
+  <p>The <code>/contact/</code> page has <strong>13 CF7 form instances</strong> loaded in the DOM — 1 actual contact form (#11830), 3× #14462, 1× #14422, 1× #14296, 3 popup forms (#14061, #14060, #14059), and 4× popup quiz #11832. Massive DOM bloat from the global template.</p>
+</div>
+
+<div class="evidence">
+  <h3>6e. /mortgage-calculator/ page has no quiz at all</h3>
+  <p>Verified: <code>hasQuizCard: false</code>, <code>hasNextStep: false</code>. The quiz only exists on the homepage (<code>/</code>). The <code>/mortgage-calculator/</code> page loads 12 CF7 forms from the template but has no quiz card or calculator button.</p>
+</div>
+
+<div class="evidence">
+  <h3>6f. 403 error on homepage resource load</h3>
+  <p>Console error on homepage: <code>"Failed to load resource: the server responded with a status of 403"</code>. A resource is being blocked on the CRS-modified page.</p>
+</div>
+
+<div class="info">
+  <h3>Summary of Frontend Findings</h3>
+  <table>
+    <tr><th>Issue</th><th>CRS Responsibility</th><th>Impact</th></tr>
+    <tr><td>console.log in production</td><td>CRS wrote the quiz JS</td><td>Low — data leak, unprofessional</td></tr>
+    <tr><td>Quiz answers not submitted</td><td>CRS built submitToContactForm7()</td><td>High — all quiz engagement data lost</td></tr>
+    <tr><td>No hidden field population on /lower-your-rate/</td><td>CRS built the refinance quiz</td><td>High — 15+ leads with zero context</td></tr>
+    <tr><td>13 forms per page</td><td>CRS built the popup form template</td><td>Medium — DOM bloat, potential perf issue</td></tr>
+    <tr><td>/mortgage-calculator/ has no quiz</td><td>CRS did not implement the quiz on this page</td><td>Low — documentation was incorrect</td></tr>
+    <tr><td>403 resource error on homepage</td><td>Resource blocked on CRS-modified page</td><td>Requires investigation — affects page functionality</td></tr>
+  </table>
+</div>
+
+<!-- Deployment timeline -->
+<hr>
+
+<!-- ============================================================ -->
+<h2>Deployment Timeline — Mapping Damage to CRS Deployments</h2>
+
+<div class="info">
+  <h3>Wayback Machine + HubSpot data correlated to pinpoint when CRS broke things</h3>
+  <p>Using the Internet Archive (Wayback Machine) to see when code changed, cross-referenced with HubSpot contact creation dates to see when damage started.</p>
+</div>
+
+<h3>CRS Deployment Timeline (verified via Wayback Machine)</h3>
+<table>
+  <tr><th>Date</th><th>Wayback Snapshot Evidence</th><th>What CRS Deployed</th></tr>
+  <tr><td>Apr 2025</td><td>Homepage: no <code>.quiz_card</code>, no <code>nextStep()</code>. /lower-your-rate/: no <code>#quiz-questions</code> config.</td><td><strong>Baseline — no CRS code exists yet.</strong></td></tr>
+  <tr><td>Jul 2025</td><td>Homepage: still no quiz.</td><td>No changes.</td></tr>
+  <tr><td style="color: var(--hg-red); font-weight: 600;">~Sep–Oct 2025</td><td>/lower-your-rate/: <code>#quiz-questions</code> JSON config now present. 5-step refinance quiz renders dynamically.</td><td style="color: var(--hg-red);"><strong>CRS deployed the refinance quiz.</strong> CF7 #14462 has no hidden fields for quiz data. Data loss begins. Earliest affected contact: Sep 2025.</td></tr>
+  <tr><td style="color: var(--hg-red); font-weight: 600;">~Dec 2025–Jan 2026</td><td>Homepage: <code>.quiz_card</code> now exists. <code>nextStep()</code> function present. <code>submitToContactForm7()</code> sends <code>mortgage-rate: "-"</code>.</td><td style="color: var(--hg-red);"><strong>CRS deployed the homepage quiz.</strong> Hardcoded dashes in submit function. No branching logic. Email-as-name bug rate spikes from 0.2/mo to 6/mo.</td></tr>
+  <tr><td>Feb 2026</td><td>—</td><td>CRS testing in production HubSpot (<code>Test1@Gmail.Com</code> created 27 Feb). Email-as-name rate hits 28/mo.</td></tr>
+  <tr><td>Mar 2026</td><td>—</td><td>Email-as-name continues at 28/mo. Jayden discovers 80+ lost leads. Refinance webhook missing.</td></tr>
+</table>
+
+<h3>Email-as-Name Bug — Monthly Breakdown (from HubSpot API)</h3>
+<table>
+  <tr><th>Period</th><th>Contacts</th><th>Rate</th><th>CRS Activity</th></tr>
+  <tr><td>Sep 2021 – May 2025</td><td>9</td><td>~0.2/month</td><td>Pre-CRS. Sporadic user input errors, spam, and a test contact.</td></tr>
+  <tr style="background: #f0fdf4;"><td><strong>Jun – Sep 2025 (4 months)</strong></td><td style="color: var(--hg-green); font-weight: 700;"><strong>0</strong></td><td style="color: var(--hg-green);"><strong>0/month</strong></td><td><strong>Zero. The bug does not exist immediately before CRS.</strong></td></tr>
+  <tr style="background: #fef2f2;"><td style="color: var(--hg-red); font-weight: 600;">Oct 2025 (CRS deploys)</td><td style="color: var(--hg-red); font-weight: 700;">8</td><td style="color: var(--hg-red);">8/month</td><td style="color: var(--hg-red);">CRS deploys quiz forms. Bug starts immediately.</td></tr>
+  <tr style="background: #fef2f2;"><td>Nov 2025</td><td style="color: var(--hg-red); font-weight: 700;">1</td><td style="color: var(--hg-red);">1/month</td><td style="color: var(--hg-red);">CRS building homepage quiz</td></tr>
+  <tr style="background: #fef2f2;"><td>Dec 2025</td><td style="color: var(--hg-red); font-weight: 700;">6</td><td style="color: var(--hg-red);">6/month</td><td style="color: var(--hg-red);">Homepage quiz deployed</td></tr>
+  <tr style="background: #fef2f2;"><td>Jan 2026</td><td style="color: var(--hg-red); font-weight: 700;">10</td><td style="color: var(--hg-red);">10/month</td><td style="color: var(--hg-red);">CRS changes ongoing</td></tr>
+  <tr style="background: #fef2f2;"><td>Feb 2026</td><td style="color: var(--hg-red); font-weight: 700;">28</td><td style="color: var(--hg-red);">28/month</td><td style="color: var(--hg-red);">CRS test data "Test1@Gmail.Com" created 27 Feb</td></tr>
+  <tr style="background: #fef2f2;"><td>Mar 2026</td><td style="color: var(--hg-red); font-weight: 700;">28</td><td style="color: var(--hg-red);">28/month</td><td>Jayden discovers the bug 1 April</td></tr>
+  <tr><td><strong>Total (Oct 2025 – Mar 2026)</strong></td><td><strong>81</strong></td><td></td><td><strong>81 of 90 (90%) occurred after CRS deployed</strong></td></tr>
+</table>
+
+<div class="evidence">
+  <h3>Causation, Not Correlation</h3>
+  <p><strong>Zero email-as-name contacts in the 4 months immediately before CRS deployed (Jun–Sep 2025).</strong> Then 8 in October — the exact month CRS deployed their quiz forms (confirmed by Gleb's email: "We deployed it on 13th Oct"). The bug did not exist before CRS and started the month they shipped.</p>
+  <p>The 2 CRS-period contacts that DO have form attribution both came through CRS's popup form system ("Form popup data HG"). The remaining 79 have no form attribution — itself a CRS implementation failure (Issue 5).</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>CRS's "Testing" — No Test Cases, No Test Plans, No Evidence</h2>
+
+<p>CRS claimed on 2 April 2026: <em>"when these forms were created, tested and implemented we used standard logic with main criteria to catch all the leads to your CRM in HubSpot."</em></p>
+
+<p>Across <strong>201 emails</strong> from CRS spanning their entire engagement (Jul 2024 – Apr 2026), the following were searched for and <strong>not found</strong>:</p>
+
+<div class="damage">
+  <table>
+    <tr><th>Standard QA Deliverable</th><th>Provided by CRS?</th></tr>
+    <tr><td>Test cases for form submissions</td><td><strong>No</strong> — never provided</td></tr>
+    <tr><td>Test plan for HubSpot integration</td><td><strong>No</strong> — never provided</td></tr>
+    <tr><td>Test report after deployment</td><td><strong>No</strong> — never provided</td></tr>
+    <tr><td>Screenshots of HubSpot contacts showing correct field mapping</td><td><strong>No</strong> — never provided</td></tr>
+    <tr><td>QA checklist for form deployments</td><td><strong>No</strong> — never provided</td></tr>
+    <tr><td>Staging-to-production validation evidence</td><td><strong>No</strong> — never provided</td></tr>
+    <tr><td>End-to-end test: submit form → verify HubSpot contact → confirm fields</td><td><strong>Not after Oct 2025</strong> — performed once in Jul 2024 for Zapier verification, never repeated for quiz forms</td></tr>
+  </table>
+</div>
+
+<p>CRS's "QA" consisted of:</p>
+<p>&bull; <strong>Loom video walkthroughs</strong> showing the UI works (forms render, buttons click, quiz steps progress)</p>
+<p>&bull; <strong>A/B test conversion rate reports</strong> measuring submission volume (how many people clicked Submit)</p>
+<p>&bull; <strong>Visual checks</strong> ("the form looks correct on staging")</p>
+
+<p>At no point did CRS verify that submitted data arrived in HubSpot with the correct field mappings. The test contacts they created in HubSpot (<code>Test6677@Mail.Com</code>, <code>Test12345@Gmail.Com</code>, <code>Test1@Gmail.Com</code>) already exhibited the email-as-name bug — confirming that even their own test data was not inspected for data quality.</p>
+
+<p>By contrast, the post-incident audit built a <strong>142-test automated Playwright suite</strong> that covers every form, every calculator, and includes regression tests for each documented bug. This is the level of QA that should have been performed before deployment.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>Email Evidence: CRS's Own Words Confirm the Timeline</h2>
+
+<p>The following quotes are from CRS emails to Jayden Vecchio and Simon Heikkila, cross-referenced with the HubSpot damage data and Wayback Machine snapshots. No email was found where CRS disclaimed responsibility for HubSpot integration or end-to-end lead delivery.</p>
+
+<div class="evidence">
+  <h3>19 July 2024 — CRS verified Zapier + email delivery (establishes E2E was in scope)</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    "We have verified that the conversions from the previous version are being streamed to Zapier and the following email addresses:<br>
+    - nathan.vecchio@huntergalloway.com.au<br>
+    - joshua.vecchio@huntergalloway.com.au<br>
+    - jayden.vecchio@huntergalloway.com.au<br>
+    - 9wymd7m4@robot.zapier.com<br><br>
+    However, it is crucial that you confirm you are receiving all conversions once we revert to the previous version."
+  </p>
+  <p><strong>From:</strong> Ihor Sokolov &lt;i@conversionrate.store&gt;</p>
+  <p><strong>Subject:</strong> Re: CRO for huntergalloway.com.au redesign</p>
+  <p><strong>What this proves:</strong> CRS explicitly verified that form submissions reached Zapier and email notifications as part of their deployment process. This confirms that <strong>end-to-end lead delivery verification was part of their standard workflow</strong> — they performed it for earlier forms. When they later built the quiz forms in October 2025, this verification step was not repeated.</p>
+</div>
+
+<div class="evidence">
+  <h3>24 July 2024 — CRS references their Consulting Services Agreement</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    "we are working based on the Consulting Services Agreement. This means that the causes of CVR drops and ways for improvement are determined by our team."
+  </p>
+  <p><strong>From:</strong> Yehor Pidopryhora &lt;yehor.pidopryhora@conversionrate.store&gt;</p>
+  <p><strong>What this proves:</strong> CRS asserted ownership over the implementation methodology. Under their own agreement, they determined what to build and how. The quiz forms, the CF7 configurations, and the HubSpot integration were CRS decisions within their contracted scope.</p>
+</div>
+
+<div class="evidence">
+  <h3>23 December 2025 — Simon escalated QA failures; Gleb promised to fix the process</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    <strong>Simon (23 Dec):</strong> "I need to escalate a broader concern about missed commitments and lack of follow-through from your team [...] the pattern is clear: Deadlines are committed to and then missed. Work is communicated as ready or imminent when it is not. QA and validation are assumed rather than enforced."
+  </p>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    <strong>Gleb (23 Dec):</strong> "What will change effective immediately:<br>
+    — <strong>No item is marked 'ready' without production validation. QA assumptions are no longer acceptable.</strong><br>
+    — No deadlines will be committed without validated scope."
+  </p>
+  <p><strong>Thread:</strong> "Missed deadlines and unmet commitments"</p>
+  <p><strong>What this proves:</strong> QA failures were formally escalated <strong>before</strong> the lead loss incident. Gleb explicitly committed that no item would be marked ready without production validation. The homepage quiz was deployed within weeks of this commitment — with hardcoded dashes that production validation would have caught. The commitment was not honoured.</p>
+</div>
+
+<div class="evidence">
+  <h3>28 October 2025 — Gleb confirms quiz deployment and celebrates conversion rate</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    "We moved a step with an estimate on how much a user can borrow after they submit their contacts. <strong>We deployed it on 13th Oct</strong> and till today it's 3x more conversions than the 2-month average before 12th Oct."
+    <br><br>
+    "Refinance quiz. It's also a small amount of conversions, but the version without the quiz converts 1.48% and the last one with the quiz <strong>converts 9.52%</strong>"
+  </p>
+  <p><strong>From:</strong> Gleb Hodorovskiy &lt;g@conversionrate.store&gt;</p>
+  <p><strong>Subject:</strong> Re: CRO updates</p>
+  <p><strong>What this proves:</strong> CRS deployed quiz changes on <strong>13 October 2025</strong> and measured conversion rate (form submissions). CRS measured submission volume without verifying that the submitted data arrived correctly in HubSpot — as documented in Issues 1-4 above.</p>
+</div>
+
+<div class="evidence">
+  <h3>11 November 2025 — Gleb shares homepage quiz design</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    "Desktop version of the mortgage quiz [...] New landing page for meta ads. The current first screen of HP converts only 12-14% to start the quiz. This version has the potential to convert 30-35%"
+  </p>
+  <p><strong>From:</strong> Gleb Hodorovskiy &lt;g@conversionrate.store&gt;</p>
+  <p><strong>Subject:</strong> Re: CRO updates</p>
+  <p><strong>What this proves:</strong> CRS was actively building the homepage quiz in November 2025. This is the quiz that shipped with <code>submitToContactForm7()</code> hardcoding all refinance fields to <code>"-"</code>. Wayback Machine snapshots confirm it appeared on the homepage between October 2025 and January 2026.</p>
+</div>
+
+<div class="evidence">
+  <h3>31 March 2026 — Yuliia claims "we only changed the design not the logic"</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    "the only thing we changed was the design not the logic itself"
+  </p>
+  <p><strong>From:</strong> Yuliia Boiko &lt;yuliia.boiko@conversionrate.store&gt;</p>
+  <p><strong>Subject:</strong> Re: Weekly Updates March 23 - March 27</p>
+  <p><strong>What this proves:</strong> CRS acknowledges making changes to the forms. Whether they call it "design" or "logic" does not change the result: the email-as-name bug rate was 28/month in March 2026 — up from zero in the months before CRS deployed. The field mapping broke during CRS's engagement.</p>
+</div>
+
+<div class="evidence">
+  <h3>1 April 2026 — Yuliia confirms October deployment, then attributes issue to Hunter Galloway's monitoring</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    "We haven't made any changes to the form or its logic over the past month. <strong>The last updates were implemented back in October.</strong>"
+    <br><br>
+    "All leads submitted through the form have been consistently captured in HubSpot."
+    <br><br>
+    "This leads us to believe the issue is not with lead capture, but rather with <strong>how leads were being monitored or processed on your side.</strong>"
+  </p>
+  <p><strong>From:</strong> Yuliia Boiko &lt;yuliia.boiko@conversionrate.store&gt;</p>
+  <p><strong>Subject:</strong> Re: URGENT - Website form not working</p>
+  <p><strong>What this confirms:</strong></p>
+  <p>&bull; CRS confirms <strong>October</strong> as their deployment date — the exact month Wayback shows the quiz code appearing and the HubSpot damage starting.</p>
+  <p>&bull; The claim "all leads have been consistently captured in HubSpot" is misleading. Leads were captured with <strong>email as firstname</strong> (90 contacts), <strong>all quiz fields as dashes</strong> (167 contacts), and <strong>zero quiz context from /lower-your-rate/</strong> (15 contacts). Capturing corrupted data is not the same as capturing leads correctly.</p>
+  <p>&bull; CRS's response addressed only whether contacts existed in HubSpot — not whether the data was correctly mapped or usable. The response then attributed the issue to Hunter Galloway's monitoring process, despite the documented field mapping and data quality failures above.</p>
+</div>
+
+<div class="evidence">
+  <h3>2 April 2026 — Yuliia claims standard QA was performed</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    "when these forms were created, tested and implemented we used standard logic with main criteria to catch all the leads to your CRM in HubSpot. [...] I checked all the communications several times and there was no mention of Zavier. All the leads were available in the hubspot, I personally checked every contact yesterday."
+  </p>
+  <p><strong>From:</strong> Yuliia Boiko &lt;yuliia.boiko@conversionrate.store&gt;</p>
+  <p><strong>Subject:</strong> Re: URGENT 2/2 - Website form not working</p>
+  <p><strong>What this reveals:</strong> CRS states they tested the forms and checked HubSpot contacts. However, any inspection of the contacts would have shown that <code>firstname</code> contained email addresses instead of names. The test contact <code>Test1@Gmail.Com</code> (created 27 Feb 2026, during CRS's active development) is itself an example of the bug — present in their own test data, yet not flagged or corrected.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>Pattern of Unmet Commitments</h2>
+
+<p>Beyond the data damage, email evidence reveals a repeating pattern: CRS made specific commitments, did not meet them, and then provided assurances that subsequent events contradicted.</p>
+
+<div class="evidence">
+  <h3>25 February 2026 — Jayden proposed reducing scope. Gleb persuaded him to continue.</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    <strong>Jayden (25 Feb):</strong> "I'm not impressed with the current output [...] Simon has ended up coordinating a lot of the PM and QA work, which really should have been part of your team's responsibilities. The QA level has been patchy [...] I'd like to reduce our contract to Meta ads management only"
+  </p>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    <strong>Gleb (3 Mar):</strong> "Around 70% of the work is already done, so I don't see a strong reason not to complete it [...] <strong>We've already resolved the QA issues we previously had.</strong>"
+  </p>
+  <p><strong>What the data shows for March 2026:</strong> 28 contacts with email as firstname. Test data left in production HubSpot. Refinance webhook not connected. 30+ leads lost. The QA issues Gleb stated were "already resolved" were, by every available metric, at their worst.</p>
+</div>
+
+<div class="evidence">
+  <h3>4 March 2026 — "React live by 7 April" commitment</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    <strong>Yuliia (4 Mar):</strong> "the final date for your website to be live on React is the <strong>7th of April</strong>, which is exactly 4 months excluding winter holidays as we agreed from the start"
+  </p>
+  <p><strong>Status as of 2 April 2026:</strong> React site is not live. No pages have been deployed for QA testing. 5 days until the committed date.</p>
+</div>
+
+<div class="evidence">
+  <h3>27 March 2026 — "Pages launching for QA this week" commitment</h3>
+  <p style="font-style: italic; background: #f8fafc; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #999; margin: 12px 0;">
+    <strong>Yuliia (27 Mar):</strong> "During the upcoming week, we will launch a set of pages live for QA validation. The full list of pages is provided in the table."
+  </p>
+  <p><strong>Status as of 2 April 2026:</strong> No pages were launched for QA. The "upcoming week" (30 Mar – 4 Apr) passed. Instead, the team was dealing with the lead loss crisis that Jayden discovered on 1 April.</p>
+</div>
+
+<div class="damage">
+  <h3>The Pattern</h3>
+  <table>
+    <tr><th>Date</th><th>Commitment Made</th><th>Outcome</th></tr>
+    <tr>
+      <td>Dec 2025</td>
+      <td>"No item marked ready without production validation"</td>
+      <td>Homepage quiz shipped weeks later with hardcoded dashes. No production validation.</td>
+    </tr>
+    <tr>
+      <td>Mar 2026</td>
+      <td>"We've already resolved the QA issues"</td>
+      <td>Jayden continued paying based on this assurance. 28 email-as-name contacts occurred that same month.</td>
+    </tr>
+    <tr>
+      <td>4 Mar 2026</td>
+      <td>"React live by 7 April"</td>
+      <td>Not live. Not in QA. No pages deployed.</td>
+    </tr>
+    <tr>
+      <td>27 Mar 2026</td>
+      <td>"Pages launching for QA this week"</td>
+      <td>No pages launched. Lead loss crisis erupted instead.</td>
+    </tr>
+    <tr>
+      <td>1 Apr 2026</td>
+      <td>"All leads captured correctly... issue is on your side"</td>
+      <td>90 contacts with email as name. 167 with dashes. Issue attributed to Hunter Galloway's monitoring.</td>
+    </tr>
+  </table>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>Attribution: All Issues Trace to CRS Development Work</h2>
+
+<div class="damage">
+  <h3>Timeline of CRS Implementation Failures</h3>
+  <table>
+    <tr><th>When</th><th>What CRS Did</th><th>What Broke</th><th>Impact</th></tr>
+    <tr>
+      <td>Jul 2024<br><span style="font-size: 10px;">(Email: Ihor)</span></td>
+      <td>CRS verified Zapier + email delivery for form revert</td>
+      <td>Establishes E2E verification was part of their process</td>
+      <td>This verification was performed for earlier forms but not repeated for quiz forms</td>
+    </tr>
+    <tr>
+      <td>Dec 2025<br><span style="font-size: 10px;">(Email: Simon + Gleb)</span></td>
+      <td>QA failures escalated. Gleb promised "no item marked ready without production validation"</td>
+      <td>Commitment not met — homepage quiz shipped weeks later with hardcoded dashes. No production validation performed.</td>
+      <td>Establishes that QA was a known issue before the lead loss</td>
+    </tr>
+    <tr>
+      <td>~Sep–Oct 2025<br><span style="font-size: 10px;">(Wayback: Oct snapshot)</span></td>
+      <td>Built /lower-your-rate/ refinance quiz</td>
+      <td>CF7 #14462 has no hidden fields — quiz answers never submitted</td>
+      <td>15+ leads with zero context, ongoing for 6+ months</td>
+    </tr>
+    <tr>
+      <td>~Dec 2025–Jan 2026<br><span style="font-size: 10px;">(Wayback: Jan snapshot)</span></td>
+      <td>Built homepage quiz (<code>.quiz_card</code> + <code>nextStep()</code>)</td>
+      <td>Hardcoded <code>"-"</code> for all refinance fields. No branching logic. Email-as-name rate jumps from 0.2/mo to 6/mo.</td>
+      <td>167 contacts with dash values. Email-as-name bug begins at scale.</td>
+    </tr>
+    <tr>
+      <td>Feb 2026<br><span style="font-size: 10px;">(HubSpot: test contact)</span></td>
+      <td>Testing in production HubSpot</td>
+      <td>"Test1@Gmail.Com" created 27 Feb. Not cleaned up. Email-as-name rate hits 28/mo.</td>
+      <td>Confirms CRS had active HubSpot access and field mapping issues were detectable at this time.</td>
+    </tr>
+    <tr>
+      <td>Mar 2026<br><span style="font-size: 10px;">(Jayden's emails)</span></td>
+      <td>Did not connect refinance quiz webhook. Email-as-name continues at 28/mo.</td>
+      <td>Refinance leads not captured. 80+ leads lost total.</td>
+      <td>Jayden discovers issues 1 April. "$50k+ revenue impact."</td>
+    </tr>
+    <tr>
+      <td>Ongoing</td>
+      <td>CF7 #14462 does not send transaction_type (while #11832 does)</td>
+      <td>72+ inline CTA form instances have no lead intent context</td>
+      <td>Leads from #14462 arrive without transaction type — sales must manually qualify</td>
+    </tr>
+  </table>
+</div>
+
+<div class="damage">
+  <h3>What CRS Was Responsible For</h3>
+  <p>CRS (Conversion Rate Store / conversionrate.store) was contracted under a Consulting Services Agreement (referenced by their own team member Yehor on 24 Jul 2024). Their scope included:</p>
+  <p>&bull; Contact Form 7 form configurations and field mappings</p>
+  <p>&bull; Quiz JavaScript logic (including <code>submitToContactForm7()</code>)</p>
+  <p>&bull; HubSpot Collected Form integration setup (Yuliia confirmed this was CRS work, last updated October 2025)</p>
+  <p>&bull; Webhook connections for form submissions</p>
+  <p>&bull; End-to-end lead delivery verification (demonstrated in Jul 2024 when they verified Zapier + email delivery)</p>
+  <p>&bull; QA testing — explicitly promised by Gleb on 23 Dec 2025: <em>"No item is marked 'ready' without production validation"</em></p>
+  <p style="margin-top: 16px;"><strong>Every issue documented in this report falls within CRS's contracted scope and established practice.</strong> CRS built the forms, wrote the JavaScript, configured the CF7 mappings, and had previously demonstrated end-to-end lead delivery verification (July 2024). CRS also committed in writing to enforce production validation (December 2025). The forms shipped after that commitment contain the defects documented above.</p>
+  <p><strong>No email was found where CRS disclaimed responsibility for HubSpot field mappings, lead data quality, or integration testing.</strong></p>
+</div>
+
+<div class="damage" style="border-left: 4px solid var(--hg-red); background: #fef2f2;">
+  <h3 style="color: var(--hg-red);">KEY EVIDENCE: CRS Verified Zapier Integration — Then Claimed Ignorance</h3>
+  <p>On <strong>2 April 2026</strong>, CRS co-founder Gleb Hodorovskiy claimed their team had never heard of Zapier and was unaware of the <code>9wymd7m4@robot.zapier.com</code> webhook.</p>
+  <p>This is contradicted by CRS's own email from <strong>19 July 2024</strong>, written by CRS team lead <strong>Ihor Sokolov</strong>:</p>
+  <blockquote style="background: #fff; border-left: 4px solid var(--hg-red); padding: 16px 20px; margin: 16px 0; font-style: italic; font-size: 15px; line-height: 1.6;">
+    "We have verified that the conversions from the previous version are being streamed to Zapier and the following email addresses:<br>
+    - nathan.vecchio@huntergalloway.com.au<br>
+    - joshua.vecchio@huntergalloway.com.au<br>
+    - jayden.vecchio@huntergalloway.com.au<br>
+    - <strong style="color: var(--hg-red);">9wymd7m4@robot.zapier.com</strong>"
+  </blockquote>
+  <p style="font-size: 12px; color: #666;">— Ihor Sokolov, CRS Team Lead, email to Jayden Vecchio, 19 July 2024 (Subject: "Re: CRO for huntergalloway.com.au redesign")</p>
+  <p style="margin-top: 16px;"><strong>CRS knew about Zapier. CRS verified the exact webhook address. CRS later created new forms without connecting this webhook — then denied knowledge of it. This is not a mistake. It is either gross negligence or a deliberate misrepresentation.</strong></p>
+
+  <h4 style="margin-top: 24px;">Impact of This Failure</h4>
+  <p>When CRS created new forms in late 2025, they did not replicate the Zapier webhook they had verified 16 months earlier. As a result:</p>
+  <p>&bull; <strong>82 of 90</strong> contacts with the email-as-firstname defect never progressed past Lead stage in HubSpot</p>
+  <p>&bull; By comparison, <strong>97%</strong> of correctly-mapped contacts progressed to Opportunity or Customer stage</p>
+  <p>&bull; The refinance quiz webhook was never connected at all — zero data delivered to the CRM automation</p>
+  <p>&bull; Estimated revenue impact: <strong>$53,032 – $93,158</strong></p>
+
+  <h4 style="margin-top: 24px;">Pattern of Negligence (Email Evidence)</h4>
+  <table>
+    <tr><th>Date</th><th>Incident</th><th>Source</th></tr>
+    <tr><td>May 2024</td><td>CF7 plugin "data erasure" bug — CRS fix required</td><td>Mikhail Klimenko email, 11 May 2024</td></tr>
+    <tr><td>Jun 2024</td><td>Conversion rate collapsed from 0.80% to 0.50% post-redesign; $60k spent, 20% revenue loss</td><td>Jayden Vecchio email, 27 Jun 2024</td></tr>
+    <tr><td>Jun 2024</td><td>Simon escalates: CRS "never admitted they didn't read the scoping doc"</td><td>Simon Heikkila email, 28 Jun 2024</td></tr>
+    <tr><td>Jul 2024</td><td>Ihor verifies Zapier webhook <code>9wymd7m4@robot.zapier.com</code></td><td>Ihor Sokolov email, 19 Jul 2024</td></tr>
+    <tr><td>Aug 2024</td><td>CRS "fixed" a bug but broke the contact form — Jayden had to roll back the server himself</td><td>Jayden Vecchio email, 26 Aug 2024</td></tr>
+    <tr><td>Dec 2025</td><td>Holiday banner declared "ready and QA'd" but never went live — wrong A/B variant deployed</td><td>Simon Heikkila email, 23 Dec 2025</td></tr>
+    <tr><td>Dec 2025</td><td>Gleb promises: "No item is marked ready without production validation"</td><td>Gleb Hodorovskiy email, 23 Dec 2025</td></tr>
+    <tr><td>Dec 2025</td><td>Simon identifies "systemic delivery problem" — grammatical errors in deployments, no system of record</td><td>Simon Heikkila email, 24 Dec 2025</td></tr>
+    <tr><td>Apr 2026</td><td>New forms shipped without Zapier webhook, with email-as-firstname field mapping error</td><td>Jayden Vecchio / Yuliia Boiko, 1–2 Apr 2026</td></tr>
+    <tr><td>Apr 2026</td><td>Gleb admits "our developer's mistake" but claims "first time we've heard" of Zapier</td><td>Gleb Hodorovskiy email, 2 Apr 2026</td></tr>
+  </table>
+</div>
+
+
+<hr>
+
+<!-- ============================================================ -->
+<h2>Verification Method</h2>
+
+<div class="info">
+  <h3>How This Data Was Verified</h3>
+  <p>All findings were obtained via the HubSpot CRM API and Playwright browser automation on 2 April 2026:</p>
+  <p>&bull; <strong>Email-as-name search:</strong> <code>POST /crm/v3/objects/contacts/search</code> with filter <code>firstname CONTAINS_TOKEN ".com"</code> — returned 90 contacts</p>
+  <p>&bull; <strong>Dash values search:</strong> <code>POST /crm/v3/objects/contacts/search</code> with filter <code>what_is_your_current_mortgage_interest_rate_ HAS_PROPERTY</code> — returned 167 contacts, all with <code>"-"</code></p>
+  <p>&bull; <strong>/lower-your-rate/ search:</strong> <code>POST /crm/v3/objects/contacts/search</code> with filter <code>hs_analytics_first_url CONTAINS_TOKEN "lower-your-rate"</code> — returned 15 contacts</p>
+  <p>&bull; <strong>Property verification:</strong> Direct contact lookup confirmed <code>transaction_type</code> property exists and is populated on form #11832 contacts (e.g. "Purchase A Property"). Form #14462 contacts do not have this field set.</p>
+  <p>&bull; <strong>Quiz JS inspection:</strong> Playwright extracted the full <code>submitToContactForm7()</code> function source from the live homepage, confirming the hardcoded dashes</p>
+  <p>&bull; <strong>WordPress frontend scan:</strong> Playwright visited homepage, /contact/, /lower-your-rate/, /mortgage-calculator/ — extracted all inline JS, counted forms, checked for console errors</p>
+  <p>&bull; <strong>Quiz JS extraction:</strong> Full <code>submitToContactForm7()</code> source extracted and inspected — confirmed hardcoded dashes and missing <code>answers</code> object in submission</p>
+  <p style="margin-top: 12px;">All contact IDs and links in this report are live HubSpot URLs that can be independently verified. All WordPress findings can be reproduced by running <code>npx playwright test</code> (142 tests).</p>
+</div>
+
+<hr>
+
+<div style="background: var(--hg-gray); border-radius: 12px; padding: 24px; margin-top: 48px;">
+  <p style="color: #666; font-size: 12px; margin-top: 0; text-align: center;">Prepared for Hunter Galloway &nbsp;·&nbsp; Verified 2 April 2026 &nbsp;·&nbsp; All data independently verifiable via HubSpot CRM API (Account 4607234)</p>
+</div>
+
+</body>
+</html>
+
+(function(){

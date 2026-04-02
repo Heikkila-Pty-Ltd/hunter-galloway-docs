@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hunter Galloway — Quiz Flow Specification & Bug Report</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"></script>
+<style>
+  :root {
+    --hg-gold: #FDB948;
+    --hg-gold-light: #FEF7EA;
+    --hg-dark: #1a1a2e;
+    --hg-red: #e74c3c;
+    --hg-green: #27ae60;
+    --hg-blue: #2E75B6;
+    --hg-gray: #f8f9fa;
+    --hg-border: #e0e0e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6; color: #333; background: #fff;
+    max-width: 1100px; margin: 0 auto; padding: 40px 24px;
+  }
+  h1 { font-size: 28px; color: var(--hg-dark); margin-bottom: 8px; }
+  h2 { font-size: 22px; color: var(--hg-dark); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--hg-gold); }
+  h3 { font-size: 18px; color: var(--hg-dark); margin: 32px 0 12px; }
+  h4 { font-size: 15px; color: #555; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: #666; font-size: 16px; margin-bottom: 32px; }
+  .meta { display: flex; gap: 24px; margin-bottom: 40px; font-size: 13px; color: #888; flex-wrap: wrap; }
+  .meta span { background: var(--hg-gray); padding: 4px 12px; border-radius: 4px; }
+
+  /* Bug callout */
+  .bug-box {
+    background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid var(--hg-red);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .bug-box h3 { color: var(--hg-red); margin: 0 0 8px; font-size: 16px; }
+  .bug-box p { margin-bottom: 6px; }
+  .bug-box code { background: #fee2e2; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+
+  /* Info box */
+  .info-box {
+    background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid var(--hg-blue);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .info-box h3 { color: var(--hg-blue); margin: 0 0 8px; font-size: 16px; }
+
+  /* Success box */
+  .success-box {
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid var(--hg-green);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .success-box h3 { color: var(--hg-green); margin: 0 0 8px; font-size: 16px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  th { background: var(--hg-dark); color: #fff; text-align: left; padding: 10px 14px; font-weight: 600; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--hg-border); }
+  tr:nth-child(even) { background: var(--hg-gray); }
+
+  /* Flow path cards */
+  .path-card {
+    border: 1px solid var(--hg-border); border-radius: 12px; padding: 24px;
+    margin: 24px 0; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .path-card.blocked { border-color: var(--hg-red); background: #fffbfb; }
+  .path-card.modified { border-color: var(--hg-gold); background: #fffdf5; }
+  .path-card.new-path { border-color: var(--hg-green); background: #f9fefb; }
+  .path-label {
+    display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; padding: 3px 10px; border-radius: 4px; margin-bottom: 12px;
+  }
+  .path-label.dead-end { background: var(--hg-red); color: #fff; }
+  .path-label.redesign { background: var(--hg-gold); color: var(--hg-dark); }
+  .path-label.keep { background: var(--hg-green); color: #fff; }
+
+  /* Wireframe */
+  .wireframe {
+    border: 2px dashed #ccc; border-radius: 16px; padding: 24px; margin: 16px 0;
+    background: #fafafa; font-family: 'Courier New', monospace; font-size: 13px;
+    max-width: 480px;
+  }
+  .wireframe .wf-title { font-weight: 700; font-size: 16px; margin-bottom: 12px; text-align: center; font-family: 'Segoe UI', sans-serif; }
+  .wireframe .wf-subtitle { font-size: 12px; color: #888; text-align: center; margin-bottom: 16px; font-family: 'Segoe UI', sans-serif; }
+  .wf-option {
+    border: 1px solid #ddd; border-radius: 8px; padding: 10px 14px; margin: 6px 0;
+    background: #fff; cursor: default; display: flex; align-items: center; gap: 8px;
+  }
+  .wf-option .radio { width: 16px; height: 16px; border: 2px solid #bbb; border-radius: 50%; flex-shrink: 0; }
+  .wf-input {
+    border: 1px solid #ddd; border-radius: 8px; padding: 10px 14px; margin: 6px 0;
+    background: #fff; color: #aaa; width: 100%;
+  }
+  .wf-select {
+    border: 1px solid #ddd; border-radius: 8px; padding: 10px 14px; margin: 6px 0;
+    background: #fff; color: #aaa; width: 100%; display: flex; justify-content: space-between;
+  }
+  .wf-btn {
+    background: var(--hg-gold); color: var(--hg-dark); border: none; border-radius: 8px;
+    padding: 12px 24px; font-weight: 700; width: 100%; margin-top: 16px; text-align: center;
+    font-size: 14px;
+  }
+  .wf-btn.secondary { background: #eee; color: #555; }
+  .wf-label { font-weight: 600; margin: 12px 0 4px; font-family: 'Segoe UI', sans-serif; font-size: 13px; }
+  .wf-hint { font-size: 11px; color: #999; margin-bottom: 6px; font-family: 'Segoe UI', sans-serif; }
+  .wf-icon { font-size: 24px; text-align: center; margin-bottom: 8px; }
+  .wf-message {
+    background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px;
+    margin: 8px 0; font-family: 'Segoe UI', sans-serif; font-size: 13px; line-height: 1.5;
+  }
+  .wf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+  /* Mermaid diagrams */
+  .mermaid { margin: 24px 0; overflow-x: auto; }
+  .mermaid svg { max-width: 100%; }
+
+  /* Code blocks */
+  pre {
+    background: #1e1e2e; color: #cdd6f4; padding: 16px 20px; border-radius: 8px;
+    overflow-x: auto; font-size: 13px; margin: 12px 0 20px; line-height: 1.5;
+  }
+  code { font-family: 'Fira Code', 'Consolas', monospace; }
+  .inline-code { background: #eee; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+
+  /* TOC */
+  .toc { background: var(--hg-gray); border-radius: 12px; padding: 24px; margin: 24px 0; }
+  .toc h3 { margin: 0 0 12px; font-size: 16px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin: 4px 0; }
+  .toc a { color: var(--hg-blue); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Section divider */
+  hr { border: none; border-top: 1px solid var(--hg-border); margin: 48px 0; }
+
+  /* Comparison layout */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .compare > div { padding: 16px; border-radius: 8px; }
+  .compare .current { background: #fef2f2; border: 1px solid #fecaca; }
+  .compare .proposed { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .compare h4 { margin-top: 0; }
+  @media (max-width: 700px) { .compare { grid-template-columns: 1fr; } }
+
+  .step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; background: var(--hg-gold); color: var(--hg-dark);
+    border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 6px;
+  }
+</style>
+</head>
+<body><script>(function(){var k="hg_audit_auth",p="huntergalloway2026";if(sessionStorage.getItem(k)===p)return;var v=prompt("Access code:");if(v===p){sessionStorage.setItem(k,p)}else{document.write("<div style=\"text-align:center;padding:100px;font-family:sans-serif;color:\#999\">Access denied.</div>");document.close()}})()</script>
+
+<div style="float: right; font-size: 13px; margin-top: -4px;">
+<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #555; margin-right: 6px;">System Docs</a>
+<a href="directory.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: var(--hg-dark, #1a1a2e); margin-right: 6px;">📋 Directory</a>
+<a href="lower-your-rate-form.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #e74c3c; margin-right: 6px;">🐛 Form Data Loss</a>
+<a href="implementation.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #27ae60; margin-right: 6px;">🛠 Code Changes</a>
+<a href="index-uk.html" style="color: #2E75B6; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #f8f9fa;">🇺🇦 Українська версія</a>
+</div>
+<h1>Quiz Section — Flow Specification & Bug Report</h1>
+<p class="subtitle">Developer documentation for fixing the homepage quiz at <code>huntergalloway.com.au</code></p>
+<div class="meta">
+  <span>Date: 2 April 2026</span>
+  <span>Section: <code>#home_quiz &gt; div &gt; div &gt; div.quiz_card</code></span>
+  <span>Priority: High</span>
+  <span>Status: Regression — logic removed</span>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#bug">Bug Summary</a></li>
+    <li><a href="#current">Current (Broken) Flow</a></li>
+    <li><a href="#master">Master Flow Diagram</a></li>
+    <li><a href="#path-purchase">Path 1 — Purchase a Property</a></li>
+    <li><a href="#path-build">Path 2 — Build (Same as Purchase)</a></li>
+    <li><a href="#path-commercial">Path 3 — Commercial / Business Loan (Dead End)</a></li>
+    <li><a href="#path-refinance">Path 4 — Refinance a Loan</a></li>
+    <li><a href="#path-exploring">Path 5 — I'm Just Exploring</a></li>
+    <li><a href="#implementation">Implementation Notes</a></li>
+    <li><a href="#data">Data & Field Reference</a></li>
+  </ol>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="bug">1. Bug Summary</h2>
+
+<div class="bug-box">
+  <h3>Regression: All quiz paths use identical linear flow</h3>
+  <p>The <code>nextStep()</code> function in the quiz JavaScript has <strong>no conditional branching</strong>. Regardless of what the user selects in Step 1, the quiz always progresses through the same 5 steps:</p>
+  <p><code>Step 1 (selection) → Step 2 (situation) → Step 3 (finances) → Step 4 (contact) → Step 5 (borrowing result)</code></p>
+  <p>This means:</p>
+  <p style="margin-left: 16px;">
+    — <strong>"Build"</strong> should follow the same path as Purchase (borrowing capacity calculator) — this is correct.<br>
+    — <strong>"Commercial or business loan"</strong> goes through residential loan questions — HG has limited commercial capacity and is currently not accepting new clients.<br>
+    — <strong>"Refinance"</strong> asks "Are you a first home owner?" and "How much is your deposit?" which don't apply.<br>
+    — <strong>"I'm just exploring"</strong> forces the same full borrowing calculator, which is too aggressive for explorers.
+  </p>
+</div>
+
+<h3>Root Cause</h3>
+<p>The <code>nextStep()</code> function simply increments <code>currentStep++</code> without reading the value of the <code>looking</code> radio input:</p>
+
+<pre><code>function nextStep() {
+  // BUG: No branching based on answers.looking
+  if (currentStep === totalSteps - 1) {
+    const data = calculateLoanCapacity(answers);
+    borrow.textContent = data.maxPropertyValue;
+    maxBorrow.textContent = data.improvedPropertyValue;
+    submitForm();
+    return;
+  }
+  if (currentStep < totalSteps) {
+    stepElements[currentStep - 1].classList.remove('active');
+    currentStep++;
+    stepElements[currentStep - 1].classList.add('active');
+    updateButton();
+    disableMainButton();
+  }
+}</code></pre>
+
+<p>There is no code that checks <code>answers.looking</code> (or the radio value for <code>name="looking"</code>) to branch the flow.</p>
+
+<div class="info-box">
+  <h3>Developer Reference — Where Everything Lives</h3>
+  <table>
+    <tr><th>What</th><th>Where</th></tr>
+    <tr><td>Quiz HTML container</td><td><code>.quiz_card</code> — on the <strong>homepage (<code>/</code>) only</strong>. The <code>/mortgage-calculator/</code> page does NOT have this quiz (verified via Playwright).</td></tr>
+    <tr><td>Step elements</td><td><code>.step_1</code> through <code>.step_5</code> — visibility toggled via <code>.active</code> class</td></tr>
+    <tr><td>Step 1 radio inputs</td><td><code>input[name="looking"]</code> — values: <code>purchase</code>, <code>build</code>, <code>commercial</code>, <code>refinance</code>, <code>exploring</code></td></tr>
+    <tr><td>Quiz JS</td><td>Inline <code>&lt;script&gt;</code> in page body (not a separate file). Functions: <code>nextStep()</code>, <code>handleBackButton()</code>, <code>disableMainButton()</code>, <code>submitForm()</code></td></tr>
+    <tr><td>Borrowing calculator</td><td><code>calculateLoanCapacity(answers)</code> — loaded from external script, not inline. Returns <code>{ maxPropertyValue, improvedPropertyValue }</code></td></tr>
+    <tr><td>Form submission</td><td><code>submitForm()</code> → <code>submitToContactForm7(formAnswers)</code> → POSTs to <code>/wp-json/contact-form-7/v1/contact-forms/<strong>72896</strong>/feedback</code> (staging: <code>72338</code>)</td></tr>
+    <tr><td>Data submitted</td><td><code>formAnswers = { name, email, phone }</code> — <strong>quiz answers from the <code>answers</code> object are NOT submitted</strong>, they only feed the client-side calculator</td></tr>
+    <tr><td>Progress indicator</td><td><code>#current_step</code> — shows "X / 5" hardcoded to 5 for all paths</td></tr>
+    <tr><td>Back button</td><td><code>.back_btn</code> with <code>onclick="handleBackButton()"</code> — decrements <code>currentStep</code></td></tr>
+  </table>
+</div>
+
+<div class="success-box">
+  <h3>Verification — Playwright Tests</h3>
+  <p>Run <code>npx playwright test tests/forms/homepage-quiz-branching.spec.ts</code> to verify the branching bug (5 tests). The full suite is 142 tests: <code>npx playwright test</code>. See <a href="test-coverage.html">Test Coverage Tracker</a> for details.</p>
+</div>
+
+<div class="bug-box">
+  <h3>Edge Cases &amp; Traps for Developers</h3>
+  <p>The following issues were found by inspecting the live JS. These will break your implementation if you don't account for them.</p>
+</div>
+
+<h3>1. <code>disableMainButton()</code> hardcodes step numbers</h3>
+<p>The button-enable logic checks specific step numbers:</p>
+<pre><code>if (currentStep === 1 && !answers.looking) { disabled }
+if (currentStep === 2 && (!answers.maritalStatus || ...)) { disabled }
+if (currentStep === 3 && (!answers.income || !answers.deposit)) { disabled }
+if (currentStep === 4 && (!formData.name || ...)) { disabled }</code></pre>
+<p><strong>Problem:</strong> If you add new steps (refinance steps, exploring steps), the step numbers won't match. Step 2 for refinance is "interest rate", not "marital status". You need to refactor this to check <strong>which fields the current step requires</strong>, not hardcoded step numbers.</p>
+
+<h3>2. <code>totalSteps = 5</code> is hardcoded</h3>
+<p><code>const totalSteps = 5</code> controls the progress indicator and the "Submit" button logic. Refinance has 6 steps. Exploring has 2–4. You must make this dynamic per flow.</p>
+
+<h3>3. <code>submitToContactForm7()</code> already sends refinance fields — as dashes</h3>
+<p>The existing submit function sends:</p>
+<pre><code>r.append("mortgage-rate", "-");
+r.append("still-owe", "-");
+r.append("loan-term", "-");
+r.append("important", "-");</code></pre>
+<p><strong>This is significant:</strong> CF7 form #72896 already has fields for refinance data (<code>mortgage-rate</code>, <code>still-owe</code>, <code>loan-term</code>, <code>important</code>) — they're just hardcoded to <code>"-"</code>. For the refinance flow, populate these with actual answers instead of adding new fields. This means the CF7 form and HubSpot mapping may already be set up.</p>
+
+<h3>4. <code>updateButton()</code> uses <code>totalSteps</code> for Submit vs Continue</h3>
+<pre><code>if (currentStep < totalSteps - 1) { "Continue" }
+else { "Submit" }</code></pre>
+<p>With dynamic step counts, this needs to check the current flow's total, not the global <code>totalSteps</code>.</p>
+
+<h3>5. <code>answers</code> and <code>formAnswers</code> are separate objects</h3>
+<pre><code>answers = { looking, maritalStatus, isFirstOwner, state, dependants, income, deposit }
+formAnswers = { name, email, phone }</code></pre>
+<p><code>answers</code> feeds the calculator. <code>formAnswers</code> is what gets submitted. For refinance, you need to add <code>interestRate</code>, <code>loanAmount</code>, <code>loanTerm</code>, <code>refiPriority</code> to the submission — but map them to the existing CF7 field names (<code>mortgage-rate</code>, <code>still-owe</code>, <code>loan-term</code>, <code>important</code>).</p>
+
+<h3>6. Event listeners are bound by element ID — new fields need new listeners</h3>
+<p>The existing code binds <code>addEventListener</code> to <code>#income</code>, <code>#deposit</code>, <code>#state</code>, <code>#name</code>, <code>#email</code>, <code>#phone</code> by ID. New refinance fields need their own listeners to update the <code>answers</code> object and call <code>disableMainButton()</code>.</p>
+
+<h3>7. No analytics tracking exists</h3>
+<p>The quiz has zero GTM dataLayer pushes, zero Google Analytics events, zero Facebook pixel events. This means there's no tracking of which quiz path users take, where they drop off, or conversion rates per path. Consider adding <code>dataLayer.push</code> events when branching is implemented.</p>
+
+<h3>8. No OTP/phone verification on the homepage quiz</h3>
+<p>Despite the spec mentioning OTP in some flows, the homepage quiz has no SMS verification. The phone field is a plain text input with client-side AU format validation only. The OTP system exists on a separate CRS-wrapped form (Flow 5 in the system docs) but is NOT part of this quiz.</p>
+
+<h3>9. <code>stepElements = document.querySelectorAll(".step")</code> runs once at load</h3>
+<p>This selector captures all <code>.step</code> elements when the page loads. If you add new step divs dynamically (e.g., refinance steps injected via JS), they won't be in this NodeList. Either add all step HTML at build time, or re-query after adding steps.</p>
+
+<hr>
+
+<h3>10. Progress indicator <code>"/ 5"</code> is hardcoded in HTML</h3>
+<p>The progress indicator is:</p>
+<pre><code>&lt;div class="progress_indicator"&gt;
+  &lt;span id="current_step"&gt;1&lt;/span&gt; / 5
+&lt;/div&gt;</code></pre>
+<p>The JS updates <code>#current_step</code> text, but the <code>/ 5</code> is static HTML. To make it dynamic, you need to also update or wrap the total in a <code>&lt;span&gt;</code> so JS can change it per flow.</p>
+
+<h3>11. Steps have different content heights — no animation</h3>
+<p>Step heights vary: Step 1 = 376px, Step 2 = 531px, Step 3 = 492px, Step 4 = 486px, Step 5 = 406px. The quiz card has no fixed height, no transition, no animation. When steps switch, the card height jumps instantly. New refinance/exploring steps will have different heights again. Consider adding <code>transition: height 0.3s</code> or <code>min-height</code> to avoid layout jumps.</p>
+
+<h3>12. Steps use <code>display: none</code>, not <code>.active</code> class for visibility</h3>
+<p>Hidden steps have <code>display: none</code> (not just missing the <code>.active</code> class). The JS removes <code>.active</code> from the current step and adds it to the next. Verify that your CSS ties <code>.active</code> to <code>display: block</code> and the default <code>.step</code> is <code>display: none</code>. New step divs need the same CSS rules.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="current">2. Current (Broken) Flow</h2>
+
+<div class="mermaid">
+flowchart TD
+    S1["<b>Step 1:</b> What are you looking to do?"]
+    S2["<b>Step 2:</b> Your situation<br/>(couple/single, FHO, state, dependants)"]
+    S3["<b>Step 3:</b> Finances<br/>(income, deposit)"]
+    S4["<b>Step 4:</b> Contact details<br/>(name, email, phone + OTP)"]
+    S5["<b>Step 5:</b> Borrowing capacity result"]
+
+    S1 -->|"Purchase"| S2
+    S1 -->|"Build"| S2
+    S1 -->|"Commercial"| S2
+    S1 -->|"Refinance"| S2
+    S1 -->|"Exploring"| S2
+    S2 --> S3 --> S4 --> S5
+
+    style S1 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style S2 fill:#fef2f2,stroke:#e74c3c,color:#000
+    style S3 fill:#fef2f2,stroke:#e74c3c,color:#000
+    style S4 fill:#fef2f2,stroke:#e74c3c,color:#000
+    style S5 fill:#fef2f2,stroke:#e74c3c,color:#000
+</div>
+
+<p>Every selection takes the <strong>exact same path</strong>. The quiz was likely designed with branching but it was lost during a redesign or A/B test update.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="master">3. Correct Master Flow Diagram</h2>
+
+<p>Below is the complete branching logic that <code>nextStep()</code> should implement. Each path is colour-coded and detailed in the sections that follow.</p>
+
+<div class="mermaid">
+flowchart TD
+    S1["<b>Step 1:</b> What are you looking to do?"]
+
+    S1 -->|"purchase"| P_S2["<b>Purchase Step 2:</b><br/>About your household"]
+    P_S2 --> P_S3["<b>Purchase Step 3:</b><br/>Your income &amp; savings"]
+    P_S3 --> P_S4["<b>Purchase Step 4:</b><br/>Contact details"]
+    P_S4 --> P_S5["<b>Purchase Step 5:</b><br/>Your borrowing power"]
+
+    S1 -->|"build"| P_S2
+
+    S1 -->|"commercial"| C_END["<b>Commercial — At Capacity</b><br/>Limited capacity,<br/>currently unavailable"]
+    C_END --> C_CTA["Redirect to Purchase<br/>or Contact page"]
+
+    S1 -->|"refinance"| R_S2["<b>Refi Step 2:</b><br/>Current interest rate"]
+    R_S2 --> R_S3["<b>Refi Step 3:</b><br/>Amount owing"]
+    R_S3 --> R_S4["<b>Refi Step 4:</b><br/>Remaining term"]
+    R_S4 --> R_S5["<b>Refi Step 5:</b><br/>Refinancing priority"]
+    R_S5 --> R_S6["<b>Refi Step 6:</b><br/>Contact details"]
+    R_S6 --> R_DONE["<b>Refi Done:</b><br/>Confirmation"]
+
+    S1 -->|"exploring"| E_S2["<b>Explore Step 2:</b><br/>What stage are you at?"]
+    E_S2 -->|"Ready to buy soon"| P_S2
+    E_S2 -->|"Curious about refi"| R_S2
+    E_S2 -->|"Just researching /<br/>6–12 months"| E_FORK{"Want to see your<br/>borrowing power?"}
+    E_FORK -->|"Yes, show me"| E_SIT["<b>Explore Step 3:</b><br/>About your household"]
+    E_SIT --> E_FIN["<b>Explore Step 4:</b><br/>Your income &amp; savings"]
+    E_FIN --> E_RESULT["<b>Explore Done:</b><br/>Borrowing power +<br/>resources"]
+    E_FORK -->|"Not yet"| E_RES["<b>Explore Done:</b><br/>Resources + soft CTA"]
+
+    style S1 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style P_S2 fill:#e8f5e9,stroke:#27ae60,color:#000
+    style P_S3 fill:#e8f5e9,stroke:#27ae60,color:#000
+    style P_S4 fill:#e8f5e9,stroke:#27ae60,color:#000
+    style P_S5 fill:#e8f5e9,stroke:#27ae60,color:#000
+    style C_END fill:#fef2f2,stroke:#e74c3c,color:#000
+    style C_CTA fill:#fef2f2,stroke:#e74c3c,color:#000
+    style R_S2 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style R_S3 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style R_S4 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style R_S5 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style R_S6 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style R_DONE fill:#FEF7EA,stroke:#FDB948,color:#000
+    style E_S2 fill:#eff6ff,stroke:#2E75B6,color:#000
+    style E_FORK fill:#eff6ff,stroke:#2E75B6,color:#000
+    style E_SIT fill:#eff6ff,stroke:#2E75B6,color:#000
+    style E_FIN fill:#eff6ff,stroke:#2E75B6,color:#000
+    style E_RESULT fill:#eff6ff,stroke:#2E75B6,color:#000
+    style E_RES fill:#eff6ff,stroke:#2E75B6,color:#000
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="path-purchase">4. Path 1 — Purchase a Property</h2>
+
+<div class="path-card">
+  <span class="path-label keep">Keep — Minor Tweaks</span>
+  <h3>This is the primary flow and is mostly correct today.</h3>
+  <p>The existing steps (situation → finances → contact → result) are appropriate for a purchase enquiry. Only minor improvements are recommended.</p>
+</div>
+
+<h3>Flow: Purchase</h3>
+<div class="mermaid">
+flowchart LR
+    A["Step 1<br/>Select: Purchase"] --> B["Step 2<br/>About Your Household"] --> C["Step 3<br/>Your Income &amp; Savings"] --> D["Step 4<br/>Contact Details"] --> E["Step 5<br/>Your Borrowing Power"]
+    style A fill:#FEF7EA,stroke:#FDB948
+    style B fill:#e8f5e9,stroke:#27ae60
+    style C fill:#e8f5e9,stroke:#27ae60
+    style D fill:#e8f5e9,stroke:#27ae60
+    style E fill:#e8f5e9,stroke:#27ae60
+</div>
+
+<h4>Step 2 — About Your Household</h4>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Options</th><th>Name</th></tr>
+  <tr><td>Couple or single?</td><td>Radio (2)</td><td>Couple · Single person</td><td><code>maritalStatus</code></td></tr>
+  <tr><td>First home owner?</td><td>Radio (2)</td><td>Yes · No</td><td><code>isFirstOwner</code></td></tr>
+  <tr><td>State buying in</td><td>Select</td><td>NSW · VIC · QLD · ACT · WA · SA · TAS · NT</td><td><code>state</code></td></tr>
+  <tr><td>Dependants</td><td>Radio (4)</td><td>None · 1 · 2 · 3+</td><td><code>dependants</code></td></tr>
+</table>
+
+<h4>Step 3 — Your Income &amp; Savings</h4>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Placeholder</th><th>Name</th></tr>
+  <tr><td>Total household income (before tax)</td><td>Currency input</td><td>e.g. 50,000</td><td><code>income</code></td></tr>
+  <tr><td>Deposit amount</td><td>Currency input</td><td>e.g. 40,000</td><td><code>deposit</code></td></tr>
+</table>
+
+<h4>Step 4 — Contact Details (unchanged)</h4>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Name</th></tr>
+  <tr><td>Full name</td><td>Text</td><td><code>name</code></td></tr>
+  <tr><td>Email</td><td>Email</td><td><code>email</code></td></tr>
+  <tr><td>Phone + OTP verification</td><td>Tel + code</td><td><code>phone</code></td></tr>
+</table>
+
+<h4>Step 5 — Your Borrowing Power (unchanged)</h4>
+<p>Shows the calculated borrowing amount via <code>calculateLoanCapacity()</code> and the "increase with our help" upsell. Includes a "Continue" CTA linking to a free assessment.</p>
+
+<div class="success-box">
+  <h3>No structural changes needed for Purchase</h3>
+  <p>This path works as intended. Just ensure the <code>nextStep()</code> branching only sends <code>looking === "purchase"</code> users down this path.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="path-build">5. Path 2 — Build (Same as Purchase)</h2>
+
+<div class="path-card">
+  <span class="path-label keep">Keep — Same Flow as Purchase</span>
+  <h3>Build follows the exact same path as Purchase.</h3>
+  <p>When a user selects "Build", they follow the same 5-step flow as Purchase: household situation → income &amp; savings → contact details → borrowing power result. The <code>looking</code> value is preserved as <code>"build"</code> in the form submission so the team knows this is a build enquiry.</p>
+</div>
+
+<h3>Flow: Build</h3>
+<div class="mermaid">
+flowchart LR
+    A["Step 1<br/>Select: Build"] --> B["Step 2<br/>About Your Household"] --> C["Step 3<br/>Your Income &amp; Savings"] --> D["Step 4<br/>Contact Details"] --> E["Step 5<br/>Your Borrowing Power"]
+    style A fill:#FEF7EA,stroke:#FDB948
+    style B fill:#e8f5e9,stroke:#27ae60
+    style C fill:#e8f5e9,stroke:#27ae60
+    style D fill:#e8f5e9,stroke:#27ae60
+    style E fill:#e8f5e9,stroke:#27ae60
+</div>
+
+<div class="success-box">
+  <h3>No separate flow needed</h3>
+  <p>Build uses the same steps, fields, and calculator as Purchase. The only difference is the <code>looking = "build"</code> value in the form submission, which lets the team route the lead appropriately.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="path-commercial">6. Path 3 — Commercial / Business Loan (Dead End)</h2>
+
+<div class="path-card blocked">
+  <span class="path-label dead-end">Capacity Limit — Soft Off-Ramp</span>
+  <h3>Commercial/business loans are offered but HG is currently at capacity.</h3>
+  <p>Same pattern as Build — show a message explaining limited capacity due to complexity, then redirect to other options.</p>
+</div>
+
+<h3>Flow: Commercial</h3>
+<div class="mermaid">
+flowchart LR
+    A["Step 1<br/>Select: Commercial"] --> B["Capacity Screen<br/>Currently at capacity"]
+    B --> C["CTA: 'Looking to buy<br/>a home instead?'"]
+    B --> D["CTA: 'Join waitlist /<br/>get in touch'"]
+    style A fill:#FEF7EA,stroke:#FDB948
+    style B fill:#fef2f2,stroke:#e74c3c
+    style C fill:#e8f5e9,stroke:#27ae60
+    style D fill:#eff6ff,stroke:#2E75B6
+</div>
+
+<h4>Wireframe — Commercial Capacity Screen</h4>
+<div class="wireframe">
+  <div class="wf-icon">🏢</div>
+  <div class="wf-title">Commercial Loans — Currently at Capacity</div>
+  <div class="wf-message">
+    Due to the complexity of commercial and business loans, we have a <strong>limited capacity</strong> for these applications. Unfortunately, we're <strong>currently at capacity</strong> and unable to take on new commercial loan clients at this time.<br><br>
+    We'd still love to help if you're looking to <strong>buy a home or investment property</strong>, or <strong>refinance an existing loan</strong> — that's where we really shine!
+  </div>
+  <div class="wf-btn">I'm Also Looking to Buy a Home →</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-btn secondary">Get in Touch Anyway</div>
+  <div style="height: 8px;"></div>
+  <div style="text-align: center; font-size: 11px; color: #999; font-family: sans-serif;">
+    <a href="#" style="color: #999;">← Start over</a>
+  </div>
+</div>
+
+<h3>Implementation Logic</h3>
+<pre><code>if (looking === 'commercial') {
+  showDeadEndScreen('commercial');
+  return;
+}</code></pre>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="path-refinance">7. Path 4 — Refinance a Loan</h2>
+
+<div class="path-card modified">
+  <span class="path-label redesign">Redesign — Different Questions</span>
+  <h3>Refinance requires a completely different set of questions.</h3>
+  <p>The current flow asks "Are you a first home owner?" and "How much is your deposit?" — neither of which applies to someone refinancing. This path needs its own steps.</p>
+</div>
+
+<div class="info-box">
+  <h3>Reference: Existing Live Refinance Quiz</h3>
+  <p>There is already a live refinance quiz at <code>huntergalloway.com.au/lower-your-rate/</code> which uses a multi-step format with one question per screen. The homepage quiz refinance path should match this structure for consistency.</p>
+</div>
+
+<h3>Flow: Refinance (5 steps — matches live quiz)</h3>
+<div class="mermaid">
+flowchart LR
+    A["Step 1<br/>Select: Refinance"] --> B["Refi Step 2<br/>Current interest rate"]
+    B --> C["Refi Step 3<br/>Amount owing"]
+    C --> D["Refi Step 4<br/>Remaining term"]
+    D --> E["Refi Step 5<br/>Refinancing priority"]
+    E --> F["Refi Step 6<br/>Contact details"]
+    F --> G["Refi Done<br/>Confirmation"]
+    style A fill:#FEF7EA,stroke:#FDB948
+    style B fill:#FEF7EA,stroke:#FDB948
+    style C fill:#FEF7EA,stroke:#FDB948
+    style D fill:#FEF7EA,stroke:#FDB948
+    style E fill:#FEF7EA,stroke:#FDB948
+    style F fill:#FEF7EA,stroke:#FDB948
+    style G fill:#FEF7EA,stroke:#FDB948
+</div>
+
+<div class="compare">
+  <div class="current">
+    <h4>❌ Current homepage quiz (wrong)</h4>
+    <p>Are you applying as a couple or single? ← irrelevant</p>
+    <p>Are you a <strong>first home owner</strong>? ← irrelevant</p>
+    <p>What state are you buying in? ← irrelevant</p>
+    <p>How many dependants? ← irrelevant</p>
+    <p>Household income? ← irrelevant</p>
+    <p>How much is your <strong>deposit</strong>? ← irrelevant</p>
+  </div>
+  <div class="proposed">
+    <h4>✅ Proposed (matches /lower-your-rate/ quiz)</h4>
+    <p>Current mortgage interest rate?</p>
+    <p>How much do you still owe?</p>
+    <p>Remaining loan term?</p>
+    <p>What's most important in refinancing?</p>
+    <p>Contact details (name, email, phone)</p>
+    <p>Confirmation + next steps</p>
+  </div>
+</div>
+
+<h4>Refi Step 2 — Current Interest Rate</h4>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Options</th><th>Name</th></tr>
+  <tr><td>What is your current mortgage interest rate?</td><td>Radio (5)</td><td>Below 5% · 5 - 5.25% · 5.25 - 5.5% · Above 5.5% · Not sure</td><td><code>interestRate</code></td></tr>
+</table>
+
+<div class="wireframe">
+  <div class="wf-title">What is your current mortgage interest rate?</div>
+  <div class="wf-option"><div class="radio"></div> Below 5%</div>
+  <div class="wf-option"><div class="radio"></div> 5 - 5.25%</div>
+  <div class="wf-option"><div class="radio"></div> 5.25 - 5.5%</div>
+  <div class="wf-option"><div class="radio"></div> Above 5.5%</div>
+  <div class="wf-option"><div class="radio"></div> Not sure</div>
+</div>
+
+<h4>Refi Step 3 — Amount Owing</h4>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Options</th><th>Name</th></tr>
+  <tr><td>How much do you still owe on your mortgage?</td><td>Radio (3)</td><td>Less than $300,000 · $300,000 to $500,000 · More than $500,000</td><td><code>loanAmount</code></td></tr>
+</table>
+
+<div class="wireframe">
+  <div class="wf-title">How much do you still owe on your mortgage?</div>
+  <div class="wf-option"><div class="radio"></div> Less than $300,000</div>
+  <div class="wf-option"><div class="radio"></div> $300,000 to $500,000</div>
+  <div class="wf-option"><div class="radio"></div> More than $500,000</div>
+</div>
+
+<h4>Refi Step 4 — Remaining Loan Term</h4>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Options</th><th>Name</th></tr>
+  <tr><td>What is your remaining loan term?</td><td>Radio (3)</td><td>Less than 5 years · 5 - 10 years · More than 10 years</td><td><code>loanTerm</code></td></tr>
+</table>
+
+<div class="wireframe">
+  <div class="wf-title">What is your remaining loan term?</div>
+  <div class="wf-option"><div class="radio"></div> Less than 5 years</div>
+  <div class="wf-option"><div class="radio"></div> 5 - 10 years</div>
+  <div class="wf-option"><div class="radio"></div> More than 10 years</div>
+</div>
+
+<h4>Refi Step 5 — Refinancing Priority</h4>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Options</th><th>Name</th></tr>
+  <tr><td>What's most important to you in refinancing?</td><td>Radio (4)</td><td>Lower monthly payment · Pay off loan faster · Cash out equity · Lock in a fixed rate</td><td><code>refiPriority</code></td></tr>
+</table>
+
+<div class="wireframe">
+  <div class="wf-title">What's most important to you in refinancing?</div>
+  <div class="wf-option"><div class="radio"></div> Lower monthly payment</div>
+  <div class="wf-option"><div class="radio"></div> Pay off loan faster</div>
+  <div class="wf-option"><div class="radio"></div> Cash out equity</div>
+  <div class="wf-option"><div class="radio"></div> Lock in a fixed rate</div>
+</div>
+
+<h4>Refi Step 6 — Contact Details</h4>
+<p>Name, email, and phone. Matches the live quiz at <code>/lower-your-rate/</code>.</p>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Placeholder</th><th>Name</th></tr>
+  <tr><td>Name</td><td>Text</td><td>Enter your Name</td><td><code>name</code></td></tr>
+  <tr><td>Email</td><td>Email</td><td>Enter your Email</td><td><code>email</code></td></tr>
+  <tr><td>Phone</td><td>Tel</td><td>Enter your Phone</td><td><code>phone</code></td></tr>
+</table>
+
+<h4>Refi Done — Confirmation Screen</h4>
+<p>Show a confirmation and next-steps screen. Matches the live quiz success message.</p>
+
+<div class="wireframe">
+  <div class="wf-icon">✅</div>
+  <div class="wf-title">Thanks! We'll Be in Touch Shortly</div>
+  <div class="wf-message">
+    We have received your request and sent you a confirmation email. <strong>We will get in contact with you within 4 business hours.</strong><br><br>
+    We are looking forward to meeting you and helping you find the right solution for your needs!<br><br>
+    <strong>In the meantime, here are some resources:</strong><br>
+    📖 <a href="#">Refinancing Guide</a><br>
+    📖 <a href="#">First Home Buyers Guide</a><br>
+    📖 <a href="#">Property Investment Guide</a>
+  </div>
+</div>
+
+<div class="success-box">
+  <h3>Consistent with Live Quiz</h3>
+  <p>This refinance flow matches the existing live quiz at <code>/lower-your-rate/</code>. The same questions, options, and contact form are used — ensuring a consistent experience regardless of which page the user starts on.</p>
+</div>
+
+<div class="bug-box">
+  <h3>CF7 Field Name Mapping — Use Existing Fields, Don't Create New Ones</h3>
+  <p><code>submitToContactForm7()</code> already sends refinance fields to CF7 #72896 — they're just hardcoded to <code>"-"</code>. Map the refinance quiz answers to these <strong>existing</strong> CF7 field names:</p>
+  <table>
+    <tr><th>Quiz Field (spec name)</th><th>CF7 Field Name (in FormData)</th><th>Current Value</th><th>Should Be</th></tr>
+    <tr><td><code>interestRate</code></td><td><code>mortgage-rate</code></td><td><code>"-"</code></td><td>User's selection (e.g. "5-5.25")</td></tr>
+    <tr><td><code>loanAmount</code></td><td><code>still-owe</code></td><td><code>"-"</code></td><td>User's selection (e.g. "300k-500k")</td></tr>
+    <tr><td><code>loanTerm</code></td><td><code>loan-term</code></td><td><code>"-"</code></td><td>User's selection (e.g. "5-10")</td></tr>
+    <tr><td><code>refiPriority</code></td><td><code>important</code></td><td><code>"-"</code></td><td>User's selection (e.g. "lower-payment")</td></tr>
+  </table>
+  <p><strong>Do NOT add new CF7 fields for these.</strong> The CF7 form definition and HubSpot mapping may already be configured for these field names.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="path-exploring">8. Path 5 — I'm Just Exploring</h2>
+
+<div class="path-card new-path">
+  <span class="path-label redesign">Redesign — Two-Fork Approach</span>
+  <h3>Explorers get triaged by stage, then offered borrowing power as opt-in value.</h3>
+  <p>Someone who selects "I'm just exploring" isn't ready to hand over income details and go through phone verification. But many explorers <em>are</em> curious about their borrowing power. This flow triages by stage: users who are further along get redirected to the Purchase or Refinance flows, while early-stage explorers are offered an optional borrowing power check — no pressure, just value.</p>
+</div>
+
+<h3>Flow: Exploring (Two-Fork Design)</h3>
+<div class="mermaid">
+flowchart TD
+    A["Step 1<br/>Select: Exploring"] --> B["Explore Step 2<br/>What stage are you at?"]
+    B -->|"Ready to buy soon"| REDIR_P["Redirect → Purchase flow<br/>'Sounds like you're further<br/>along than you think!'"]
+    B -->|"Curious about refinancing"| REDIR_R["Redirect → Refinance flow<br/>'Let's look at your<br/>refinance options.'"]
+    B -->|"Just researching /<br/>6–12 months out"| FORK{"'Want to see how much<br/>you could borrow?<br/>It takes 30 seconds.'"}
+    FORK -->|"Yes, show me"| E_SIT["Explore Step 3<br/>About your household"]
+    E_SIT --> E_FIN["Explore Step 4<br/>Your income &amp; savings"]
+    E_FIN --> E_RESULT["Explore Done<br/>Borrowing power result<br/>+ resources + soft CTA"]
+    FORK -->|"Not yet, just<br/>show me resources"| E_RES["Explore Done<br/>Resources + soft CTA"]
+    style A fill:#FEF7EA,stroke:#FDB948
+    style B fill:#eff6ff,stroke:#2E75B6
+    style REDIR_P fill:#e8f5e9,stroke:#27ae60
+    style REDIR_R fill:#FEF7EA,stroke:#FDB948
+    style FORK fill:#eff6ff,stroke:#2E75B6
+    style E_SIT fill:#eff6ff,stroke:#2E75B6
+    style E_FIN fill:#eff6ff,stroke:#2E75B6
+    style E_RESULT fill:#eff6ff,stroke:#2E75B6
+    style E_RES fill:#eff6ff,stroke:#2E75B6
+</div>
+
+<h4>Explore Step 2 — What Stage Are You At?</h4>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Options</th><th>Name</th><th>Behaviour</th></tr>
+  <tr><td>Where are you in your journey?</td><td>Radio (4)</td><td>Just starting to research</td><td rowspan="4"><code>exploreStage</code></td><td>→ Borrowing power fork</td></tr>
+  <tr><td></td><td></td><td>Thinking about buying in 6–12 months</td><td>→ Borrowing power fork</td></tr>
+  <tr><td></td><td></td><td>Ready to buy soon, comparing options</td><td>→ Redirect to <strong>Purchase</strong> flow (Step 2)</td></tr>
+  <tr><td></td><td></td><td>Curious about refinancing my current loan</td><td>→ Redirect to <strong>Refinance</strong> flow (Step 2)</td></tr>
+</table>
+
+<h4>Wireframe — Explore Step 2</h4>
+<div class="wireframe">
+  <div class="wf-title">Where are you in your journey?</div>
+  <div class="wf-subtitle">No pressure — we're here to help at any stage.</div>
+  <div class="wf-option"><div class="radio"></div> Just starting to research</div>
+  <div class="wf-option"><div class="radio"></div> Thinking about buying in 6–12 months</div>
+  <div class="wf-option"><div class="radio"></div> Ready to buy soon, comparing options</div>
+  <div class="wf-option"><div class="radio"></div> Curious about refinancing</div>
+</div>
+
+<div class="info-box">
+  <h3>Stage-Based Redirects</h3>
+  <p><strong>"Ready to buy soon, comparing options"</strong> → Set <code>answers.looking = 'purchase'</code> and navigate to Purchase Step 2, with a transition message: <em>"Sounds like you're further along than you think! Let's see how much you can borrow."</em></p>
+  <p><strong>"Curious about refinancing"</strong> → Set <code>answers.looking = 'refinance'</code> and navigate to Refinance Step 2, with a transition message: <em>"Great — let's look at your refinance options."</em></p>
+  <p>These redirects enter the full Purchase/Refinance flows (including contact details and results). The <code>exploreStage</code> value is preserved in the form submission so the CRM knows they entered via the exploring path.</p>
+</div>
+
+<h4>Borrowing Power Fork (for early-stage explorers)</h4>
+<p>Users who select <strong>"Just starting to research"</strong> or <strong>"Thinking about buying in 6–12 months"</strong> are shown an opt-in screen offering a quick borrowing power check.</p>
+
+<div class="wireframe">
+  <div class="wf-icon">💡</div>
+  <div class="wf-title">Want to see how much you could borrow?</div>
+  <div class="wf-message">
+    Answer a few quick questions and we'll estimate your borrowing power — <strong>takes about 30 seconds</strong>. No commitment, no phone call required.
+  </div>
+  <div class="wf-btn">Yes, Show Me My Borrowing Power →</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-btn secondary">Not Yet — Just Show Me Resources</div>
+</div>
+
+<h4>Fork A: "Yes, Show Me" → Explore Steps 3–4 (Borrowing Power Check)</h4>
+<p>Collects the same situation and finances data as the Purchase flow, so the borrowing power calculator can run. However, <strong>no contact details or phone verification</strong> are required — this keeps the experience low-commitment.</p>
+
+<table>
+  <tr><th colspan="4">Explore Step 3 — About Your Household</th></tr>
+  <tr><th>Field</th><th>Type</th><th>Options</th><th>Name</th></tr>
+  <tr><td>Couple or single?</td><td>Radio (2)</td><td>Couple · Single person</td><td><code>maritalStatus</code></td></tr>
+  <tr><td>First home?</td><td>Radio (2)</td><td>Yes · No</td><td><code>isFirstOwner</code></td></tr>
+  <tr><td>State buying in</td><td>Select</td><td>NSW · VIC · QLD · etc.</td><td><code>state</code></td></tr>
+  <tr><td>Dependants</td><td>Radio (4)</td><td>None · 1 · 2 · 3+</td><td><code>dependants</code></td></tr>
+</table>
+
+<table>
+  <tr><th colspan="4">Explore Step 4 — Your Income &amp; Savings</th></tr>
+  <tr><th>Field</th><th>Type</th><th>Placeholder</th><th>Name</th></tr>
+  <tr><td>Total household income (before tax)</td><td>Currency input</td><td>e.g. 50,000</td><td><code>income</code></td></tr>
+  <tr><td>Deposit amount</td><td>Currency input</td><td>e.g. 40,000</td><td><code>deposit</code></td></tr>
+</table>
+
+<h4>Explore Done (Fork A) — Borrowing Power Result + Resources</h4>
+<p>Shows the same borrowing power calculation as the Purchase flow, but with a softer tone and no obligation to proceed. Includes resources and an optional contact CTA.</p>
+
+<div class="wireframe">
+  <div class="wf-icon">🎯</div>
+  <div class="wf-title">Your Estimated Borrowing Power</div>
+  <div class="wf-message">
+    Based on your details, you could borrow up to approximately:<br><br>
+    <div style="text-align: center; font-size: 24px; font-weight: 700; color: #27ae60; margin: 12px 0;">$XXX,XXX</div>
+    <div style="text-align: center; font-size: 12px; color: #999; margin-bottom: 12px;">This is an estimate only — actual amounts depend on lender criteria.</div>
+    <strong>Helpful resources:</strong><br>
+    📖 First Home Buyer's Guide <span style="font-size:11px; color:#999;">(if isFirstOwner=yes)</span><br>
+    📖 Home Buying Hub<br>
+    📖 Understanding Your Borrowing Power<br><br>
+    When you're ready, our team can give you a <strong>free, personalised assessment</strong> across 30+ lenders.
+  </div>
+  <div class="wf-btn">Book a Free Chat When You're Ready</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-label" style="text-align: center;">Your email <span style="color: #aaa; font-weight: 400;">(optional — we'll send your result)</span></div>
+  <div class="wf-input">you@email.com</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-btn secondary">← Back to Homepage</div>
+</div>
+
+<h4>Fork B: "Not Yet" → Resources Only</h4>
+<p>Skips all data collection. Shows curated resources and a soft CTA.</p>
+
+<div class="wireframe">
+  <div class="wf-icon">📚</div>
+  <div class="wf-title">Here Are Some Resources to Get Started</div>
+  <div class="wf-message">
+    <strong>Free guides to help you on your journey:</strong><br><br>
+    📖 <a href="#">First Home Buyer's Guide</a><br>
+    📖 <a href="#">Home Buying Hub</a><br>
+    📖 <a href="#">Understanding Your Borrowing Power</a><br>
+    📖 <a href="#">How Much Can I Borrow?</a><br><br>
+    When you're ready to take the next step, our team can give you a <strong>free, no-obligation assessment</strong>.
+  </div>
+  <div class="wf-btn">Book a Free Chat When You're Ready</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-label" style="text-align: center;">Your email <span style="color: #aaa; font-weight: 400;">(optional — we'll send you the guides)</span></div>
+  <div class="wf-input">you@email.com</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-btn secondary">← Back to Homepage</div>
+</div>
+
+<div class="info-box">
+  <h3>Why Two Forks?</h3>
+  <p><strong>Opt-in borrowing power</strong> is the key insight: forcing financials on someone who said "just exploring" is too aggressive and will cause drop-off. But <em>offering</em> it as a value exchange ("see how much you could borrow in 30 seconds") converts curious explorers into warm leads with full data — without the pressure of contact details or phone verification.</p>
+  <p><strong>Stage-based redirects</strong> catch users who selected "exploring" but are actually further along. Rather than giving them a watered-down experience, funnel them into the full Purchase or Refinance flows where they'll get the most value.</p>
+</div>
+
+<div class="success-box">
+  <h3>Data Passthrough</h3>
+  <p>Explorers who opt into the borrowing power check collect the same fields as the Purchase situation + finances steps (<code>maritalStatus</code>, <code>isFirstOwner</code>, <code>state</code>, <code>dependants</code>, <code>income</code>, <code>deposit</code>). This data feeds directly into the existing <code>calculateLoanCapacity()</code> function. The form submission includes <code>looking=exploring</code> and <code>exploreStage</code> so the CRM can distinguish these leads from direct purchase enquiries.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="implementation">9. Implementation Notes</h2>
+
+<h3>Core Change: Branching in <code>nextStep()</code></h3>
+
+<p>The primary fix is modifying <code>nextStep()</code> to read <code>answers.looking</code> after Step 1 and route to the correct flow. Here's the suggested pseudocode:</p>
+
+<pre><code>// Suggested refactored nextStep()
+function nextStep() {
+  const looking = answers.looking;
+
+  // After Step 1: branch based on selection
+  if (currentStep === 1) {
+    switch (looking) {
+      case 'purchase':
+        goToStep('purchase_situation'); // existing step_2
+        break;
+      case 'build':
+        goToStep('purchase_situation'); // Same flow as purchase
+        break;
+      case 'commercial':
+        showDeadEndScreen('commercial');
+        return;
+      case 'refinance':
+        goToStep('refi_situation');
+        break;
+      case 'exploring':
+        goToStep('explore_stage'); // Step 2: What stage?
+        break;
+    }
+    updateProgressIndicator();
+    return;
+  }
+
+  // Exploring Step 2: branch based on stage
+  if (looking === 'exploring' && currentStep === 'explore_stage') {
+    const stage = answers.exploreStage;
+    if (stage === 'ready_to_buy') {
+      answers.looking = 'purchase';
+      goToStep('purchase_situation');
+      return;
+    }
+    if (stage === 'curious_refi') {
+      answers.looking = 'refinance';
+      goToStep('refi_situation');
+      return;
+    }
+    // Early-stage: show borrowing power fork
+    goToStep('explore_borrowing_fork');
+    return;
+  }
+
+  // Exploring borrowing power fork
+  if (looking === 'exploring' && currentStep === 'explore_borrowing_fork') {
+    if (answers.wantsBorrowingPower) {
+      goToStep('explore_situation'); // collect household + finances
+    } else {
+      goToStep('explore_resources'); // skip to resources
+    }
+    return;
+  }
+
+  // Within each flow: advance to next step in that flow
+  advanceCurrentFlow();
+}
+
+// Helper: show dead-end screen for unsupported services
+function showDeadEndScreen(type) {
+  hideAllSteps();
+  const screen = document.querySelector(`.dead-end-${type}`);
+  screen.classList.add('active');
+  // Update progress indicator to show "complete" state
+  updateProgressIndicator('dead-end');
+}
+
+// Dead-end CTA: redirect to purchase flow
+function redirectToPurchase() {
+  answers.looking = 'purchase';
+  goToStep('purchase_situation');
+}
+
+// IMPORTANT: calculateLoanCapacity() should ONLY run for:
+//   - purchase flow (step 4 → step 5)
+//   - build flow (same as purchase)
+//   - exploring flow Fork A (after finances → show result)
+// It should NOT run for:
+//   - refinance (no calculator, show confirmation instead)
+//   - exploring Fork B (no data collected, show resources)
+//   - commercial (dead end, no calculation)
+//
+// The current code calls it at totalSteps-1. With branching,
+// call it when the CURRENT FLOW reaches its calculator step.
+
+// IMPORTANT: stepElements is captured once at load:
+//   const stepElements = document.querySelectorAll(".step");
+// New step divs MUST be in the HTML at page load, not injected
+// dynamically, or they won't be in this NodeList.
+// Alternative: re-query after adding steps, or use a Map.</code></pre>
+
+<div class="info-box">
+  <h3>Note on Step IDs in Pseudocode</h3>
+  <p>The pseudocode above uses descriptive string IDs like <code>'purchase_situation'</code> and <code>'refi_situation'</code> for clarity. The actual DOM uses numeric classes (<code>.step_1</code> through <code>.step_5</code>). When implementing, you'll need to either:</p>
+  <p><strong>Option A:</strong> Add new step divs with new classes (<code>.step_refi_2</code>, <code>.step_explore_1</code>, etc.) and map them in your flow arrays.</p>
+  <p><strong>Option B:</strong> Re-use the existing <code>.step_2</code> through <code>.step_5</code> by swapping their inner HTML based on the active flow (lighter DOM, but more complex JS).</p>
+  <p>Option A is recommended — it's cleaner and avoids state bugs from HTML swapping.</p>
+</div>
+
+<h3>Architecture Options</h3>
+
+<table>
+  <tr><th>Approach</th><th>Pros</th><th>Cons</th></tr>
+  <tr>
+    <td><strong>A: Conditional steps in existing HTML</strong><br>Add new step divs (refi_step2, explore_step2, etc.) and show/hide based on <code>looking</code></td>
+    <td>Minimal restructure. Works within existing quiz_card container.</td>
+    <td>More hidden DOM elements. Progress indicator logic gets more complex.</td>
+  </tr>
+  <tr>
+    <td><strong>B: Flow-based step arrays</strong><br>Define step sequences per flow (e.g. <code>purchaseSteps = [1, 2, 3, 4, 5]</code>, <code>refiSteps = [1, 6, 7, 4, 8]</code>) and navigate using the array</td>
+    <td>Clean, scalable. Easy to add new flows later. Progress indicator works naturally (step X of N).</td>
+    <td>Requires refactoring the step navigation model.</td>
+  </tr>
+  <tr>
+    <td><strong>C: Full component rewrite</strong><br>Move to a proper state machine or React-style component</td>
+    <td>Most robust. Testable. Proper state management.</td>
+    <td>Heaviest lift. May not be justified for a 5-step quiz.</td>
+  </tr>
+</table>
+
+<div class="success-box">
+  <h3>Recommendation: Approach B (Flow-based step arrays)</h3>
+  <p>This gives you the cleanest branching with minimal restructuring. Define each flow as an ordered array of step IDs, then the navigation logic becomes a simple index increment within the active flow array.</p>
+</div>
+
+<h3>Progress Indicator</h3>
+<p>The current progress indicator shows "X / 5" for all paths. This needs to adapt per flow:</p>
+<table>
+  <tr><th>Flow</th><th>Total Steps</th><th>Indicator</th></tr>
+  <tr><td>Purchase</td><td>5</td><td>1/5 → 2/5 → 3/5 → 4/5 → 5/5</td></tr>
+  <tr><td>Build</td><td>5</td><td>1/5 → 2/5 → 3/5 → 4/5 → 5/5 (same as Purchase)</td></tr>
+  <tr><td>Commercial (dead end)</td><td>1</td><td>Hidden or "—"</td></tr>
+  <tr><td>Refinance</td><td>6</td><td>1/6 → 2/6 → 3/6 → 4/6 → 5/6 → 6/6</td></tr>
+  <tr><td>Exploring (with borrowing power)</td><td>4</td><td>1/4 → 2/4 → 3/4 → 4/4</td></tr>
+  <tr><td>Exploring (resources only)</td><td>2</td><td>1/2 → 2/2</td></tr>
+</table>
+
+<h3>Form Submission</h3>
+<p>The current <code>submitForm()</code> fires at the contact step. For refinance and exploring paths, the data payload will differ:</p>
+
+<table>
+  <tr><th>Flow</th><th>Payload Fields</th></tr>
+  <tr><td>Purchase</td><td><code>looking, maritalStatus, isFirstOwner, state, dependants, income, deposit, name, email, phone</code></td></tr>
+  <tr><td>Refinance</td><td><code>looking, interestRate, loanAmount, loanTerm, refiPriority, name, email, phone</code></td></tr>
+  <tr><td>Exploring (borrowing power)</td><td><code>looking, exploreStage, maritalStatus, isFirstOwner, state, dependants, income, deposit, email</code> (name &amp; phone optional)</td></tr>
+  <tr><td>Exploring (resources only)</td><td><code>looking, exploreStage, email</code> (all optional except looking)</td></tr>
+  <tr><td>Build</td><td><code>looking, maritalStatus, isFirstOwner, state, dependants, income, deposit, name, email, phone</code> (same as Purchase)</td></tr>
+  <tr><td>Commercial</td><td>No submission (unless they click "Contact Us", which routes to a contact page)</td></tr>
+</table>
+
+<h3>Back Button Handling</h3>
+<p>The existing <code>handleBackButton()</code> decrements <code>currentStep</code>. With branching, it needs to navigate back within the active flow's step array. For dead-end screens, the back button should return to Step 1.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="data">10. Data & Field Reference</h2>
+
+<h3>All Fields Across All Flows</h3>
+<table>
+  <tr><th>Field Name</th><th>Type</th><th>Used In</th><th>Required</th></tr>
+  <tr><td><code>looking</code></td><td>Radio</td><td>All flows (Step 1)</td><td>Yes</td></tr>
+  <tr><td><code>maritalStatus</code></td><td>Radio</td><td>Purchase, Exploring (borrowing power)</td><td>Yes</td></tr>
+  <tr><td><code>isFirstOwner</code></td><td>Radio</td><td>Purchase, Exploring (borrowing power)</td><td>Yes</td></tr>
+  <tr><td><code>state</code></td><td>Select</td><td>Purchase, Exploring (borrowing power)</td><td>Yes</td></tr>
+  <tr><td><code>dependants</code></td><td>Radio</td><td>Purchase, Exploring (borrowing power)</td><td>Yes</td></tr>
+  <tr><td><code>income</code></td><td>Currency</td><td>Purchase, Exploring (borrowing power)</td><td>Yes</td></tr>
+  <tr><td><code>deposit</code></td><td>Currency</td><td>Purchase, Exploring (borrowing power)</td><td>Yes</td></tr>
+  <tr><td><code>interestRate</code></td><td>Radio</td><td>Refinance only (Step 2)</td><td>Yes</td></tr>
+  <tr><td><code>loanAmount</code></td><td>Radio</td><td>Refinance only (Step 3)</td><td>Yes</td></tr>
+  <tr><td><code>loanTerm</code></td><td>Radio</td><td>Refinance only (Step 4)</td><td>Yes</td></tr>
+  <tr><td><code>refiPriority</code></td><td>Radio</td><td>Refinance only (Step 5)</td><td>Yes</td></tr>
+  <tr><td><code>exploreStage</code></td><td>Radio</td><td>Exploring only</td><td>Yes</td></tr>
+  <tr><td><code>wantsBorrowingPower</code></td><td>Button choice</td><td>Exploring only (early-stage fork)</td><td>Yes</td></tr>
+  <tr><td><code>name</code></td><td>Text</td><td>Purchase, Refinance</td><td>Yes</td></tr>
+  <tr><td><code>email</code></td><td>Email</td><td>Purchase, Refinance, Exploring</td><td>Exploring: optional</td></tr>
+  <tr><td><code>phone</code></td><td>Tel + OTP</td><td>Purchase, Refinance</td><td>Yes</td></tr>
+</table>
+
+<h3>Radio Value Reference (Step 1)</h3>
+<table>
+  <tr><th>Label</th><th>Input Value</th><th>Flow</th></tr>
+  <tr><td>Purchase a property</td><td><code>purchase</code></td><td>Full purchase flow (5 steps)</td></tr>
+  <tr><td>Build</td><td><code>build</code></td><td>Same flow as Purchase (5 steps)</td></tr>
+  <tr><td>Commercial or business loan</td><td><code>commercial</code></td><td>Dead end screen</td></tr>
+  <tr><td>Refinance a loan</td><td><code>refinance</code></td><td>Refinance flow (6 steps — matches /lower-your-rate/ quiz)</td></tr>
+  <tr><td>I'm just exploring</td><td><code>exploring</code></td><td>Exploring flow (2–4 steps, depends on fork)</td></tr>
+</table>
+
+<hr>
+
+<div style="background: var(--hg-gray); border-radius: 12px; padding: 24px; margin-top: 48px;">
+  <h3 style="margin-top: 0;">Summary of Changes Required</h3>
+  <table>
+    <tr><th>Priority</th><th>Change</th><th>Effort</th></tr>
+    <tr><td>🔴 P0</td><td>Add branching logic to <code>nextStep()</code> based on <code>answers.looking</code></td><td>Small</td></tr>
+    <tr><td>🔴 P0</td><td>Create dead-end screen for Commercial (Build uses Purchase flow)</td><td>Small</td></tr>
+    <tr><td>🔴 P0</td><td>Create Refinance step HTML (new questions: refiGoal, propertyValue, loanBalance)</td><td>Medium</td></tr>
+    <tr><td>🔴 P0</td><td>Create Refinance confirmation screen (no calculator)</td><td>Small</td></tr>
+    <tr><td>🟡 P1</td><td>Create Exploring flow: stage triage, borrowing power fork, two end screens</td><td>Medium</td></tr>
+    <tr><td>🟡 P1</td><td>Update progress indicator to show correct step count per flow</td><td>Small</td></tr>
+    <tr><td>🟡 P1</td><td>Update <code>handleBackButton()</code> for flow-aware navigation</td><td>Small</td></tr>
+    <tr><td>🟢 P2</td><td>Update form submission to include flow-specific fields</td><td>Medium</td></tr>
+    <tr><td>🟡 P1</td><td>Stage-based redirects: Exploring → Purchase/Refinance for ready users</td><td>Small</td></tr>
+    <tr><td>🟢 P2</td><td>Future: Build a refinance savings calculator</td><td>Large</td></tr>
+  </table>
+
+  <h3 style="margin-top: 24px;">Implementation Phases (ship incrementally)</h3>
+  <table>
+    <tr><th>Phase</th><th>What to Ship</th><th>Result</th></tr>
+    <tr><td><strong>Phase 1</strong><br>Minimum viable fix</td><td>Add <code>switch(looking)</code> in <code>nextStep()</code> after step 1. Route <code>commercial</code> to a dead-end screen. Route <code>build</code> to the existing purchase flow. Leave <code>refinance</code> and <code>exploring</code> on the existing linear flow for now.</td><td>Commercial users stop seeing irrelevant questions. Build users get the correct experience. Purchase/refinance/exploring unchanged.</td></tr>
+    <tr><td><strong>Phase 2</strong><br>Refinance flow</td><td>Add new step divs for the 4 refinance questions (interest rate, amount, term, priority). Route <code>refinance</code> to these steps. Add refinance confirmation screen.</td><td>Refinance users get relevant questions matching <code>/lower-your-rate/</code> quiz.</td></tr>
+    <tr><td><strong>Phase 3</strong><br>Exploring flow</td><td>Add exploring stage triage, borrowing power fork, and resources screen. Wire up redirects to purchase/refinance for ready users.</td><td>Explorers get a low-pressure experience with optional borrowing power check.</td></tr>
+  </table>
+
+  <h3 style="margin-top: 24px;">Acceptance Criteria</h3>
+  <table>
+    <tr><th>#</th><th>Scenario</th><th>Expected</th></tr>
+    <tr><td>1</td><td>Select "Purchase" → complete quiz</td><td>Same 5-step flow as today. Borrowing result shown. No change in behaviour.</td></tr>
+    <tr><td>2</td><td>Select "Build" → complete quiz</td><td>Same as Purchase. <code>looking=build</code> in form submission.</td></tr>
+    <tr><td>3</td><td>Select "Commercial"</td><td>Dead-end screen shown. No finance/situation questions. CTA to purchase or contact page.</td></tr>
+    <tr><td>4</td><td>Select "Refinance" → complete quiz</td><td>4 refinance-specific questions (rate, amount, term, priority) → contact → confirmation. No "first home owner" or "deposit" questions.</td></tr>
+    <tr><td>5</td><td>Select "Exploring" → "Ready to buy soon"</td><td>Redirects to Purchase Step 2 with transition message.</td></tr>
+    <tr><td>6</td><td>Select "Exploring" → "Just researching" → "Yes, show me"</td><td>Borrowing power check: situation → finances → result + resources. No phone verification required.</td></tr>
+    <tr><td>7</td><td>Select "Exploring" → "Just researching" → "Not yet"</td><td>Resources screen with soft CTA. No data collected.</td></tr>
+    <tr><td>8</td><td>Back button at any step</td><td>Returns to previous step in the current flow. From dead-end screen, returns to Step 1.</td></tr>
+    <tr><td>9</td><td>Progress indicator</td><td>Shows correct "X / N" for each flow (5 for purchase/build, 1 for commercial, 6 for refinance, varies for exploring).</td></tr>
+    <tr><td>10</td><td>All 142 Playwright tests pass</td><td><code>npx playwright test</code> — zero failures.</td></tr>
+  </table>
+</div>
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'neutral',
+    flowchart: { curve: 'basis', padding: 16 },
+    themeVariables: {
+      primaryColor: '#FEF7EA',
+      primaryBorderColor: '#FDB948',
+      primaryTextColor: '#1a1a2e',
+      lineColor: '#999',
+      fontSize: '13px'
+    }
+  });
+</script>
+
+</body>
+</html>
+
+(function(){

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRS Engagement Review — Hunter Galloway</title>
+<style>
+  :root { --dark: #1a1a2e; --red: #dc2626; --green: #16a34a; --blue: #2563eb; --gray: #f8fafc; --border: #e2e8f0; --gold: #d97706; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.7; color: #1e293b; background: #fff; max-width: 900px; margin: 0 auto; padding: 48px 32px; font-size: 15px; }
+  h1 { font-size: 26px; color: var(--dark); margin-bottom: 4px; letter-spacing: -0.5px; }
+  h2 { font-size: 20px; color: var(--dark); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--red); }
+  h3 { font-size: 16px; color: var(--dark); margin: 28px 0 10px; }
+  h4 { font-size: 14px; color: #475569; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: #64748b; font-size: 15px; margin-bottom: 32px; }
+  .meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; font-size: 12px; color: #94a3b8; }
+  .meta span { background: var(--gray); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+  th { background: #1e293b; color: #fff; text-align: left; padding: 8px 12px; font-weight: 600; font-size: 12px; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) { background: var(--gray); }
+  code { font-family: 'Fira Code', monospace; background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  a { color: var(--blue); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+  blockquote { background: #f8fafc; border-left: 4px solid #cbd5e1; padding: 12px 16px; margin: 12px 0; font-style: italic; font-size: 14px; color: #475569; }
+  .red { color: var(--red); font-weight: 700; }
+  .green { color: var(--green); }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 20px 0; }
+  .stat { background: var(--gray); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
+  .stat .num { font-size: 32px; font-weight: 700; color: var(--red); }
+  .stat .label { font-size: 11px; color: #64748b; margin-top: 4px; }
+  .incident { background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid var(--red); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+  .incident h4 { color: var(--red); margin: 0 0 8px; text-transform: none; letter-spacing: 0; font-size: 15px; }
+  .incident .date { font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
+  .email-quote { background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--blue); padding: 12px 16px; margin: 10px 0; border-radius: 0 6px 6px 0; }
+  .email-quote .from { font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
+  .email-quote .body { font-style: italic; font-size: 14px; color: #334155; }
+  .lie-box { background: #450a0a; color: #fca5a5; padding: 20px; border-radius: 8px; margin: 16px 0; }
+  .lie-box h4 { color: #fca5a5; margin: 0 0 6px; text-transform: none; letter-spacing: 0; }
+  .lie-box .claim { font-style: italic; margin-bottom: 8px; }
+  .lie-box .truth { color: #fff; font-weight: 600; }
+  .lie-box td { color: #fca5a5; border-color: #7f1d1d; }
+  .lie-box th { background: #7f1d1d; color: #fca5a5; }
+  .timeline { border-left: 3px solid var(--red); padding-left: 24px; margin: 20px 0; }
+  .timeline-item { position: relative; margin-bottom: 24px; }
+  .timeline-item::before { content: ''; position: absolute; left: -30px; top: 6px; width: 12px; height: 12px; background: var(--red); border-radius: 50%; }
+  .timeline-item .date { font-size: 12px; font-weight: 700; color: var(--red); }
+  .timeline-item .event { font-size: 14px; margin-top: 2px; }
+  .verdict { background: #1e293b; color: #fff; padding: 32px; border-radius: 12px; margin: 32px 0; }
+  .verdict h3 { color: #fff; margin: 0 0 16px; }
+  .verdict p { color: #cbd5e1; }
+  .verdict strong { color: #fca5a5; }
+  .toc { background: var(--gray); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 24px 0; }
+  .toc h3 { margin: 0 0 12px; font-size: 14px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin-bottom: 4px; font-size: 13px; }
+  .toc a { text-decoration: none; }
+  @media print { body { padding: 20px; font-size: 12px; } .stat .num { font-size: 24px; } }
+</style>
+</head>
+<body>
+
+<h1>CRS Engagement Review</h1>
+<p class="subtitle">A complete record of Conversion Rate Store's performance across 25 months of paid engagement with Hunter Galloway. Every claim is sourced from CRS's own emails, HubSpot CRM API data, or Wayback Machine snapshots.</p>
+
+<div class="meta">
+  <span>Prepared: 3 April 2026</span>
+  <span>Period: Mar 2024 – Apr 2026</span>
+  <span>Prepared by: Simon Heikkila</span>
+  <span>For: Jayden Vecchio, Hunter Galloway</span>
+</div>
+
+<div class="stat-grid">
+  <div class="stat"><div class="num">~$225k</div><div class="label">Total fees paid to CRS</div></div>
+  <div class="stat"><div class="num">$53k–$93k</div><div class="label">Revenue lost from corrupted leads</div></div>
+  <div class="stat"><div class="num">18</div><div class="label">Documented incidents</div></div>
+  <div class="stat"><div class="num">0</div><div class="label">Test cases ever provided</div></div>
+  <div class="stat"><div class="num">3</div><div class="label">Provable lies in writing</div></div>
+</div>
+
+<div class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#executive">Executive Summary</a></li>
+    <li><a href="#financials">Financial Summary</a></li>
+    <li><a href="#lies">Three Provable Lies</a></li>
+    <li><a href="#timeline">Full Incident Timeline (2024–2026)</a></li>
+    <li><a href="#redesign">The $60k Redesign Disaster (2024)</a></li>
+    <li><a href="#suburb">The Suburb Map</a></li>
+    <li><a href="#forms">The Form Corruption (2025–2026)</a></li>
+    <li><a href="#react">The Undelivered React Migration</a></li>
+    <li><a href="#retention">The Retention Cycle</a></li>
+    <li><a href="#qa">CRS's QA: What Was Never Done</a></li>
+    <li><a href="#verdict">Verdict</a></li>
+  </ol>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="executive">1. Executive Summary</h2>
+
+<p>Hunter Galloway engaged Conversion Rate Store (CRS / conversionrate.store) in approximately March 2024 for website CRO (conversion rate optimisation), development, and later Meta ads management, at a retainer of approximately <strong>$9,000 per month</strong>.</p>
+
+<p>Over 25 months, CRS:</p>
+<ul style="margin: 12px 0 12px 24px;">
+  <li>Shipped a redesign that <strong>collapsed conversion rates by 37%</strong> and cost <strong>$60k with a 30% revenue drop</strong> (Jun 2024)</li>
+  <li>"Fixed" a bug that <strong>broke the contact form</strong> — Jayden had to roll back the server himself (Aug 2024)</li>
+  <li>Built a suburb dropdown that <strong>listed the wrong data and did nothing when clicked</strong> (Apr 2024)</li>
+  <li>Shipped forms that stored <strong>email addresses as first names</strong> in HubSpot — <strong>90 contacts</strong> corrupted (Oct 2025)</li>
+  <li><strong>Hardcoded dashes</strong> instead of quiz answers for <strong>167 contacts</strong> (Dec 2025)</li>
+  <li>Never connected the refinance quiz webhook — <strong>80+ leads lost</strong> (discovered Apr 2026)</li>
+  <li>Denied knowledge of Zapier <strong>despite their own team verifying it in writing 16 months earlier</strong></li>
+  <li>Told Jayden "QA issues resolved" on 3 March 2026 while <strong>28 leads were corrupted that same month</strong></li>
+  <li>Promised React site live by 7 April 2026 — <strong>not delivered</strong></li>
+  <li>Provided <strong>zero test cases, zero test plans, zero test reports</strong> across 201 emails and the entire engagement</li>
+</ul>
+
+<p>Estimated revenue lost from the form corruption alone: <strong class="red">$53,032 – $93,158</strong>. This excludes the $60k redesign damage, lost leads from the broken contact form, and the undelivered React migration.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="financials">2. Financial Summary</h2>
+
+<table>
+  <tr><th>Item</th><th>Amount</th><th>Source</th></tr>
+  <tr><td>Total fees paid (~25 months × $9k)</td><td class="red">~$225,000+</td><td>Invoice emails from finance@conversionrate.store</td></tr>
+  <tr><td>Revenue lost: corrupted form leads (88 leads)</td><td class="red">$53,032 – $93,158</td><td>HubSpot CRM API, verified 2 Apr 2026</td></tr>
+  <tr><td>Revenue lost: redesign conversion collapse (Jun 2024)</td><td class="red">30% revenue drop over 2+ months</td><td>Jayden's email, 27 Jun 2024</td></tr>
+  <tr><td>Leads lost: broken contact form (Aug 2024)</td><td class="red">Multiple leads (exact count unknown)</td><td>Jayden's email, 26 Aug 2024</td></tr>
+  <tr><td>Leads lost: missing webhook (80+ leads)</td><td class="red">Included in $53k–$93k estimate</td><td>Jayden's email, 1 Apr 2026</td></tr>
+  <tr><td>React migration</td><td class="red">Not delivered</td><td>Deadline: 7 Apr 2026. Status: not live.</td></tr>
+  <tr><td>Meta ads: 80% no-answer rate on leads</td><td class="red">Wasted ad spend (amount unknown)</td><td>Gleb's email, 23 Feb 2026</td></tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="lies">3. Three Provable Lies</h2>
+
+<div class="lie-box">
+  <h4>Lie #1: "First time we've heard of Zapier"</h4>
+  <p class="claim">Gleb Hodorovskiy, 2 April 2026: "If we had known about the Zapier automation... it's the first time we've heard"</p>
+  <p class="truth">Ihor Sokolov (CRS team lead), 19 July 2024: "We have verified that the conversions from the previous version are being streamed to Zapier and the following email addresses: ... 9wymd7m4@robot.zapier.com"</p>
+  <p style="font-size: 12px; margin-top: 8px;">CRS verified the exact Zapier webhook address 20 months before claiming ignorance. This is not a mistake in memory — it is a documented, searchable email from their own team lead.</p>
+</div>
+
+<div class="lie-box">
+  <h4>Lie #2: "We've already resolved the QA issues"</h4>
+  <p class="claim">Gleb Hodorovskiy, 3 March 2026 (in response to Jayden proposing to reduce scope)</p>
+  <p class="truth">March 2026: 28 contacts with email stored as first name — the worst month on record. The homepage quiz was shipping hardcoded dashes for every submission. Test data "Test1@Gmail.Com" was left in production HubSpot.</p>
+  <p style="font-size: 12px; margin-top: 8px;">This statement was made to convince Jayden to continue paying the full $9k/month retainer. Jayden continued based on this assurance.</p>
+</div>
+
+<div class="lie-box">
+  <h4>Lie #3: "All leads captured correctly... issue is on your side"</h4>
+  <p class="claim">Yuliia Boiko, 1 April 2026: "All leads submitted through the form have been consistently captured in HubSpot... This leads us to believe the issue is not with lead capture, but rather with how leads were being monitored or processed on your side."</p>
+  <p class="truth">90 contacts had email as firstname. 167 had all quiz fields hardcoded to "-". 15 had zero quiz data. 72+ form instances missing transaction_type. The JavaScript literally reads: <code>r.append("mortgage-rate", "-")</code></p>
+  <p style="font-size: 12px; margin-top: 8px;">CRS attributed the problem to Hunter Galloway's monitoring before investigating their own code. "Captured in HubSpot" is technically true in the way "the house is still standing" is true after the plumbing floods every room.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="timeline">4. Full Incident Timeline</h2>
+
+<table>
+  <tr><th>#</th><th>Date</th><th>Incident</th><th>Impact</th><th>Who Fixed It</th></tr>
+  <tr><td>1</td><td>Feb 2024</td><td>Redesign 100+ working days late (quoted 60)</td><td>Delayed 40+ working days</td><td>Nobody — shipped late</td></tr>
+  <tr><td>2</td><td>Apr 2024</td><td>Suburb dropdown shows states instead of suburbs, does nothing when clicked</td><td>Broken UX</td><td>Simon flagged it</td></tr>
+  <tr><td>3</td><td>Apr 2024</td><td>New form missing Akismet spam filtering</td><td>100+ spam submissions</td><td><strong>Jayden added it manually</strong></td></tr>
+  <tr><td>4</td><td>May 2024</td><td>CF7 plugin "data erasure" bug</td><td>Data loss risk</td><td>CRS fix required</td></tr>
+  <tr><td>5</td><td>Apr–Jun 2024</td><td>Redesign tanks conversion 0.80% → 0.50%</td><td><strong>30% revenue drop, ~$60k spent</strong></td><td>Had to be reverted</td></tr>
+  <tr><td>6</td><td>Jun 2024</td><td>Jayden: "we never asked for a redesign" — CRS recommended it, it failed</td><td>Scope mismatch, $60k wasted</td><td>Post-mortem only</td></tr>
+  <tr><td>7</td><td>Aug 2024</td><td>CRS "fixes" a bug, breaks the contact form entirely</td><td>Lost several leads, no contact form submissions for a week+</td><td><strong>Jayden rolled back the server</strong></td></tr>
+  <tr><td>8</td><td>Aug 2024</td><td>Favicon broken by CRS changes</td><td>Unprofessional appearance in Google</td><td>Multiple emails to fix</td></tr>
+  <tr><td>9</td><td>~Oct 2025</td><td>Quiz deployed — email field mapped to firstname</td><td><strong>90 contacts corrupted</strong></td><td>Discovered 6 months later by Jayden</td></tr>
+  <tr><td>10</td><td>~Oct 2025</td><td>/lower-your-rate/ quiz — no hidden fields for answers</td><td>15 leads with zero quiz data</td><td>Discovered 6 months later</td></tr>
+  <tr><td>11</td><td>Dec 2025</td><td>Christmas banner declared "ready and QA'd" — never went live</td><td>Missed seasonal opportunity</td><td>Simon flagged it</td></tr>
+  <tr><td>12</td><td>Dec 2025</td><td>Gleb promises "no item marked ready without production validation"</td><td>Written commitment</td><td><strong>Broken within weeks</strong></td></tr>
+  <tr><td>13</td><td>~Jan 2026</td><td>Homepage quiz ships with all refinance fields hardcoded to "-"</td><td><strong>167 contacts with dashes</strong></td><td>Discovered 3 months later</td></tr>
+  <tr><td>14</td><td>Feb 2026</td><td>Test contacts show email-as-name bug (Test1@Gmail.Com)</td><td>Bug visible in CRS's own test data</td><td><strong>Never caught by CRS</strong></td></tr>
+  <tr><td>15</td><td>Feb 2026</td><td>Meta ads: 80% no-answer rate on leads</td><td>Wasted ad spend</td><td>Acknowledged by Gleb, no fix</td></tr>
+  <tr><td>16</td><td>Mar 2026</td><td>Gleb: "QA issues resolved" — 28 email-as-name contacts that month</td><td>Retention through misrepresentation</td><td>Jayden discovered 1 Apr</td></tr>
+  <tr><td>17</td><td>Mar 2026</td><td>"Pages launching for QA this week" — zero pages launched</td><td>Empty commitment, lead crisis erupted instead</td><td>Nothing launched</td></tr>
+  <tr><td>18</td><td>Apr 2026</td><td>Refinance webhook never connected + Zapier denial</td><td><strong>80+ leads lost</strong></td><td><strong>Jayden connected it himself</strong></td></tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="redesign">5. The $60k Redesign Disaster</h2>
+
+<p>CRS was engaged in approximately September 2023 to increase conversions and consolidate CTAs across the Hunter Galloway website. CRS spent 3 months researching, then recommended a full template redesign. Ihor Sokolov (CRS team lead) assured Jayden conversions would increase after implementation.</p>
+
+<div class="incident">
+  <h4>Conversion Rate Collapse</h4>
+  <div class="date">Documented in Jayden's email, 24 June 2024</div>
+  <table>
+    <tr><th>Month</th><th>Total Users</th><th>Total Submits</th><th>Conversion Rate</th></tr>
+    <tr><td>January 2024 (pre-redesign)</td><td>49,081</td><td>294</td><td class="green" style="font-weight:700;">0.80%</td></tr>
+    <tr><td>February</td><td>37,805</td><td>238</td><td>0.63%</td></tr>
+    <tr><td>March</td><td>34,720</td><td>231</td><td>0.67%</td></tr>
+    <tr><td>April (post-redesign)</td><td>35,486</td><td>182</td><td class="red">0.51%</td></tr>
+    <tr><td>May</td><td>33,462</td><td>169</td><td class="red">0.51%</td></tr>
+    <tr><td>June (MTD)</td><td>20,119</td><td>109</td><td class="red">0.54%</td></tr>
+  </table>
+</div>
+
+<div class="email-quote">
+  <div class="from">Jayden Vecchio → Gleb Hodorovskiy, 26 June 2024</div>
+  <div class="body">"This unexpected drop in leads is heavily affecting our business, our revenues and settlements are almost 30% down since the new website has gone online 2 months ago."</div>
+</div>
+
+<div class="email-quote">
+  <div class="from">Jayden Vecchio → Gleb Hodorovskiy, 27 June 2024</div>
+  <div class="body">"We never asked for a complete redesign. Your team completed their research over the course of three months and then recommended redesigning the template. Ihor reassured me in March he thought we would see an increase after the implementation — which has not happened. At this point, we have lost 20% of our monthly revenue and spent $60k for no result. This has severely hurt our business."</div>
+</div>
+
+<div class="email-quote">
+  <div class="from">Gleb Hodorovskiy → Jayden Vecchio, 27 June 2024</div>
+  <div class="body">"Redesigns are risky, that's why almost all big tech companies prefer incremental improvements through A/B testing."</div>
+</div>
+
+<p>Gleb admitted the approach was wrong <strong>after</strong> charging $60k to execute it. CRS recommended the redesign, assured it would improve conversions, shipped it 40+ working days late, and when it tanked conversions by 37%, explained that "redesigns are risky."</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="suburb">6. The Suburb Map</h2>
+
+<p>In April 2024, Simon discovered a "suburb map conversion mechanism" CRS had built for the blog pages.</p>
+
+<div class="incident">
+  <h4>Implementation: Wrong data, no functionality</h4>
+  <div class="date">Email thread: "Suburb Map Conversion Mechanism on Blog Incorrectly Implemented", April 2024</div>
+  <p>The dropdown listed <strong>Australian states</strong> instead of Brisbane suburbs. Selecting any option and clicking the button redirected to the generic suburb map page — <strong>the dropdown did nothing</strong>.</p>
+</div>
+
+<div class="email-quote">
+  <div class="from">Simon Heikkila → Mikhail Klimenko (CRS), 24 April 2024</div>
+  <div class="body">"The dropdown box has been 'fixed', i.e. it lists a handful of brisbane suburbs, but it doesn't do anything. If I select 'Belmont', and click on the button, it goes to the default suburb map anyway. This implementation doesn't make sense. Firstly, there are over a hundred different suburbs in Brisbane. The chance of anyone being interested in a small subset of these is low. Secondly, if the user does select a suburb, they are just redirected to the generic suburb map. So I'd suggest removing the dropdown box entirely."</div>
+</div>
+
+<div class="email-quote">
+  <div class="from">Mikhail Klimenko (CRS) → Simon, 24 April 2024</div>
+  <div class="body">"This dropdown gives the user a sense of customization. Its task is to show the user that we have information about the area they are interested in. Essentially, this is a hook to interest the user in navigating to the Suburbs map page."</div>
+</div>
+
+<p>CRS's position: a dropdown that displays the wrong data and does nothing when clicked is a "conversion mechanism" that gives users a "sense of customization." This was defended, not apologised for.</p>
+
+<p><strong>Same thread:</strong> Jayden flagged that CRS's new form didn't have Akismet spam filtering. Joshua Vecchio reported <strong>100+ spam submissions</strong>. Jayden had to manually add the anti-spam code to the form CRS had built.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="forms">7. The Form Corruption (Oct 2025 – Apr 2026)</h2>
+
+<p>Full technical details are in the <a href="hubspot-damage-report.html">HubSpot Damage Report</a> (verified via CRM API, 2 April 2026). Summary of the 6 issues:</p>
+
+<div class="stat-grid">
+  <div class="stat"><div class="num">90</div><div class="label">Email stored as firstname</div></div>
+  <div class="stat"><div class="num">167</div><div class="label">Quiz fields = dashes</div></div>
+  <div class="stat"><div class="num">15</div><div class="label">/lower-your-rate/ zero data</div></div>
+  <div class="stat"><div class="num">72+</div><div class="label">Forms missing transaction_type</div></div>
+  <div class="stat"><div class="num">268</div><div class="label">No form attribution</div></div>
+  <div class="stat"><div class="num">80+</div><div class="label">Leads lost (webhook)</div></div>
+</div>
+
+<h3>How the bugs went undetected for 6 months</h3>
+<p>CRS's QA process checked:</p>
+<ul style="margin: 8px 0 8px 24px;">
+  <li>Whether the form <em>rendered</em> on the page (visual check)</li>
+  <li>Whether clicking Submit produced a "Thank you" message (UI check)</li>
+  <li>Whether submission <em>volume</em> increased (A/B test metrics)</li>
+</ul>
+<p>CRS's QA process <strong>never checked</strong>:</p>
+<ul style="margin: 8px 0 8px 24px;">
+  <li>Whether the submitted data arrived with correct field mappings in HubSpot</li>
+  <li>Whether the firstname field contained a name (not an email address)</li>
+  <li>Whether the quiz answer fields contained answers (not dashes)</li>
+  <li>Whether the webhook was connected</li>
+</ul>
+
+<p><strong>CRS's own test contacts proved the bug was visible from day one:</strong></p>
+<table>
+  <tr><th>Contact</th><th>firstname (WRONG)</th><th>Created</th></tr>
+  <tr><td>Test6677@Mail.Com</td><td class="red">Test6677@Mail.Com</td><td>10 Oct 2025</td></tr>
+  <tr><td>Test12345@Gmail.Com</td><td class="red">Test12345@Gmail.Com</td><td>10 Oct 2025</td></tr>
+  <tr><td>Test1@Gmail.Com</td><td class="red">Test1@Gmail.Com</td><td>27 Feb 2026</td></tr>
+</table>
+<p>These test contacts, created by CRS during active development, already exhibited the email-as-name bug. The bug was visible in their own test data and was either not noticed or not considered a problem.</p>
+
+<h3>Revenue impact</h3>
+<table>
+  <tr><th></th><th>Using blended rate (8.8%)</th><th>Using pre-CRS rate (15.4%)</th></tr>
+  <tr><td>88 affected leads × conversion rate × $6,880/deal</td><td class="red" style="font-size: 18px;">$53,032</td><td class="red" style="font-size: 18px;">$93,158</td></tr>
+</table>
+<p style="font-size: 13px; color: #64748b;">Jayden estimated "$50,000+". The data shows $53,032 – $93,158. Non-corrupted leads progressed at 97%. Email-as-name leads progressed at 9%. 88 percentage point gap.</p>
+
+<h3>The silent fix</h3>
+<p><strong>Zero new corrupted contacts since 2 April 2026.</strong> CRS fixed the bug without documenting what was wrong, what they changed, or why. If it was easy to fix, it was easy to prevent.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="react">8. The Undelivered React Migration</h2>
+
+<div class="email-quote">
+  <div class="from">Gleb Hodorovskiy → Jayden Vecchio, 3 March 2026</div>
+  <div class="body">"Around 70% of the work is already done, so I don't see a strong reason not to complete it... The React migration alone could realistically bring +20% in conversions."</div>
+</div>
+
+<div class="email-quote">
+  <div class="from">Yuliia Boiko → Jayden Vecchio, 4 March 2026</div>
+  <div class="body">"The final date for your website to be live on React is the 7th of April, which is exactly 4 months excluding winter holidays as we agreed from the start."</div>
+</div>
+
+<div class="email-quote">
+  <div class="from">Yuliia Boiko → Jayden Vecchio, 27 March 2026</div>
+  <div class="body">"During the upcoming week, we will launch a set of pages live for QA validation."</div>
+</div>
+
+<p><strong>Status as of 3 April 2026:</strong> React site is not live. No pages were launched for QA. The "upcoming week" (30 Mar – 4 Apr) produced zero deployed pages. Instead, the team was dealing with the lead loss crisis.</p>
+
+<p>The React migration was used as justification to keep Jayden paying full retainer. Gleb explicitly cited it on 3 March when Jayden proposed reducing scope to Meta ads only.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="retention">9. The Retention Cycle</h2>
+
+<p>A pattern emerges across the entire engagement: every time Jayden attempted to reduce scope or end the engagement, CRS made assurances that subsequent events contradicted.</p>
+
+<table>
+  <tr><th>Date</th><th>Jayden's Position</th><th>CRS Response</th><th>What Actually Happened</th></tr>
+  <tr>
+    <td>Feb 2024</td>
+    <td>"100+ working days, no deliverables"</td>
+    <td>Ihor: "We will get back to you with a plan"</td>
+    <td>Jayden kept paying.</td>
+  </tr>
+  <tr>
+    <td>Jun 2024</td>
+    <td>"30% revenue down, $60k spent"</td>
+    <td>Gleb: "Redesigns are risky" + continued billing</td>
+    <td>Jayden kept paying.</td>
+  </tr>
+  <tr>
+    <td>Aug 2024</td>
+    <td>"Your fix broke our contact form. I rolled back the server myself."</td>
+    <td>Gleb: "Our team is on the next iteration"</td>
+    <td>Jayden kept paying.</td>
+  </tr>
+  <tr>
+    <td>Dec 2025</td>
+    <td>Simon: "Pattern of missed deadlines, QA assumed not enforced"</td>
+    <td>Gleb: <strong>"No item marked ready without production validation"</strong></td>
+    <td>Homepage quiz shipped with hardcoded dashes. No validation.</td>
+  </tr>
+  <tr>
+    <td>Feb 2026</td>
+    <td>Jayden: "Not impressed. Reduce to Meta ads only."</td>
+    <td>Gleb: <strong>"70% done. QA issues resolved. $1k discount."</strong></td>
+    <td>28 email-as-name contacts that month. React not delivered.</td>
+  </tr>
+  <tr>
+    <td>Mar 2026</td>
+    <td>Jayden: "I need a committed delivery date"</td>
+    <td>Yuliia: <strong>"React live by 7 April. Pages launching this week."</strong></td>
+    <td>No pages launched. Lead crisis erupted.</td>
+  </tr>
+  <tr>
+    <td>Apr 2026</td>
+    <td>Jayden: "Lost 80+ leads. $50k+ revenue."</td>
+    <td>Yuliia: <strong>"Issue is on your side."</strong><br>Gleb: <strong>"Small mistake. Never heard of Zapier."</strong></td>
+    <td>90 contacts corrupted. Zapier verified in Jul 2024.</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="qa">10. CRS's QA: What Was Never Done</h2>
+
+<p>Across <strong>201 emails</strong> from CRS spanning the entire engagement (Jul 2024 – Apr 2026), the following were searched for and <strong>not found</strong>:</p>
+
+<table>
+  <tr><th>Standard QA Deliverable</th><th>Provided by CRS?</th></tr>
+  <tr><td>Test cases for form submissions</td><td class="red">Never</td></tr>
+  <tr><td>Test plan for HubSpot integration</td><td class="red">Never</td></tr>
+  <tr><td>Test report after deployment</td><td class="red">Never</td></tr>
+  <tr><td>Screenshots of HubSpot contacts with correct field mappings</td><td class="red">Never</td></tr>
+  <tr><td>QA checklist for form deployments</td><td class="red">Never</td></tr>
+  <tr><td>Staging-to-production validation evidence</td><td class="red">Never</td></tr>
+  <tr><td>End-to-end test (submit → verify HubSpot → confirm fields)</td><td class="red">Done once (Jul 2024 for Zapier), never repeated</td></tr>
+</table>
+
+<p>CRS's deliverables consisted of:</p>
+<ul style="margin: 8px 0 8px 24px;">
+  <li>Loom video walkthroughs showing the UI renders (forms appear, buttons click)</li>
+  <li>A/B test reports measuring submission volume (how many people clicked Submit)</li>
+  <li>Visual checks ("the form looks correct on staging")</li>
+  <li>Figma design mockups</li>
+</ul>
+
+<p>At no point in 25 months did CRS verify that submitted data arrived in HubSpot with correct field mappings.</p>
+
+<p>By contrast, the post-incident audit built a <strong>142-test automated Playwright suite</strong> covering every form, every calculator, and regression tests for each documented bug — in 48 hours.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="verdict">11. Verdict</h2>
+
+<div class="verdict">
+  <h3>The Record Speaks for Itself</h3>
+  <p>Over 25 months, Hunter Galloway paid CRS approximately <strong>$225,000</strong>. In return:</p>
+  <p>&bull; A redesign that <strong>collapsed conversions by 37%</strong> and caused a <strong>30% revenue drop</strong></p>
+  <p>&bull; A contact form that <strong>CRS broke and Jayden had to fix</strong></p>
+  <p>&bull; A suburb dropdown that <strong>displayed the wrong data and did nothing</strong></p>
+  <p>&bull; Quiz forms that <strong>corrupted 90 contacts, hardcoded dashes for 167 more, and lost 80+ leads entirely</strong></p>
+  <p>&bull; A React migration that was <strong>never delivered</strong></p>
+  <p>&bull; Meta ads with an <strong>80% no-answer rate</strong></p>
+  <p>&bull; <strong>Three provable lies</strong> in writing when confronted</p>
+  <p>&bull; <strong>Zero test cases</strong> across the entire engagement</p>
+  <p style="margin-top: 20px;">Every time something broke, the client fixed it or discovered it months later. Every time the client tried to leave, CRS made promises that were not kept. Every time CRS was confronted, they either denied knowledge, shifted blame to the client, or minimised the damage.</p>
+  <p style="margin-top: 16px;"><strong>Estimated total damage: $53,032 – $93,158 in lost revenue from form corruption alone.</strong> This excludes the redesign disaster, the broken contact form, the wasted Meta ad spend, and the undelivered React migration.</p>
+  <p style="margin-top: 16px;">All evidence is independently verifiable via HubSpot CRM API (Account 4607234), Gmail search, and Wayback Machine snapshots. All email citations are from CRS's own communications.</p>
+</div>
+
+<hr>
+
+<h2>Supporting Evidence</h2>
+<table>
+  <tr><th>Document</th><th>Description</th></tr>
+  <tr><td><a href="hubspot-damage-report.html">HubSpot Damage Report</a></td><td>Full technical audit: 90/167/15/268/72+ stats, revenue calculation, pipeline verification, email citations, deployment timeline</td></tr>
+  <tr><td><a href="index.html">Quiz Flow Specification</a></td><td>Developer reference for correct quiz implementation (English)</td></tr>
+  <tr><td><a href="directory.html">Forms & Calculators Directory</a></td><td>All 8 forms + 9 calculators with status, bugs, and field mappings</td></tr>
+  <tr><td><a href="priority-triage.html">Priority Triage</a></td><td>P0/P1/P2 classification with React launch QA checklist</td></tr>
+  <tr><td><a href="test-coverage.html">Test Coverage</a></td><td>142 Playwright tests mapped to every form and calculator</td></tr>
+  <tr><td><a href="cf7-14462-context-loss.html">CF7 #14462 Context Loss</a></td><td>72+ form instances missing source_url and transaction_type</td></tr>
+</table>
+
+<div style="background: var(--gray); border-radius: 8px; padding: 20px; margin-top: 48px; text-align: center;">
+  <p style="color: #94a3b8; font-size: 12px; margin: 0;">Prepared for Hunter Galloway &nbsp;·&nbsp; 3 April 2026 &nbsp;·&nbsp; All data independently verifiable</p>
+</div>
+
+</body>
+</html>

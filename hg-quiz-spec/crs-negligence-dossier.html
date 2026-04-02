@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRS Negligence Dossier — Hunter Galloway</title>
+<style>
+:root { --hg-dark: #1a1a2e; --hg-red: #dc2626; --hg-green: #16a34a; --hg-gold: #d97706; --hg-gray: #f3f4f6; --hg-blue: #2563eb; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #1a1a2e; line-height: 1.65; max-width: 960px; margin: 0 auto; padding: 48px 32px; }
+h1 { font-size: 32px; margin-bottom: 8px; color: var(--hg-dark); }
+h2 { font-size: 22px; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 3px solid var(--hg-red); color: var(--hg-dark); }
+h3 { font-size: 17px; margin: 24px 0 12px; color: var(--hg-dark); }
+h4 { font-size: 14px; margin: 16px 0 8px; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
+p { margin: 12px 0; }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+th { background: var(--hg-dark); color: #fff; padding: 10px 12px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+tr:hover td { background: #f9fafb; }
+blockquote { background: #fef2f2; border-left: 4px solid var(--hg-red); padding: 16px 20px; margin: 16px 0; font-style: italic; line-height: 1.6; }
+code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+.subtitle { color: #666; font-size: 15px; margin-bottom: 24px; }
+.meta { display: flex; gap: 24px; flex-wrap: wrap; font-size: 13px; color: #888; padding: 12px 16px; background: var(--hg-gray); border-radius: 8px; margin-bottom: 32px; }
+.verdict { background: var(--hg-dark); color: #fff; border-radius: 12px; padding: 32px; margin: 32px 0; }
+.verdict h3 { color: var(--hg-red); margin-top: 0; font-size: 20px; }
+.verdict p { color: #ccc; }
+.verdict strong { color: #fff; }
+.charge { background: #fff; border: 2px solid var(--hg-red); border-radius: 12px; padding: 24px; margin: 24px 0; }
+.charge h3 { color: var(--hg-red); margin-top: 0; }
+.evidence-box { background: var(--hg-gray); border-radius: 8px; padding: 16px; margin: 12px 0; font-size: 14px; }
+.evidence-box .label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.timeline { position: relative; padding-left: 32px; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--hg-green), var(--hg-gold), var(--hg-red)); border-radius: 2px; }
+.timeline-item { position: relative; margin-bottom: 24px; }
+.timeline-item::before { content: ''; position: absolute; left: -28px; top: 6px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--hg-red); background: #fff; }
+.timeline-item.green::before { border-color: var(--hg-green); }
+.timeline-item.gold::before { border-color: var(--hg-gold); }
+.timeline-item .date { font-size: 12px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.timeline-item .title { font-weight: 700; font-size: 15px; margin: 4px 0; }
+.timeline-item .detail { font-size: 14px; color: #555; }
+.nuclear { background: linear-gradient(135deg, #fef2f2, #fff5f5); border: 3px solid var(--hg-red); border-radius: 12px; padding: 32px; margin: 32px 0; position: relative; }
+.nuclear::before { content: '⚠'; position: absolute; top: -18px; left: 24px; font-size: 28px; background: #fff; padding: 0 8px; }
+.nuclear h3 { color: var(--hg-red); font-size: 20px; margin-top: 0; }
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+.stat-card { background: var(--hg-dark); color: #fff; border-radius: 12px; padding: 20px; text-align: center; }
+.stat-card .num { font-size: 36px; font-weight: 700; color: var(--hg-red); }
+.stat-card .label { font-size: 12px; color: #999; margin-top: 4px; }
+.comparison { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin: 24px 0; }
+.comparison-box { text-align: center; padding: 24px; border-radius: 12px; }
+.comparison-box.good { background: #f0fdf4; border: 2px solid var(--hg-green); }
+.comparison-box.bad { background: #fef2f2; border: 2px solid var(--hg-red); }
+.comparison-box .pct { font-size: 42px; font-weight: 700; }
+.comparison-box.good .pct { color: var(--hg-green); }
+.comparison-box.bad .pct { color: var(--hg-red); }
+.comparison-arrow { font-size: 36px; color: var(--hg-red); }
+hr { border: none; border-top: 1px solid #e5e7eb; margin: 48px 0; }
+.footer { text-align: center; color: #999; font-size: 12px; margin-top: 48px; padding-top: 24px; border-top: 1px solid #e5e7eb; }
+
+/* Password overlay */
+#reveal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--hg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease; }
+#reveal-overlay.fade-out { opacity: 0; pointer-events: none; }
+.reveal-title { color: #fff; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.reveal-subtitle { color: #999; font-size: 14px; margin-bottom: 24px; }
+.reveal-input { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 16px; text-align: center; width: 280px; margin-bottom: 12px; }
+.reveal-input::placeholder { color: rgba(255,255,255,0.3); }
+.reveal-btn { background: var(--hg-red); color: #fff; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.reveal-error { color: var(--hg-red); font-size: 13px; min-height: 20px; margin-top: 8px; }
+@media print { #reveal-overlay { display: none !important; } }
+</style>
+<script>
+function checkPassword() {
+  var pw = document.getElementById('pw-input').value;
+  if (pw === 'huntergalloway2026') {
+    document.getElementById('reveal-overlay').classList.add('fade-out');
+    setTimeout(function(){ document.getElementById('reveal-overlay').style.display='none'; }, 800);
+  } else {
+    document.getElementById('pw-error').textContent = 'Incorrect password';
+  }
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('reveal-overlay').style.display !== 'none') checkPassword();
+});
+</script>
+</head>
+<body>
+
+<div id="reveal-overlay">
+  <div class="reveal-title">CRS Negligence Dossier</div>
+  <div class="reveal-subtitle">Hunter Galloway — Confidential</div>
+  <input type="password" id="pw-input" class="reveal-input" placeholder="Enter password" autofocus>
+  <button class="reveal-btn" onclick="checkPassword()">Open Dossier</button>
+  <div id="pw-error" class="reveal-error"></div>
+</div>
+
+<h1>CRS Negligence Dossier</h1>
+<p class="subtitle">A complete, email-evidenced record of systemic failures by Conversion Rate Store (conversionrate.store) across 2.5 years of engagement with Hunter Galloway.</p>
+
+<div class="meta">
+  <span>Period: October 2023 – April 2026</span>
+  <span>Evidence source: Gmail correspondence</span>
+  <span>Compiled: 3 April 2026</span>
+  <span>Classification: Confidential</span>
+</div>
+
+<!-- ============================================================ -->
+<h2>Executive Summary</h2>
+
+<p>This document presents the complete email record of CRS's engagement with Hunter Galloway. Every claim is sourced to a specific email with date, sender, and subject line. The evidence establishes:</p>
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="num">4+</div><div class="label">Times CRS broke production forms</div></div>
+  <div class="stat-card"><div class="num">$60k+</div><div class="label">Spent on redesign that reduced revenue 20%</div></div>
+  <div class="stat-card"><div class="num">$53k–$93k</div><div class="label">Revenue lost from latest incident alone</div></div>
+</div>
+
+<div class="verdict">
+  <h3>Core Finding</h3>
+  <p>CRS's co-founder claimed on 2 April 2026 that his team had <strong>"never heard of Zapier"</strong> and was unaware of the webhook address <code style="color: var(--hg-red);">9wymd7m4@robot.zapier.com</code>.</p>
+  <p style="margin-top: 16px;">CRS's own team lead, <strong>Ihor Sokolov</strong>, emailed the client on <strong>19 July 2024</strong> — twenty months earlier — confirming that his team had <strong>verified</strong> this exact Zapier webhook was receiving form submissions.</p>
+  <p style="margin-top: 16px;"><strong style="color: var(--hg-red);">This is either a deliberate misrepresentation or evidence that CRS's internal knowledge management is so poor that their co-founder is unaware of work his own team performed and documented.</strong></p>
+</div>
+
+<!-- ============================================================ -->
+<h2>Charge 1: Misrepresentation of Zapier Knowledge</h2>
+
+<div class="charge">
+  <h3>CRS Claimed Ignorance of a System They Verified</h3>
+
+  <h4>What Gleb Said (2 April 2026)</h4>
+  <blockquote>"Firstly, I understand your pain — I recently lost around 200 leads because I wasn't checking our email on another domain 😭 We created the new form instead of using the old one… this is the first time we've heard of Zapier in this project."</blockquote>
+  <div class="evidence-box">
+    <div class="label">Source</div>
+    Gleb Hodorovskiy → Jayden Vecchio, 2 Apr 2026, Subject: "Re: URGENT 2/2 - Website form not working"
+  </div>
+
+  <h4>What Ihor Said (19 July 2024)</h4>
+  <div class="nuclear">
+    <h3>The Ihor Sokolov Email</h3>
+    <blockquote style="background: #fff; font-size: 15px;">
+      "We have verified that the conversions from the previous version are being streamed to Zapier and the following email addresses:<br>
+      - nathan.vecchio@huntergalloway.com.au<br>
+      - joshua.vecchio@huntergalloway.com.au<br>
+      - jayden.vecchio@huntergalloway.com.au<br>
+      - <strong style="color: var(--hg-red);">9wymd7m4@robot.zapier.com</strong>"
+    </blockquote>
+    <div class="evidence-box" style="background: #fff;">
+      <div class="label">Source</div>
+      Ihor Sokolov (CRS Team Lead) → Jayden Vecchio, 19 Jul 2024, Subject: "Re: CRO for huntergalloway.com.au redesign"<br>
+      CC: Gleb Hodorovskiy, Simon Heikkila, Yehor Pidopryhora
+    </div>
+    <p style="margin-top: 16px;"><strong>Gleb was CC'd on this email.</strong> His co-founder received a copy of the message in which his own team lead verified the Zapier integration, named the exact webhook address, and confirmed it was receiving data.</p>
+  </div>
+
+  <h4>The Logical Conclusion</h4>
+  <p>There are only two possibilities:</p>
+  <p><strong>1. Gleb knew about Zapier and lied.</strong> He was CC'd on the July 2024 email. His team verified the webhook. When confronted with their failure in April 2026, he chose to deny knowledge rather than accept responsibility.</p>
+  <p><strong>2. Gleb genuinely didn't know.</strong> This means CRS's internal knowledge transfer is so broken that the co-founder of the company is unaware of verified integrations his own team documented. This is arguably worse — it means no institutional memory exists, no handover process works, and every new team member starts from zero with zero awareness of what their predecessors built and verified.</p>
+  <p><strong>Either way, it is a disqualifying failure for a company that charges professional rates to manage mission-critical lead infrastructure.</strong></p>
+</div>
+
+<!-- ============================================================ -->
+<h2>Charge 2: Repeated Destruction of Production Forms</h2>
+
+<div class="charge">
+  <h3>CRS Has Broken Production Forms At Least 4 Times</h3>
+
+  <table>
+    <tr><th>Date</th><th>What CRS Broke</th><th>Impact</th><th>Email Evidence</th></tr>
+    <tr>
+      <td><strong>May 2024</strong></td>
+      <td>Contact Form 7 plugin causing "data erasure in the form"</td>
+      <td>Form data lost on submission</td>
+      <td>Mikhail Klimenko → Jayden, 11 May 2024<br>"Our development team has created a technical solution to bypass and fix the issue related to the 'Contact Form 7' plugin behavior, which was causing data erasure in the form."</td>
+    </tr>
+    <tr>
+      <td><strong>Aug 2024</strong></td>
+      <td>Contact form broken while "fixing" a bug</td>
+      <td>Zero contact form submissions for a week; several leads lost</td>
+      <td>Jayden → Gleb, 26 Aug 2024<br>"The team 'fixed' a bug last week but inadvertently broke our contact form. We haven't received any contact for submissions since they changed this last week so have lost several leads"</td>
+    </tr>
+    <tr>
+      <td><strong>Dec 2025</strong></td>
+      <td>Holiday banner deployed with wrong A/B test variant (100% control)</td>
+      <td>Banner declared "ready and QA'd" never appeared on production site</td>
+      <td>Simon → Gleb, 23 Dec 2025<br>Subject: "Missed deadlines and unmet commitments"</td>
+    </tr>
+    <tr>
+      <td><strong>Mar–Apr 2026</strong></td>
+      <td>New forms created without Zapier webhook; email mapped to firstname field; refinance quiz webhook never connected</td>
+      <td>90 contacts corrupted; 82/90 never progressed past Lead; est. $53k–$93k revenue lost</td>
+      <td>Gleb admits "We created the new form" and "our developer's mistake", 2 Apr 2026</td>
+    </tr>
+  </table>
+
+  <h4>The Pattern</h4>
+  <p>This is not a one-off mistake. This is a company that has broken production forms in <strong>May 2024, August 2024, December 2025, and March 2026</strong>. Every single time, it was Hunter Galloway — not CRS — that detected the problem. CRS's QA process has never once caught a form-breaking deployment before it reached production.</p>
+
+  <p>After the August 2024 incident, Jayden had to <strong>roll the server back himself</strong>. After the December 2025 incident, Simon had to <strong>implement a banner workaround himself via a plugin</strong>. After the March 2026 incident, it was Jayden who discovered the data corruption by inspecting HubSpot records. CRS's "QA" has been the client, every time.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2>Charge 3: QA Promises Made and Immediately Broken</h2>
+
+<div class="charge">
+  <h3>Gleb's Written Commitment vs. Reality</h3>
+
+  <h4>The Promise (23 December 2025)</h4>
+  <blockquote>"What will change effective immediately: No item is marked 'ready' without production validation. QA assumptions are no longer acceptable."</blockquote>
+  <div class="evidence-box">
+    <div class="label">Source</div>
+    Gleb Hodorovskiy → Simon Heikkila, Jayden Vecchio, 23 Dec 2025, Subject: "Re: Missed deadlines and unmet commitments"
+  </div>
+
+  <h4>The Reality (March 2026 — 3 months later)</h4>
+  <p>CRS shipped new forms that:</p>
+  <p>• Mapped email addresses to the firstname field in HubSpot</p>
+  <p>• Did not connect the Zapier webhook they had verified 20 months earlier</p>
+  <p>• Never connected the refinance quiz webhook at all</p>
+  <p>• Were never tested for data correctness — Yuliia admitted they used "standard logic" and never verified what data reached the CRM</p>
+
+  <h4>Yuliia's Admission (2 April 2026)</h4>
+  <blockquote>"When these forms were created, tested and implemented we used standard logic."</blockquote>
+  <div class="evidence-box">
+    <div class="label">Source</div>
+    Yuliia Boiko → Jayden Vecchio, 2 Apr 2026, Subject: "Re: URGENT 2/2 - Website form not working"
+  </div>
+
+  <p><strong>"Standard logic" means: we tested whether the form submits, not whether the data arrives correctly.</strong> This is not QA. This is checking that a car starts, but not that the steering wheel is connected.</p>
+
+  <h4>The Result</h4>
+  <div class="comparison">
+    <div class="comparison-box good">
+      <div style="font-size: 12px; color: #666;">Correctly-mapped contacts</div>
+      <div class="pct">97%</div>
+      <div style="font-size: 13px; color: #666;">progressed past Lead stage</div>
+    </div>
+    <div class="comparison-arrow">→</div>
+    <div class="comparison-box bad">
+      <div style="font-size: 12px; color: #666;">CRS email-as-firstname contacts</div>
+      <div class="pct">8.9%</div>
+      <div style="font-size: 13px; color: #666;">progressed past Lead stage</div>
+    </div>
+  </div>
+  <p style="text-align: center; font-size: 14px; color: #666;">82 of 90 contacts with the email-as-firstname defect were never followed up. They sat in HubSpot looking like spam because there was no recognizable name — just an email address where the first name should be.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2>Charge 4: Scope Creep and Overcharging</h2>
+
+<div class="charge">
+  <h3>CRS Redesigned a Site Nobody Asked Them to Redesign — Then Charged to Fix It</h3>
+
+  <h4>What Was Requested (September 2023)</h4>
+  <blockquote>"The original scope that we sent to your team in September 2023 was about increasing conversions and consolidating CTAs across the site. We came to your team for a recommendation on how to achieve this."</blockquote>
+  <div class="evidence-box">
+    <div class="label">Source</div>
+    Jayden Vecchio → Gleb Hodorovskiy, 27 Jun 2024, Subject: "Re: Hunter Galloway redesign - Following on from meeting"
+  </div>
+
+  <h4>What Was Delivered</h4>
+  <p>A full redesign that:</p>
+  <p>• Took <strong>100+ working days</strong> vs. the quoted <strong>60 working days</strong> (Jayden escalation, 5 Feb 2024)</p>
+  <p>• Collapsed conversion rates from <strong>0.80% to 0.50%</strong> (Jayden's data table, 24 Jun 2024)</p>
+  <p>• Cost <strong>$60,000+</strong> in fees</p>
+  <p>• Reduced monthly revenue by <strong>20-30%</strong></p>
+  <p>• Changed the quiz form without being asked to: "Im not sure why it was changed with the redevelopment as this wasn't within the scope of what we requested" (Jayden, 18 Jul 2024)</p>
+
+  <h4>Then CRS Charged a New Retainer to Fix Their Own Damage</h4>
+  <p>After the redesign destroyed conversion rates, CRS sold Hunter Galloway a <strong>CRO retainer</strong> — a separate monthly fee to investigate and fix the very problems their redesign had created.</p>
+
+  <p>Gleb's justification (19 Aug 2024):</p>
+  <blockquote>"I understand that significant budget was spent already and that's why it makes sense to continue to capitalize on that so that the redesigned version performs much better than before."</blockquote>
+
+  <p><strong>Translation: "You've already spent $60k on a redesign you didn't ask for that made things worse. Now pay us more to fix it."</strong></p>
+</div>
+
+<!-- ============================================================ -->
+<h2>Charge 5: Systemic Communication Failure</h2>
+
+<div class="charge">
+  <h3>Deadlines Committed and Silently Missed — Repeatedly</h3>
+
+  <p>Simon's December 2025 escalation identified the exact pattern:</p>
+  <blockquote>"What's most frustrating is not just the individual misses, but the pattern: Clear commitments are being made → Deadlines pass silently → We are left chasing, firefighting, or filling gaps ourselves."</blockquote>
+
+  <p>His follow-up identified the systemic nature:</p>
+  <blockquote>"Deadlines are committed to and then missed. Work is communicated as ready or imminent when it is not. QA and validation are assumed rather than enforced. There is no consistently used system of record."</blockquote>
+
+  <p>Simon also identified that CRS was using AI-generated responses to mask lack of genuine engagement:</p>
+  <blockquote>"Clearly, this was an AI-generated response. I have no issues with using AI. But there is a larger issue here. It is a failure of end-to-end delivery validation and ownership."</blockquote>
+
+  <div class="evidence-box">
+    <div class="label">Sources</div>
+    Simon Heikkila → Gleb Hodorovskiy, 23 Dec 2025 &amp; 24 Dec 2025, Subject: "Missed deadlines and unmet commitments"
+  </div>
+
+  <p>Gleb responded to this by promising that <strong>Linear would be the "single system of record"</strong> and that QA assumptions were "no longer acceptable." Three months later, CRS shipped forms with corrupted field mappings and missing webhooks. The QA that Gleb promised in December did not exist in March.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2>Charge 6: Demonstrated Incompetence in Their Core Competency</h2>
+
+<div class="charge">
+  <h3>CRS is a Conversion Rate Optimization Company That Destroyed Conversion Rates</h3>
+
+  <p>CRS's company name is literally "Conversion Rate Store." Their website (conversionrate.store) markets them as specialists in conversion optimization. The irony is not lost:</p>
+
+  <table>
+    <tr><th>Metric</th><th>Before CRS</th><th>After CRS</th><th>Change</th></tr>
+    <tr><td>Free Assessment conversion rate</td><td>0.80%</td><td>0.50%</td><td style="color: var(--hg-red); font-weight: 700;">-37.5%</td></tr>
+    <tr><td>Monthly revenue</td><td>100%</td><td>70-80%</td><td style="color: var(--hg-red); font-weight: 700;">-20 to -30%</td></tr>
+    <tr><td>Refinance lead progression (latest incident)</td><td>97%</td><td>8.9%</td><td style="color: var(--hg-red); font-weight: 700;">-90.8%</td></tr>
+    <tr><td>Project timeline (redesign)</td><td>60 days quoted</td><td>100+ days actual</td><td style="color: var(--hg-red); font-weight: 700;">+67%</td></tr>
+    <tr><td>Fees paid</td><td colspan="2" style="text-align: center;">$60,000+ (redesign) + ongoing CRO retainer</td><td></td></tr>
+  </table>
+
+  <p><strong>Hunter Galloway paid a conversion rate optimization company over $60,000 and received a 37.5% reduction in conversion rates, a 20-30% reduction in revenue, and the destruction of their lead data integrity.</strong></p>
+</div>
+
+<!-- ============================================================ -->
+<h2>Charge 7: React Migration — A Promise That Was Never Going to Be Kept</h2>
+
+<div class="charge">
+  <h3>4 Days to Launch. Zero Pages Delivered for Testing. Radio Silence.</h3>
+
+  <p>In late 2025, CRS proposed migrating Hunter Galloway's WordPress site to React/Next.js. By February 2026, Jayden was already concerned. What followed is a textbook case of a vendor making commitments they had no ability to honour, then going silent when the deadline arrived.</p>
+
+  <div class="evidence-item">
+    <div class="evidence-header">25 Feb 2026 — Jayden to Gleb</div>
+    <div class="evidence-subject">Re: Weekly updates</div>
+    <blockquote>"To be honest, I'm not impressed with the current output. When this React project kicked off 3 months ago, it was framed as a 4 month project, but we aren't seeing the necessary progress… Simon has ended up coordinating a lot of the PM and QA work, which really should have been part of your team's responsibilities."</blockquote>
+    <p><strong>Impact:</strong> Jayden identifies that CRS has offloaded project management onto Simon — a volunteer consultant — rather than managing the project themselves. He proposes reducing the contract to Meta ads only.</p>
+  </div>
+
+  <div class="evidence-item">
+    <div class="evidence-header">3 Mar 2026 — Gleb to Jayden</div>
+    <div class="evidence-subject">Re: Weekly updates</div>
+    <blockquote>"Around 70% of the work is already done, so I don't see a strong reason not to complete it… After completing the React migration, we'll need at least two additional months of CRO retainer."</blockquote>
+    <p><strong>Impact:</strong> Gleb claims 70% completion to persuade Jayden to continue paying. Then immediately pivots to requesting <em>two more months of retainer fees</em> after the migration. The pattern: promise completion to retain the client, then extend the engagement.</p>
+  </div>
+
+  <div class="evidence-item">
+    <div class="evidence-header">4 Mar 2026 — Jayden to Gleb</div>
+    <div class="evidence-subject">Re: Weekly updates</div>
+    <blockquote>"I need a clear, firm completion date for the React site. What exact date will the migration be fully completed and live? I'm not looking for an estimate — I need a committed delivery date so I can make a decision on next steps."</blockquote>
+    <p><strong>Impact:</strong> Jayden demands a hard deadline. No more vague timelines.</p>
+  </div>
+
+  <div class="evidence-item" style="background: #fef2f2; border-left-color: var(--hg-red);">
+    <div class="evidence-header" style="color: var(--hg-red);">4 Mar 2026 — Yuliia to Jayden (THE COMMITMENT)</div>
+    <div class="evidence-subject">Re: Weekly updates</div>
+    <blockquote>"We checked everything with our developer and the final date for your website to be live on React is the 7th of April, which is exactly 4 months excluding winter holidays as we agreed from the start."</blockquote>
+    <p><strong>Impact:</strong> This is the commitment. Written. Dated. Unambiguous. <strong>The React site will be live on 7 April 2026.</strong></p>
+  </div>
+
+  <div class="evidence-item">
+    <div class="evidence-header">5 Mar 2026 — Jayden to Yuliia</div>
+    <div class="evidence-subject">Re: Weekly updates</div>
+    <blockquote>"Ok sounds good, I look forward to seeing the final website live by 7th of April. Please proceed as planned."</blockquote>
+    <p><strong>Impact:</strong> Jayden accepts the commitment in writing. Both parties are aligned on the deadline.</p>
+  </div>
+
+  <div class="evidence-item">
+    <div class="evidence-header">13 Mar 2026 — Yuliia to Jayden</div>
+    <div class="evidence-subject">Re: Weekly updates</div>
+    <blockquote>"We are tracking the progress according to plan, via checklist, currently we are on page migration, developer is transferring blog pages, he already transferred other prioritized pages."</blockquote>
+    <p><strong>Impact:</strong> CRS reports everything is on track. 25 days to deadline.</p>
+  </div>
+
+  <div class="evidence-item">
+    <div class="evidence-header">14 Mar 2026 — Jayden to Yuliia</div>
+    <div class="evidence-subject">Re: Weekly updates</div>
+    <blockquote>"It should be deployed in 3 weeks — is there a version for testing available?"</blockquote>
+    <p><strong>Impact:</strong> Jayden asks for a testable version. No version is provided.</p>
+  </div>
+
+  <div class="evidence-item">
+    <div class="evidence-header">24 Mar 2026 — Simon to Yuliia</div>
+    <div class="evidence-subject">Re: Weekly updates</div>
+    <blockquote>"We haven't had an update since 14 March. What is the current status of conversionrate.store's projects?"</blockquote>
+    <p><strong>Impact:</strong> 10 days of silence from CRS. Simon has to chase them for a basic status update. 14 days to deadline.</p>
+  </div>
+
+  <div class="evidence-item">
+    <div class="evidence-header">24 Mar 2026 — Yuliia to Simon</div>
+    <div class="evidence-subject">Re: Weekly updates</div>
+    <blockquote>"I was out of office due to family issues, I'll be back today."</blockquote>
+    <p><strong>Impact:</strong> CRS went dark for 10 days without notifying the client. Two weeks before a committed launch date.</p>
+  </div>
+
+  <div class="evidence-item" style="background: #fef2f2; border-left-color: var(--hg-red);">
+    <div class="evidence-header" style="color: var(--hg-red);">27 Mar 2026 — Yuliia to Team (THE SECOND PROMISE)</div>
+    <div class="evidence-subject">Weekly Updates March 23 - March 27</div>
+    <blockquote>"During the upcoming week, we will launch a set of pages live for QA validation."</blockquote>
+    <p><strong>Impact:</strong> 11 days before launch, CRS promises pages will be available for QA "during the upcoming week" (i.e., by ~3 Apr). This is the promise that sets the final trap.</p>
+  </div>
+
+  <div class="evidence-item">
+    <div class="evidence-header">31 Mar 2026 — Jayden to Yuliia</div>
+    <div class="evidence-subject">Re: Weekly Updates March 23 - March 27</div>
+    <blockquote>"On the website you had said it would be due to be finalised by 7th April — when can we get testing on the pages you have built? We need at least a week of testing prior to deployment."</blockquote>
+    <p><strong>Impact:</strong> Jayden does the math: 7 days to launch, minimum 1 week of testing required. Where are the pages?</p>
+  </div>
+
+  <div class="evidence-item">
+    <div class="evidence-header">31 Mar 2026 — Yuliia to Jayden (THE BACKTRACK)</div>
+    <div class="evidence-subject">Re: Weekly Updates March 23 - March 27</div>
+    <blockquote>"Regarding testing we can start now, page by page — a lot of them are already ready. We planned to finalise all pages as I wrote on Friday and test it all together but I suppose we can do it page by page."</blockquote>
+    <p><strong>Impact:</strong> The language shifts from "we will launch a set of pages" to "we can do it page by page." No pages are actually provided. The word "ready" is doing work that the pages themselves are not.</p>
+  </div>
+
+  <div class="evidence-item" style="background: #fef2f2; border-left-color: var(--hg-red);">
+    <div class="evidence-header" style="color: var(--hg-red);">2 Apr 2026 — Simon to Yuliia (THE QUESTION)</div>
+    <div class="evidence-subject">Re: Weekly Updates March 23 - March 27</div>
+    <blockquote>"I believe the pages rollout was supposed to happen this week. Are any available to QA yet?"</blockquote>
+    <p><strong>Impact:</strong> Direct, simple question. 5 days after Yuliia promised pages "during the upcoming week." 5 days before the committed launch date.</p>
+  </div>
+
+  <div class="nuclear-evidence" style="margin-top: 24px;">
+    <h4 style="color: var(--hg-red); margin-bottom: 12px;">⚠️ AS OF 3 APRIL 2026: ZERO RESPONSE. ZERO PAGES DELIVERED.</h4>
+    <p>CRS has not replied to Simon's question. Not a single page has been delivered for QA testing. The committed launch date of <strong>7 April 2026</strong> is in <strong>4 days</strong>.</p>
+    <p style="margin-top: 12px;">There is no version of events in which this website launches on 7 April. CRS knew this when they made the promise. They knew it when they claimed 70% was done. They knew it when they promised pages "during the upcoming week." And they know it now, which is why they have gone silent.</p>
+  </div>
+
+  <h3 style="margin-top: 32px;">The Pattern Is the Point</h3>
+
+  <table>
+    <tr><th>Promise</th><th>Made By</th><th>Date</th><th>Outcome</th></tr>
+    <tr>
+      <td>Website redesign in 60 working days</td>
+      <td>CRS</td>
+      <td>Oct 2023</td>
+      <td style="color: var(--hg-red); font-weight: 700;">100+ days, no deliverables at day 100</td>
+    </tr>
+    <tr>
+      <td>Holiday banner live and QA'd</td>
+      <td>CRS</td>
+      <td>Dec 2025</td>
+      <td style="color: var(--hg-red); font-weight: 700;">Never went live</td>
+    </tr>
+    <tr>
+      <td>"No item marked 'ready' without production validation"</td>
+      <td>Gleb</td>
+      <td>23 Dec 2025</td>
+      <td style="color: var(--hg-red); font-weight: 700;">Broken within 3 months — corrupted forms shipped</td>
+    </tr>
+    <tr>
+      <td>React site live by 7 April 2026</td>
+      <td>Yuliia</td>
+      <td>4 Mar 2026</td>
+      <td style="color: var(--hg-red); font-weight: 700;">Zero pages available for QA at T-5 days</td>
+    </tr>
+    <tr>
+      <td>Pages for QA "during the upcoming week"</td>
+      <td>Yuliia</td>
+      <td>27 Mar 2026</td>
+      <td style="color: var(--hg-red); font-weight: 700;">Week elapsed. Zero pages delivered. No response.</td>
+    </tr>
+  </table>
+
+  <p><strong>Not a single major promise made by CRS has ever been delivered when or how they said it would.</strong> This is not bad luck. This is not scope creep. This is a vendor that makes commitments to retain a paying client, with no demonstrated ability or intention to meet them.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2>Complete Email Evidence Timeline</h2>
+
+<div class="timeline">
+  <div class="timeline-item green">
+    <div class="date">Oct 2023</div>
+    <div class="title">Engagement Begins</div>
+    <div class="detail">HG sends scope document requesting conversion optimization and CTA consolidation. CRS quotes 60 working days.</div>
+  </div>
+
+  <div class="timeline-item gold">
+    <div class="date">5 Feb 2024</div>
+    <div class="title">100+ Days, No Deliverables</div>
+    <div class="detail">Jayden escalates: "we were quoted 60 working days for project completion, we are currently at 100+ working days and no deliverables."</div>
+  </div>
+
+  <div class="timeline-item gold">
+    <div class="date">Apr 2024</div>
+    <div class="title">Deployment Chaos</div>
+    <div class="detail">Multiple production issues during go-live. Blog content lost. CF7 form bugs. Legacy script conflicts. CRS deploys pages piecemeal over 5 days.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date">11 May 2024</div>
+    <div class="title">CF7 Data Erasure Bug</div>
+    <div class="detail">Mikhail: "Our development team has created a technical solution to bypass and fix the issue related to the 'Contact Form 7' plugin behavior, which was causing data erasure in the form."</div>
+  </div>
+
+  <div class="timeline-item gold">
+    <div class="date">30 May 2024</div>
+    <div class="title">CRS Requests Google Ads Access</div>
+    <div class="detail">Mikhail requests access for analytics@conversionrate.store — credential expansion into Google Ads.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date">24 Jun 2024</div>
+    <div class="title">Conversion Collapse Documented</div>
+    <div class="detail">Jayden presents data: conversion rate fell from 0.80% (Jan) to 0.50% (May). Revenue down 20-30%.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date">27 Jun 2024</div>
+    <div class="title">Jayden: "We Never Asked for a Redesign"</div>
+    <div class="detail">"We never asked for a complete redesign… the original scope was about increasing conversions… lost 20% of our monthly revenue and spent $60k for no result."</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date">28 Jun 2024</div>
+    <div class="title">Simon's First Escalation</div>
+    <div class="detail">"They've never admitted that they didn't read the scoping doc and that they missed the primary objectives."</div>
+  </div>
+
+  <div class="timeline-item gold">
+    <div class="date">18 Jul 2024</div>
+    <div class="title">CRS Charges CRO Retainer to Fix Own Damage</div>
+    <div class="detail">Jayden demands form rollback: "Im not sure why it was changed with the redevelopment as this wasn't within the scope of what we requested." CRS responds by introducing a new project manager and billing for a CRO retainer.</div>
+  </div>
+
+  <div class="timeline-item" style="background: #fef2f2; padding: 16px; border-radius: 8px; margin-left: -16px; padding-left: 16px;">
+    <div class="date" style="color: var(--hg-red);">⭐ 19 Jul 2024</div>
+    <div class="title" style="color: var(--hg-red);">IHOR VERIFIES ZAPIER WEBHOOK</div>
+    <div class="detail">Ihor Sokolov confirms: "We have verified that the conversions from the previous version are being streamed to Zapier… 9wymd7m4@robot.zapier.com". <strong>Gleb is CC'd.</strong></div>
+  </div>
+
+  <div class="timeline-item gold">
+    <div class="date">26 Jul 2024</div>
+    <div class="title">CRS Requests Hotjar Access</div>
+    <div class="detail">Yehor requests access for analytics@conversionrate.store — another platform credential.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date">2 Aug 2024</div>
+    <div class="title">Leads Drop After CRS Change</div>
+    <div class="detail">Jayden: "since the change Tuesday the leads have dropped off." CRS made desktop CTA changes on what was supposed to be mobile-only scope.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date">26 Aug 2024</div>
+    <div class="title">CRS Breaks Contact Form</div>
+    <div class="detail">Jayden: "The team 'fixed' a bug last week but inadvertently broke our contact form. We haven't received any contact form submissions since." Jayden rolls server back himself.</div>
+  </div>
+
+  <div class="timeline-item gold">
+    <div class="date">Sep 2024</div>
+    <div class="title">HubSpot Data Shared With CRS</div>
+    <div class="detail">Jayden shares HubSpot report URLs (account 4607234) with Simon for CRS. Form submission data exported.</div>
+  </div>
+
+  <div class="timeline-item gold">
+    <div class="date">Oct–Nov 2025</div>
+    <div class="title">Gleb Running Reports From HubSpot</div>
+    <div class="detail">Gleb sending Meta Ads performance updates referencing HubSpot data — proves active access to HubSpot account.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date">23 Dec 2025</div>
+    <div class="title">Simon: "Missed Deadlines and Unmet Commitments"</div>
+    <div class="detail">Holiday banner never went live despite being declared "ready and QA'd." Architecture recommendation never delivered. No Linear updates. Simon identifies systemic pattern of overpromising and underdelivering.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date">24 Dec 2025</div>
+    <div class="title">Simon Identifies Systemic Failure</div>
+    <div class="detail">Calls out AI-generated response. Identifies "systemic delivery problem." Notes grammatical errors in deployments. Demands process changes.</div>
+  </div>
+
+  <div class="timeline-item gold">
+    <div class="date">23 Dec 2025</div>
+    <div class="title">Gleb's QA Promise</div>
+    <div class="detail">"No item is marked 'ready' without production validation. QA assumptions are no longer acceptable." — A promise that would be broken within 3 months.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date">1 Apr 2026</div>
+    <div class="title">Yuliia Confirms CRS Built the Integration</div>
+    <div class="detail">WordPress-HubSpot integration confirmed as CRS work, last updated October 2025.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date">1–2 Apr 2026</div>
+    <div class="title">Jayden Catches Missing Webhooks</div>
+    <div class="detail">New form created without Zapier automation. Refinance quiz webhook never connected. Email addresses stored as first names.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date" style="color: var(--hg-red);">2 Apr 2026</div>
+    <div class="title" style="color: var(--hg-red);">Gleb Denies Zapier Knowledge</div>
+    <div class="detail">Claims "first time we've heard of Zapier." Admits "our developer's mistake." Calls it a "relatively small mistake." 82 of 90 affected contacts never progressed past Lead stage.</div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="date" style="color: var(--hg-red);">2 Apr 2026</div>
+    <div class="title" style="color: var(--hg-red);">Yuliia Admits QA Never Checked Data</div>
+    <div class="detail">"When these forms were created, tested and implemented we used standard logic." Translation: we checked that the form submitted, not that the data was correct.</div>
+  </div>
+
+  <div class="timeline-item" style="background: #fef2f2; padding: 16px; border-radius: 8px; margin-left: -16px; padding-left: 16px;">
+    <div class="date" style="color: var(--hg-red);">2 Apr 2026</div>
+    <div class="title" style="color: var(--hg-red);">Simon Asks: "Are Any Pages Available to QA Yet?"</div>
+    <div class="detail">Pages were promised "during the upcoming week" on 27 Mar. 6 days later, Simon asks the obvious question. <strong>No response. No pages. 5 days to committed launch.</strong></div>
+  </div>
+
+  <div class="timeline-item" style="background: #fef2f2; padding: 16px; border-radius: 8px; margin-left: -16px; padding-left: 16px;">
+    <div class="date" style="color: var(--hg-red);">⭐ 3 Apr 2026</div>
+    <div class="title" style="color: var(--hg-red);">GOOD FRIDAY: NOTHING DELIVERED</div>
+    <div class="detail">React site promised live 7 Apr. Zero pages delivered for QA. Zero response to Simon's question. CRS has gone silent on the migration while simultaneously defending their broken forms in the URGENT email thread. 4 days to deadline.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2>Conclusion</h2>
+
+<div class="verdict">
+  <h3>The Verdict</h3>
+  <p>The email evidence is unambiguous. CRS:</p>
+  <p style="margin-top: 16px;"><strong>1. Verified a critical integration and then denied knowledge of it.</strong><br>Ihor Sokolov verified the Zapier webhook on 19 Jul 2024. Gleb Hodorovskiy denied knowledge of Zapier on 2 Apr 2026. These are emails from the same company, about the same client, about the same system.</p>
+  <p style="margin-top: 16px;"><strong>2. Broke production forms four times and never caught a single incident before the client did.</strong><br>May 2024, August 2024, December 2025, March 2026. In every case, it was Hunter Galloway that detected the problem. CRS's QA process has zero demonstrated effectiveness.</p>
+  <p style="margin-top: 16px;"><strong>3. Promised production validation in writing and broke that promise within three months.</strong><br>Gleb's 23 Dec 2025 email explicitly committed to "No item is marked 'ready' without production validation." The forms shipped in early 2026 contain the defects documented above.</p>
+  <p style="margin-top: 16px;"><strong>4. Redesigned a website nobody asked them to redesign, destroyed conversion rates, then charged a new retainer to fix it.</strong><br>The original scope was conversion optimization. CRS unilaterally expanded this to a full redesign, took 100+ days instead of 60, collapsed conversion rates by 37.5%, and then invoiced a separate CRO retainer to investigate the damage.</p>
+  <p style="margin-top: 16px;"><strong>5. Demonstrated a pattern of negligence spanning the entire engagement.</strong><br>This is not one mistake. This is 2.5 years of broken deployments, missed deadlines, silent failures, and a company that has never once caught its own errors before the client did.</p>
+  <p style="margin-top: 16px;"><strong>6. Committed to a React migration launch date they had no ability to meet.</strong><br>CRS committed in writing to deliver a live React site by 7 April 2026. They claimed 70% was done on 3 March. They promised pages for QA on 27 March. As of 3 April — 4 days before launch — not a single page has been delivered, and CRS has gone silent. Not one major promise made by CRS over the entire 2.5-year engagement has been delivered when or how they said it would.</p>
+  <p style="margin-top: 24px; font-size: 18px; color: #fff;"><strong>Every claim in this document is sourced to a specific email with date, sender, and subject line. Every email is available for independent verification.</strong></p>
+</div>
+
+<div class="footer">
+  <p>Prepared for Hunter Galloway &nbsp;·&nbsp; Compiled 3 April 2026 &nbsp;·&nbsp; All evidence independently verifiable via Gmail correspondence</p>
+  <p style="margin-top: 4px;">This document is confidential and intended for internal use only.</p>
+</div>
+
+</body>
+</html>

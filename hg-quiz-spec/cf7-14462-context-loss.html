@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CF7 #14462 — Site-Wide Context Loss Bug Report</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"></script>
+<style>
+  :root {
+    --hg-gold: #FDB948;
+    --hg-gold-light: #FEF7EA;
+    --hg-dark: #1a1a2e;
+    --hg-red: #e74c3c;
+    --hg-green: #27ae60;
+    --hg-blue: #2E75B6;
+    --hg-gray: #f8f9fa;
+    --hg-border: #e0e0e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6; color: #333; background: #fff;
+    max-width: 1100px; margin: 0 auto; padding: 40px 24px;
+  }
+  h1 { font-size: 28px; color: var(--hg-dark); margin-bottom: 8px; }
+  h2 { font-size: 22px; color: var(--hg-dark); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--hg-gold); }
+  h3 { font-size: 18px; color: var(--hg-dark); margin: 32px 0 12px; }
+  h4 { font-size: 15px; color: #555; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: #666; font-size: 16px; margin-bottom: 32px; }
+  .meta { display: flex; gap: 24px; margin-bottom: 40px; font-size: 13px; color: #888; flex-wrap: wrap; }
+  .meta span { background: var(--hg-gray); padding: 4px 12px; border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  th { background: var(--hg-dark); color: #fff; text-align: left; padding: 10px 14px; font-weight: 600; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--hg-border); vertical-align: top; }
+  tr:nth-child(even) { background: var(--hg-gray); }
+  code { font-family: 'Fira Code', 'Consolas', monospace; background: #eee; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+  a { color: var(--hg-blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  hr { border: none; border-top: 1px solid var(--hg-border); margin: 48px 0; }
+  pre { background: #1e1e2e; color: #cdd6f4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 12px 0 20px; line-height: 1.5; }
+  .bug-box {
+    background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid var(--hg-red);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .bug-box h3 { color: var(--hg-red); margin: 0 0 8px; font-size: 16px; }
+  .bug-box p { margin-bottom: 6px; }
+  .info-box {
+    background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid var(--hg-blue);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .info-box h3 { color: var(--hg-blue); margin: 0 0 8px; font-size: 16px; }
+  .success-box {
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid var(--hg-green);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .success-box h3 { color: var(--hg-green); margin: 0 0 8px; font-size: 16px; }
+  .mermaid { margin: 24px 0; overflow-x: auto; }
+  .mermaid svg { max-width: 100%; }
+  .stat-row { display: flex; gap: 24px; margin: 24px 0; flex-wrap: wrap; }
+  .stat-box { background: var(--hg-gray); border-radius: 12px; padding: 20px 24px; flex: 1; min-width: 150px; text-align: center; }
+  .stat-box .num { font-size: 36px; font-weight: 700; color: var(--hg-red); }
+  .stat-box .label { font-size: 13px; color: #666; margin-top: 4px; }
+</style>
+</head>
+<body><script>(function(){var k="hg_audit_auth",p="huntergalloway2026";if(sessionStorage.getItem(k)===p)return;var v=prompt("Access code:");if(v===p){sessionStorage.setItem(k,p)}else{document.write("<div style=\"text-align:center;padding:100px;font-family:sans-serif;color:\#999\">Access denied.</div>");document.close()}})()</script>
+
+<div style="float: right; font-size: 13px; margin-top: -4px;">
+<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #555; margin-right: 6px;">System Docs</a>
+<a href="directory.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: var(--hg-dark); margin-right: 6px;">Directory</a>
+<a href="index.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #2E75B6; margin-right: 6px;">Quiz Flow Spec</a>
+<a href="lower-your-rate-form.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #e74c3c;">Refi Data Loss</a>
+</div>
+
+<h1>CF7 #14462 — Site-Wide Context Loss</h1>
+<p class="subtitle">The primary inline CTA form on 24+ landing pages captures name, email, and phone — but no page source, no transaction type, and no lead intent. Every submission arrives in HubSpot with zero context.</p>
+
+<div class="meta">
+  <span>Date: 2 April 2026</span>
+  <span>CF7 Form ID: 14462</span>
+  <span>Severity: High — affects all landing pages</span>
+  <span>Verified by: Playwright scan of 24 pages</span>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="impact">1. Scale of the Problem</h2>
+
+<div class="stat-row">
+  <div class="stat-box">
+    <div class="num">24+</div>
+    <div class="label">Landing pages affected</div>
+  </div>
+  <div class="stat-box">
+    <div class="num">3x</div>
+    <div class="label">Form instances per page</div>
+  </div>
+  <div class="stat-box">
+    <div class="num">72+</div>
+    <div class="label">Total form instances site-wide</div>
+  </div>
+  <div class="stat-box">
+    <div class="num">0</div>
+    <div class="label">Context fields captured</div>
+  </div>
+</div>
+
+<div class="bug-box">
+  <h3>CF7 #14462 is the most widely deployed form on the site — and it captures no context</h3>
+  <p>This form appears <strong>3 times on every landing page</strong> (hero section, mid-page CTA, footer CTA). When a user submits from <code>/first-home-buyer-loans/</code> versus <code>/refinance-home-loan/</code> versus <code>/home-loans-for-doctors/</code>, HubSpot receives the same context-free submission: name, email, phone. Nothing else.</p>
+  <p>The team cannot tell:</p>
+  <p style="margin-left: 16px;">
+    — Which page the lead came from<br>
+    — What type of loan they're interested in<br>
+    — Whether they're a first home buyer, investor, refinancer, or professional program lead<br>
+    — Which CTA on the page they clicked (hero vs mid-page vs footer)
+  </p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="form-anatomy">2. Form Anatomy</h2>
+
+<h3>What CF7 #14462 currently captures</h3>
+<table>
+  <tr><th>Field</th><th>Name Attribute</th><th>Type</th><th>Captured?</th></tr>
+  <tr><td>Name</td><td><code>your-name-yefl1</code></td><td>text</td><td style="color: var(--hg-green); font-weight: 700;">Yes</td></tr>
+  <tr><td>Email</td><td><code>your-email-yefl1</code></td><td>email</td><td style="color: var(--hg-green); font-weight: 700;">Yes</td></tr>
+  <tr><td>Phone</td><td><code>text-phone-yefl1</code></td><td>tel</td><td style="color: var(--hg-green); font-weight: 700;">Yes</td></tr>
+</table>
+
+<h3>What's missing</h3>
+<table>
+  <tr><th>Field</th><th>Why It's Needed</th><th>Currently?</th></tr>
+  <tr><td><code>source_url</code></td><td>Which page the user submitted from — critical for knowing if this is a first home buyer vs investor vs refinance lead</td><td style="color: var(--hg-red); font-weight: 700;">Missing</td></tr>
+  <tr><td><code>transaction_type</code></td><td>What type of loan they're interested in — can be inferred from the page URL but should be explicit</td><td style="color: var(--hg-red); font-weight: 700;">Missing</td></tr>
+  <tr><td><code>form_position</code></td><td>Which CTA they clicked (hero/mid/footer) — useful for conversion optimisation</td><td style="color: var(--hg-red); font-weight: 700;">Missing</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="comparison">3. Comparison With Other Forms on the Same Pages</h2>
+
+<p>The same landing pages also load 5 other CF7 forms that <em>do</em> capture context. This makes #14462 the outlier.</p>
+
+<table>
+  <tr><th>CF7 ID</th><th>Instances</th><th>Fields</th><th>Has Source/Context?</th></tr>
+  <tr style="background: #fef2f2;">
+    <td><code>#14462</code></td><td>3x per page</td>
+    <td>name, email, phone</td>
+    <td style="color: var(--hg-red); font-weight: 700;">No — completely blind</td>
+  </tr>
+  <tr>
+    <td><code>#14422</code></td><td>1x per page</td>
+    <td>name, email, phone</td>
+    <td style="color: var(--hg-red);">No</td>
+  </tr>
+  <tr>
+    <td><code>#14296</code></td><td>1x per page</td>
+    <td>name, email, phone</td>
+    <td style="color: var(--hg-red);">No</td>
+  </tr>
+  <tr>
+    <td><code>#14061</code></td><td>1x per page</td>
+    <td>name, email, phone, <strong>dropdown (menu-108)</strong>, <strong>textarea</strong></td>
+    <td style="color: var(--hg-green);">Yes — "Discover Capacity"</td>
+  </tr>
+  <tr>
+    <td><code>#14060</code></td><td>1x per page</td>
+    <td>name, email, phone, <strong>dropdown (menu-109)</strong>, <strong>textarea</strong></td>
+    <td style="color: var(--hg-green);">Yes — "Find a Loan"</td>
+  </tr>
+  <tr>
+    <td><code>#14059</code></td><td>1x per page</td>
+    <td>name, email, phone, <strong>dropdown (menu-107)</strong>, <strong>textarea</strong></td>
+    <td style="color: var(--hg-green);">Yes — "Check a Loan"</td>
+  </tr>
+  <tr>
+    <td><code>#11832</code></td><td>4x per page</td>
+    <td>name, email, phone, <strong>transaction_type</strong>, <strong>source_url</strong>, spending, savings</td>
+    <td style="color: var(--hg-green);">Yes — full context (popup quiz)</td>
+  </tr>
+</table>
+
+<div class="info-box">
+  <h3>The pattern already exists</h3>
+  <p>Form #11832 (the popup quiz form) already captures <code>source_url</code> and <code>transaction_type</code> as hidden fields. The fix for #14462 is the same pattern — add hidden fields and populate them with JS on page load.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="data-flow">4. Data Flow</h2>
+
+<h3>Current: No context reaches HubSpot</h3>
+<div class="mermaid">
+flowchart LR
+    subgraph Pages ["24+ Landing Pages"]
+        P1["/first-home-buyer-loans/"]
+        P2["/refinance-home-loan/"]
+        P3["/home-loans-for-doctors/"]
+        P4["/investment-loans-queensland/"]
+        P5["... 20 more pages"]
+    end
+
+    subgraph Form14462 ["CF7 #14462 (3x per page)"]
+        F_NAME["Name"]
+        F_EMAIL["Email"]
+        F_PHONE["Phone"]
+    end
+
+    P1 --> Form14462
+    P2 --> Form14462
+    P3 --> Form14462
+    P4 --> Form14462
+
+    Form14462 --> HS["HubSpot"]
+    CONTEXT["Page URL?<br/>Transaction type?<br/>Lead intent?"] -. "LOST" .-> VOID["Not captured"]
+
+    style VOID fill:#fecaca,stroke:#e74c3c,color:#991b1b
+    style CONTEXT fill:#fef3c7,stroke:#f59e0b,color:#92400e
+    style HS fill:#d1fae5,stroke:#10b981,color:#065f46
+</div>
+
+<h3>Target: Source URL and transaction type reach HubSpot</h3>
+<div class="mermaid">
+flowchart LR
+    subgraph Pages ["24+ Landing Pages"]
+        P1["/first-home-buyer-loans/"]
+        P2["/refinance-home-loan/"]
+        P3["/home-loans-for-doctors/"]
+        P4["/investment-loans-queensland/"]
+    end
+
+    subgraph Form14462 ["CF7 #14462 (fixed)"]
+        F_NAME["Name"]
+        F_EMAIL["Email"]
+        F_PHONE["Phone"]
+        F_SRC["source_url (hidden)"]
+        F_TYPE["transaction_type (hidden)"]
+    end
+
+    P1 --> Form14462
+    P2 --> Form14462
+    P3 --> Form14462
+    P4 --> Form14462
+
+    Form14462 --> HS["HubSpot<br/>(with full context)"]
+
+    style F_SRC fill:#d1fae5,stroke:#10b981,color:#065f46
+    style F_TYPE fill:#d1fae5,stroke:#10b981,color:#065f46
+    style HS fill:#d1fae5,stroke:#10b981,color:#065f46
+</div>
+
+<!-- ============================================================ -->
+<h2 id="pages">5. Affected Pages (Full List)</h2>
+
+<table>
+  <tr><th>Category</th><th>Page</th><th>#14462 Instances</th><th>Popup Triggers</th></tr>
+  <tr><td rowspan="2">First Home Buyer</td><td><code>/first-home-buyer-loans/</code></td><td>3</td><td>7</td></tr>
+  <tr><td><code>/get-a-stress-free-first-home-loan/</code></td><td>3</td><td>11</td></tr>
+  <tr><td rowspan="3">Refinance &amp; Upgrade</td><td><code>/refinance-home-loan/</code></td><td>3</td><td>7</td></tr>
+  <tr><td><code>/upgrade-my-home/</code></td><td>3</td><td>7</td></tr>
+  <tr><td><code>/ready-to-upgrade/</code></td><td>3</td><td>10</td></tr>
+  <tr><td rowspan="3">Investment</td><td><code>/investment-loans-queensland/</code></td><td>3</td><td>4</td></tr>
+  <tr><td><code>/buy-to-let-mortgage/</code></td><td>3</td><td>5</td></tr>
+  <tr><td><code>/apartment-mortgage/</code></td><td>3</td><td>4</td></tr>
+  <tr><td rowspan="6">Professional Programs</td><td><code>/home-loans-for-doctors/</code></td><td>3</td><td>15</td></tr>
+  <tr><td><code>/nurse-home-loan/</code></td><td>3</td><td>6</td></tr>
+  <tr><td><code>/nurses-midwives/</code></td><td>3</td><td>—</td></tr>
+  <tr><td><code>/teachers/</code></td><td>3</td><td>3</td></tr>
+  <tr><td><code>/home-loans-for-nurses/</code></td><td>3</td><td>4</td></tr>
+  <tr><td><code>/home-loans-pharmacists/</code></td><td>3</td><td>5</td></tr>
+  <tr><td>Guarantor</td><td><code>/guarantor-home-loan/</code></td><td>3</td><td>4</td></tr>
+  <tr><td rowspan="5">Geographic</td><td><code>/mortgage-broker-brisbane/</code></td><td>3</td><td>12</td></tr>
+  <tr><td><code>/home-loans-brisbane/</code></td><td>3</td><td>—</td></tr>
+  <tr><td><code>/best-mortgage-broker-brisbane/</code></td><td>3</td><td>—</td></tr>
+  <tr><td><code>/kiwi-first-home-buyers/</code></td><td>3</td><td>—</td></tr>
+  <tr><td><code>/mortgage-broker-perth/</code></td><td>3</td><td>—</td></tr>
+  <tr><td rowspan="4">Suburb Pages (30+)</td><td><code>/paddington-mortgage-brokers/</code></td><td>3</td><td>—</td></tr>
+  <tr><td><code>/mortgage-broker-red-hill/</code></td><td>3</td><td>—</td></tr>
+  <tr><td><code>/mortgage-broker-toowong/</code></td><td>3</td><td>—</td></tr>
+  <tr><td><code>/mortgage-broker-kelvin-grove/</code> + 26 more</td><td>3</td><td>—</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="fix">6. The Fix</h2>
+
+<h3>Step 1: Add hidden fields to CF7 #14462</h3>
+<p>In the WordPress CF7 form editor for form ID 14462, add:</p>
+<pre><code>[hidden source_url default:shortcode_attr class:source-url]
+[hidden transaction_type default:shortcode_attr class:transaction-type]</code></pre>
+
+<h3>Step 2: Populate hidden fields via JavaScript</h3>
+<p>Add a script to the theme (or via a WP code snippet plugin) that runs on page load:</p>
+<pre><code>document.addEventListener('DOMContentLoaded', function() {
+  // Populate source_url with the current page path
+  document.querySelectorAll('form.wpcf7-form input[name="source_url"]').forEach(function(input) {
+    input.value = window.location.pathname;
+  });
+
+  // Infer transaction_type from the page URL
+  var path = window.location.pathname;
+  var transactionType = 'general';
+
+  if (path.includes('first-home') || path.includes('kiwi-first')) {
+    transactionType = 'first_home_buyer';
+  } else if (path.includes('refinanc') || path.includes('lower-your-rate') || path.includes('upgrade')) {
+    transactionType = 'refinance';
+  } else if (path.includes('invest') || path.includes('buy-to-let')) {
+    transactionType = 'investment';
+  } else if (path.includes('doctor') || path.includes('nurse') || path.includes('teacher')
+             || path.includes('pharmacist') || path.includes('midwi')) {
+    transactionType = 'professional_program';
+  } else if (path.includes('guarantor')) {
+    transactionType = 'guarantor';
+  } else if (path.includes('commercial') || path.includes('business')) {
+    transactionType = 'commercial';
+  } else if (path.includes('apartment')) {
+    transactionType = 'apartment';
+  } else if (path.includes('mortgage-broker-') || path.includes('home-loans-brisbane')) {
+    transactionType = 'location_page';
+  }
+
+  document.querySelectorAll('form.wpcf7-form input[name="transaction_type"]').forEach(function(input) {
+    input.value = transactionType;
+  });
+});</code></pre>
+
+<h3>Step 3: Map new fields in HubSpot</h3>
+<table>
+  <tr><th>CF7 Field</th><th>HubSpot Property</th><th>Type</th><th>Action</th></tr>
+  <tr><td><code>source_url</code></td><td><code>source_url</code></td><td>Single-line text</td><td>Create custom property if not exists, map in CF7-to-HubSpot integration</td></tr>
+  <tr><td><code>transaction_type</code></td><td><code>transaction_type</code></td><td>Dropdown</td><td>Already exists and works on form #11832 (verified: contacts have "Purchase A Property" etc.) — just add to #14462</td></tr>
+</table>
+
+<div class="success-box">
+  <h3>Same pattern as form #11832</h3>
+  <p>Form #11832 (the popup quiz) already does exactly this — it has <code>source_url</code> and <code>transaction_type</code> as hidden fields that get populated by JS. The fix for #14462 is applying the same pattern to the inline CTA forms.</p>
+</div>
+
+<h3>Step 4: Also fix #14422 and #14296</h3>
+<p>These two other simple forms have the same issue — name/email/phone with no context. Apply the same hidden field pattern:</p>
+<table>
+  <tr><th>CF7 ID</th><th>Purpose</th><th>Same Fix?</th></tr>
+  <tr><td><code>#14422</code></td><td>"Compare My Assessment"</td><td>Yes — add <code>source_url</code> + <code>transaction_type</code></td></tr>
+  <tr><td><code>#14296</code></td><td>"Contact from Landing Page"</td><td>Yes — add <code>source_url</code> + <code>transaction_type</code></td></tr>
+</table>
+
+<hr>
+
+<div style="background: var(--hg-gray); border-radius: 12px; padding: 24px; margin-top: 48px;">
+  <h3 style="margin-top: 0;">Summary of Changes Required</h3>
+  <table>
+    <tr><th>Priority</th><th>Change</th><th>Effort</th><th>Impact</th></tr>
+    <tr><td style="color: var(--hg-red); font-weight: 700;">P0</td><td>Add <code>source_url</code> + <code>transaction_type</code> hidden fields to CF7 #14462</td><td>Small</td><td>72+ form instances across 24+ pages gain context</td></tr>
+    <tr><td style="color: var(--hg-red); font-weight: 700;">P0</td><td>Add JS to populate hidden fields on page load</td><td>Small</td><td>Automatic — no user interaction needed</td></tr>
+    <tr><td style="color: var(--hg-gold); font-weight: 700;">P1</td><td>Map new fields in HubSpot CF7 integration</td><td>Small</td><td>Data flows through to CRM</td></tr>
+    <tr><td style="color: var(--hg-gold); font-weight: 700;">P1</td><td>Apply same fix to CF7 #14422 and #14296</td><td>Small</td><td>2 more forms gain context</td></tr>
+    <tr><td style="color: var(--hg-green); font-weight: 700;">P2</td><td>Add <code>form_position</code> field (hero/mid/footer)</td><td>Small</td><td>Conversion optimisation data</td></tr>
+  </table>
+</div>
+
+<div style="margin-top: 24px;">
+  <h3 style="margin-top: 0;">Related Documents</h3>
+  <p><a href="directory.html">Forms, Quizzes & Calculators Directory</a> — full site inventory</p>
+  <p><a href="lower-your-rate-form.html">/lower-your-rate/ Form Data Loss</a> — same form #14462, quiz-specific data loss on refinance page</p>
+  <p><a href="index.html">Quiz Flow Specification</a> — homepage quiz branching fix</p>
+</div>
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'neutral',
+    flowchart: { curve: 'basis', padding: 16 },
+    themeVariables: {
+      primaryColor: '#FEF7EA',
+      primaryBorderColor: '#FDB948',
+      primaryTextColor: '#1a1a2e',
+      lineColor: '#999',
+      fontSize: '13px'
+    }
+  });
+</script>
+
+</body>
+</html>
+
+(function(){

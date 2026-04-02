@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hunter Galloway — Forms, Quizzes & Calculators Directory</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"></script>
+<style>
+  :root {
+    --hg-gold: #FDB948;
+    --hg-gold-light: #FEF7EA;
+    --hg-dark: #1a1a2e;
+    --hg-red: #e74c3c;
+    --hg-green: #27ae60;
+    --hg-blue: #2E75B6;
+    --hg-gray: #f8f9fa;
+    --hg-border: #e0e0e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6; color: #333; background: #fff;
+    max-width: 1100px; margin: 0 auto; padding: 40px 24px;
+  }
+  h1 { font-size: 28px; color: var(--hg-dark); margin-bottom: 8px; }
+  h2 { font-size: 22px; color: var(--hg-dark); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--hg-gold); }
+  h3 { font-size: 18px; color: var(--hg-dark); margin: 32px 0 12px; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: #666; font-size: 16px; margin-bottom: 32px; }
+  .meta { display: flex; gap: 24px; margin-bottom: 40px; font-size: 13px; color: #888; flex-wrap: wrap; }
+  .meta span { background: var(--hg-gray); padding: 4px 12px; border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  th { background: var(--hg-dark); color: #fff; text-align: left; padding: 10px 14px; font-weight: 600; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--hg-border); vertical-align: top; }
+  tr:nth-child(even) { background: var(--hg-gray); }
+  code { font-family: 'Fira Code', 'Consolas', monospace; background: #eee; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+  a { color: var(--hg-blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  hr { border: none; border-top: 1px solid var(--hg-border); margin: 48px 0; }
+
+  .bug-box {
+    background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid var(--hg-red);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .bug-box h3 { color: var(--hg-red); margin: 0 0 8px; font-size: 16px; }
+  .info-box {
+    background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid var(--hg-blue);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .info-box h3 { color: var(--hg-blue); margin: 0 0 8px; font-size: 16px; }
+  .success-box {
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid var(--hg-green);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .success-box h3 { color: var(--hg-green); margin: 0 0 8px; font-size: 16px; }
+
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 2px 8px; border-radius: 4px;
+  }
+  .badge-ok { background: #d1fae5; color: #065f46; }
+  .badge-bug { background: #fee2e2; color: #991b1b; }
+  .badge-tbd { background: #fef3c7; color: #92400e; }
+  .badge-na { background: #e5e7eb; color: #6b7280; }
+
+  .mermaid { margin: 24px 0; overflow-x: auto; }
+  .mermaid svg { max-width: 100%; }
+
+  .toc { background: var(--hg-gray); border-radius: 12px; padding: 24px; margin: 24px 0; }
+  .toc h3 { margin: 0 0 12px; font-size: 16px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin: 4px 0; }
+
+  .item-card {
+    border: 1px solid var(--hg-border); border-radius: 12px; padding: 20px 24px;
+    margin: 16px 0; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .item-card h3 { margin: 0 0 4px; font-size: 16px; }
+  .item-card .item-id { font-size: 12px; color: #888; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .item-card .item-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; font-size: 13px; }
+  .item-card .item-meta span { background: var(--hg-gray); padding: 2px 8px; border-radius: 4px; }
+  .item-card .flow-steps { font-size: 13px; color: #555; margin: 8px 0; }
+  .item-card .flow-steps strong { color: var(--hg-dark); }
+  .item-card.has-bug { border-left: 4px solid var(--hg-red); }
+  .item-card.ok { border-left: 4px solid var(--hg-green); }
+  .item-card.needs-review { border-left: 4px solid var(--hg-gold); }
+</style>
+</head>
+<body><script>(function(){var k="hg_audit_auth",p="huntergalloway2026";if(sessionStorage.getItem(k)===p)return;var v=prompt("Access code:");if(v===p){sessionStorage.setItem(k,p)}else{document.write("<div style=\"text-align:center;padding:100px;font-family:sans-serif;color:\#999\">Access denied.</div>");document.close()}})()</script>
+
+<div style="float: right; font-size: 13px; margin-top: -4px;">
+<a href="hubspot-damage-report.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #dc2626; margin-right: 6px;">Damage Report</a>
+<a href="priority-triage.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #dc2626; margin-right: 6px;">Priority Triage</a>
+<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #555; margin-right: 6px;">System Docs</a>
+<a href="test-coverage.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #27ae60; margin-right: 6px;">Test Coverage</a>
+<a href="index.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #2E75B6; margin-right: 6px;">Quiz Flow Spec</a>
+<a href="cf7-14462-context-loss.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #e74c3c; margin-right: 6px;">#14462 Context Loss</a>
+<a href="lower-your-rate-form.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #e74c3c; margin-right: 6px;">Refi Data Loss</a>
+<a href="implementation.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #27ae60;">Code Changes</a>
+</div>
+
+<h1>Forms, Quizzes & Calculators Directory</h1>
+<p class="subtitle">Complete inventory of all interactive elements on <code>huntergalloway.com.au</code> with current status and known issues.</p>
+<div class="meta">
+  <span>Date: 2 April 2026</span>
+  <span>Source: Website & Lead System Docs</span>
+  <span>Forms: 10 &middot; Calculators: 9</span>
+</div>
+
+<!-- SUMMARY -->
+<h2 id="summary">At a Glance</h2>
+
+<table>
+  <tr><th>ID</th><th>Type</th><th>Name</th><th>Page</th><th>Data Capture</th><th>Status</th></tr>
+  <tr><td><code>F-01</code></td><td>Form</td><td>Contact Us (2-step)</td><td><a href="https://www.huntergalloway.com.au/contact/" target="_blank"><code>/contact/</code></a></td><td>CF7 → HubSpot</td><td><span class="badge badge-ok">OK</span></td></tr>
+  <tr><td><code>F-02</code></td><td>Form</td><td>Free Assessment</td><td><a href="https://www.huntergalloway.com.au/get-free-assessment/" target="_blank"><code>/get-free-assessment/</code></a></td><td>CF7 → HubSpot</td><td><span class="badge badge-ok">OK</span></td></tr>
+  <tr><td><code>F-03</code></td><td>Quiz</td><td>Mortgage Calculator Quiz</td><td><a href="https://www.huntergalloway.com.au/mortgage-calculator/" target="_blank"><code>/mortgage-calculator/</code></a></td><td>Custom JS → HubSpot</td><td><span class="badge badge-bug">BUG</span></td></tr>
+  <tr><td><code>F-04</code></td><td>Quiz</td><td>Assessment Quiz Popup</td><td>Multiple pages</td><td>CF7 #11832 → HubSpot</td><td><span class="badge badge-bug">BUG</span></td></tr>
+  <tr><td><code>F-05</code></td><td>Form</td><td>LVR Calculator Broker Form</td><td><a href="https://www.huntergalloway.com.au/lvr-calculator/" target="_blank"><code>/lvr-calculator/</code></a></td><td>Gravity Forms #10 — 100% spam (91 entries, 0 real leads)</td><td><span class="badge badge-na">Spam</span></td></tr>
+  <tr><td><code>F-06</code></td><td>Form</td><td>LMI Calculator Broker Form</td><td><a href="https://www.huntergalloway.com.au/lmi-calculator/" target="_blank"><code>/lmi-calculator/</code></a></td><td>Gravity Forms #9 — 100% spam (249 entries, 0 real leads)</td><td><span class="badge badge-na">Spam</span></td></tr>
+  <tr><td><code>F-07</code></td><td>Form Template</td><td>Landing Page Forms (8 CF7 forms, global)</td><td>24+ landing pages</td><td>CF7 → HubSpot (3 forms lack context)</td><td><span class="badge badge-ok">Investigated</span></td></tr>
+  <tr><td><code>F-08</code></td><td>Quiz</td><td>Mortgage Report ("Quizr" 13-step)</td><td><a href="https://www.huntergalloway.com.au/mortgage-report/" target="_blank"><code>/mortgage-report/</code></a></td><td>CF7 #67146 + #67147 → HubSpot</td><td><span class="badge badge-ok">Investigated</span></td></tr>
+  <tr style="background: #eff6ff;"><td colspan="6" style="font-weight: 600; color: var(--hg-blue); font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Additional Quizzes (not in original inventory)</td></tr>
+  <tr><td><code>F-09</code></td><td>Quiz</td><td>Refinance Quiz (Lower Your Rate)</td><td><a href="https://www.huntergalloway.com.au/lower-your-rate/" target="_blank"><code>/lower-your-rate/</code></a></td><td>CF7 #14462 → HubSpot</td><td><span class="badge badge-bug">BUG</span></td></tr>
+  <tr style="background: #eff6ff;"><td colspan="6" style="font-weight: 600; color: var(--hg-blue); font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Calculators</td></tr>
+  <tr><td><code>C-01</code></td><td>Calculator</td><td>Mortgage Calculator</td><td><a href="https://www.huntergalloway.com.au/mortgage-calculator/" target="_blank"><code>/mortgage-calculator/</code></a></td><td>Display only → F-03</td><td><span class="badge badge-ok">OK</span></td></tr>
+  <tr><td><code>C-02</code></td><td>Calculator</td><td>Equity Calculator</td><td><a href="https://www.huntergalloway.com.au/equity-calculator/" target="_blank"><code>/equity-calculator/</code></a></td><td>Display only</td><td><span class="badge badge-bug">BUG</span></td></tr>
+  <tr><td><code>C-03</code></td><td>Calculator</td><td>LVR Calculator</td><td><a href="https://www.huntergalloway.com.au/lvr-calculator/" target="_blank"><code>/lvr-calculator/</code></a></td><td>Display only → F-05</td><td><span class="badge badge-ok">OK</span></td></tr>
+  <tr><td><code>C-04</code></td><td>Calculator</td><td>LMI Calculator</td><td><a href="https://www.huntergalloway.com.au/ytd-calculator/" target="_blank"><code>/ytd-calculator/</code></a></td><td>Display only → F-06</td><td><span class="badge badge-ok">OK</span></td></tr>
+  <tr><td><code>C-05</code></td><td>Calculator</td><td>Mortgage vs Rent</td><td><a href="https://www.huntergalloway.com.au/mortgage-vs-rent-calculator/" target="_blank"><code>/mortgage-vs-rent-calculator/</code></a></td><td>Display only</td><td><span class="badge badge-ok">OK</span></td></tr>
+  <tr><td><code>C-06</code></td><td>Calculator</td><td>Deposit Calculator</td><td><a href="https://www.huntergalloway.com.au/deposit-calculator/" target="_blank"><code>/deposit-calculator/</code></a></td><td>Display only</td><td><span class="badge badge-ok">OK</span></td></tr>
+  <tr><td><code>C-07</code></td><td>Calculator</td><td>Stamp Duty QLD</td><td><a href="https://www.huntergalloway.com.au/stamp-duty-calculator-queensland/" target="_blank"><code>/stamp-duty-calculator-queensland/</code></a></td><td>Display only</td><td><span class="badge badge-ok">OK</span></td></tr>
+  <tr><td><code>C-08</code></td><td>Calculator</td><td>LMI Calculator</td><td><a href="https://www.huntergalloway.com.au/lmi-calculator/" target="_blank"><code>/lmi-calculator/</code></a></td><td>Display only</td><td><span class="badge badge-ok">OK</span></td></tr>
+  <tr><td><code>C-09</code></td><td>Calculator</td><td>Extra Repayments</td><td><a href="https://www.huntergalloway.com.au/home-loan-extra-repayment-calculator/" target="_blank"><code>/home-loan-extra-repayment-calculator/</code></a></td><td>Redirects to C-06</td><td><span class="badge badge-ok">OK</span></td></tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="forms">Forms & Quizzes — Detailed</h2>
+
+<!-- F-01 -->
+<div class="item-card ok">
+  <div class="item-id">F-01 &middot; FORM</div>
+  <h3>Contact Us (2-step)</h3>
+  <div class="item-meta">
+    <span><a href="https://www.huntergalloway.com.au/contact/" target="_blank"><code>/contact/</code></a></span>
+    <span>CF7</span>
+    <span>CF7 → HubSpot</span>
+  </div>
+  <div class="flow-steps">
+    <strong>Flow:</strong> Step 1: Message + Request Type dropdown → Step 2: Name, Email, Phone → Submit
+  </div>
+  <table>
+    <tr><th>Field</th><th>Name</th><th>Type</th><th>HubSpot Property</th></tr>
+    <tr><td>Message</td><td><code>your-message</code></td><td>textarea</td><td><code>message</code></td></tr>
+    <tr><td>Request Type</td><td><code>request-type</code></td><td>select</td><td><code>request_type</code></td></tr>
+    <tr><td>Name</td><td><code>your-name</code></td><td>text</td><td><code>firstname</code> + <code>lastname</code></td></tr>
+    <tr><td>Email</td><td><code>your-email</code></td><td>email</td><td><code>email</code></td></tr>
+    <tr><td>Phone</td><td><code>your-phone</code></td><td>text (auto-format)</td><td><code>phone</code></td></tr>
+  </table>
+  <div class="success-box">
+    <h3>Status: Working</h3>
+    <p>All fields submit correctly. Request type is captured. Auto-formatting on phone works.</p>
+  </div>
+</div>
+
+<!-- F-02 -->
+<div class="item-card ok">
+  <div class="item-id">F-02 &middot; FORM</div>
+  <h3>Free Assessment</h3>
+  <div class="item-meta">
+    <span><a href="https://www.huntergalloway.com.au/get-free-assessment/" target="_blank"><code>/get-free-assessment/</code></a></span>
+    <span>CF7 #68942</span>
+    <span>CF7 → HubSpot</span>
+  </div>
+  <div class="flow-steps">
+    <strong>Flow:</strong> Name, Email, Phone + Transaction Type dropdown → Submit → Result screen (different for Build vs other)
+  </div>
+  <table>
+    <tr><th>Field</th><th>Name</th><th>Type</th><th>HubSpot Property</th></tr>
+    <tr><td>Name</td><td><code>text-name</code></td><td>text</td><td><code>firstname</code> + <code>lastname</code></td></tr>
+    <tr><td>Email</td><td><code>text-email</code></td><td>email</td><td><code>email</code></td></tr>
+    <tr><td>Phone</td><td><code>text-phone</code></td><td>text (auto-format)</td><td><code>phone</code></td></tr>
+    <tr><td>Transaction Type</td><td><code>transaction_type</code></td><td>custom select</td><td><code>transaction_type</code></td></tr>
+  </table>
+  <div class="success-box">
+    <h3>Status: Working</h3>
+    <p>All fields submit correctly. Transaction type is captured. Build shows different result screen (<code>.result-typ_two</code>).</p>
+  </div>
+</div>
+
+<!-- F-03 -->
+<div class="item-card has-bug">
+  <div class="item-id">F-03 &middot; QUIZ</div>
+  <h3>Homepage Mortgage Calculator Quiz</h3>
+  <div class="item-meta">
+    <span><a href="https://www.huntergalloway.com.au/mortgage-calculator/" target="_blank"><code>/mortgage-calculator/</code></a> + <a href="https://www.huntergalloway.com.au/" target="_blank">homepage</a></span>
+    <span>Custom JS</span>
+    <span>Custom JS → HubSpot</span>
+  </div>
+  <div class="flow-steps">
+    <strong>Current flow (broken):</strong> Step 1: What are you looking to do? → Step 2: Situation → Step 3: Finances → Step 4: Contact → Step 5: Borrowing result<br>
+    <strong>Problem:</strong> All 5 options (Purchase, Build, Commercial, Refinance, Exploring) follow the identical linear flow. No branching.
+  </div>
+  <table>
+    <tr><th>Field</th><th>Name</th><th>Type</th><th>HubSpot Property</th></tr>
+    <tr><td>Purpose (Step 1)</td><td><code>purpose</code></td><td>radio</td><td>Custom property</td></tr>
+    <tr><td>Applicant Type</td><td><code>applicant_type</code></td><td>radio</td><td>Custom property</td></tr>
+    <tr><td>First Home Owner</td><td><code>first_home</code></td><td>radio</td><td><code>first_home_buyer_free_assessment_</code></td></tr>
+    <tr><td>State</td><td><code>state</code></td><td>dropdown</td><td>Custom property</td></tr>
+    <tr><td>Dependents</td><td><code>dependents</code></td><td>radio</td><td><code>do_you_have_any_kids_free_assessment_</code></td></tr>
+    <tr><td>Income</td><td><code>income</code></td><td>currency</td><td><code>annual_income</code></td></tr>
+    <tr><td>Deposit</td><td><code>deposit</code></td><td>currency</td><td><code>how_much_do_you_have_in_savings_deposit_</code></td></tr>
+    <tr><td>Name</td><td><code>name</code></td><td>text</td><td><code>firstname</code> + <code>lastname</code></td></tr>
+    <tr><td>Email</td><td><code>email</code></td><td>email</td><td><code>email</code></td></tr>
+    <tr><td>Phone</td><td><code>phone</code></td><td>text</td><td><code>phone</code></td></tr>
+    <tr><td>Goal</td><td><code>goal</code></td><td>dropdown</td><td><code>menu_106</code></td></tr>
+  </table>
+  <div class="bug-box">
+    <h3>BUG: No branching logic in nextStep()</h3>
+    <p><code>nextStep()</code> increments <code>currentStep++</code> without reading the user's selection. Refinance users get asked about deposit and first home buyer status. Exploring users are forced through the full calculator.</p>
+    <p><strong>Spec:</strong> <a href="index.html">Quiz Flow Specification</a></p>
+  </div>
+</div>
+
+<!-- F-04 -->
+<div class="item-card has-bug">
+  <div class="item-id">F-04 &middot; QUIZ</div>
+  <h3>Assessment Quiz Popup</h3>
+  <div class="item-meta">
+    <span>Multiple pages (CTA popups)</span>
+    <span>CF7 #11832</span>
+    <span>CF7 → HubSpot</span>
+  </div>
+  <div class="flow-steps">
+    <strong>Flow:</strong> Step 1: What are you looking to do? (Purchase/Build/Commercial/Refinance) → Step 2: Property price (preset or exact) → Step 3: Deposit check (Yes/No) → Step 4: Special circumstances → Step 5: Contact form → Result
+  </div>
+  <table>
+    <tr><th>Field</th><th>Name</th><th>Type</th><th>HubSpot Property</th></tr>
+    <tr><td>Property Price</td><td><code>property_price</code></td><td>preset + input</td><td><code>how_much_is_your_property_worth_</code></td></tr>
+    <tr><td>Deposit Available?</td><td><code>deposit_available</code></td><td>radio (Yes/No)</td><td><code>how_much_do_you_have_in_savings_deposit_</code></td></tr>
+    <tr><td>Circumstances</td><td><code>circumstances</code></td><td>checkboxes</td><td>Custom properties</td></tr>
+    <tr><td>Name</td><td><code>text-name</code></td><td>text</td><td><code>firstname</code> + <code>lastname</code></td></tr>
+    <tr><td>Email</td><td><code>text-email</code></td><td>email</td><td><code>email</code></td></tr>
+    <tr><td>Phone</td><td><code>text-phone</code></td><td>text</td><td><code>phone</code></td></tr>
+    <tr><td>Transaction Type</td><td><code>transaction_type</code></td><td>hidden</td><td><code>transaction_type</code></td></tr>
+    <tr><td>Source URL</td><td><code>source_url</code></td><td>hidden</td><td><code>source_url</code></td></tr>
+  </table>
+  <div class="bug-box">
+    <h3>BUG: Same branching issue as F-03</h3>
+    <p>The popup quiz shares the same <code>nextStep()</code> logic. All paths follow the same linear flow regardless of selection. "Build" and "Commercial" should show capacity screens, "Refinance" should ask different questions.</p>
+  </div>
+  <div class="info-box">
+    <h3>Note: Form 11832 is better than 14462</h3>
+    <p>This form already has <code>transaction_type</code>, <code>source_url</code>, and spending/savings hidden fields — unlike the <code>/lower-your-rate/</code> form (14462) which is missing all of these. The pattern is proven here.</p>
+  </div>
+</div>
+
+<!-- F-05 -->
+<div class="item-card">
+  <div class="item-id">F-05 &middot; FORM (pre-CRS)</div>
+  <h3>LVR Calculator Broker Form — 100% Spam</h3>
+  <div class="item-meta">
+    <span><a href="https://www.huntergalloway.com.au/lvr-calculator/" target="_blank"><code>/lvr-calculator/</code></a></span>
+    <span>Gravity Forms #10</span>
+    <span>Not connected to HubSpot</span>
+  </div>
+  <div class="flow-steps">
+    <strong>Finding:</strong> 91 entries in WordPress, zero real leads. All entries are BTC/crypto scam spam (telegra.ph links, carrotquest-mail links) and bot submissions (VincentPex, AlvenFom, AbrahamvapKW). No spam protection (no reCAPTCHA, no honeypot). Not connected to HubSpot.
+  </div>
+  <div class="info-box">
+    <h3>Not a CRS issue — predates their engagement</h3>
+    <p>These Gravity Forms were on the site before CRS started work. No leads were ever lost from these forms because no real leads ever came through them. Recommend replacing with popup quiz trigger (#11832) or disabling entirely.</p>
+  </div>
+</div>
+
+<!-- F-06 -->
+<div class="item-card">
+  <div class="item-id">F-06 &middot; FORM (pre-CRS)</div>
+  <h3>LMI Calculator Broker Form — 100% Spam</h3>
+  <div class="item-meta">
+    <span><a href="https://www.huntergalloway.com.au/lmi-calculator/" target="_blank"><code>/lmi-calculator/</code></a></span>
+    <span>Gravity Forms #9 (labelled "LMI Calculator" in WP, not "YTD")</span>
+    <span>Not connected to HubSpot</span>
+  </div>
+  <div class="flow-steps">
+    <strong>Finding:</strong> 249 entries in WordPress, zero real leads. Wall-to-wall crypto scam spam. One entry is a brute-force attempt ("katana katana" with "katanaP@assw0rd1" in the phone field). No spam protection. Not connected to HubSpot.
+  </div>
+  <div class="info-box">
+    <h3>Not a CRS issue — predates their engagement</h3>
+    <p>Same as F-05. Recommend replacing with popup quiz trigger or disabling. Note: this form was incorrectly labelled "LMI Calculator" in earlier documentation — WordPress shows it as "LMI Calculator."</p>
+  </div>
+</div>
+
+<!-- F-07 -->
+<div class="item-card ok">
+  <div class="item-id">F-07 &middot; FORM TEMPLATE</div>
+  <h3>Landing Page Forms (Global Template — 24+ pages)</h3>
+  <div class="item-meta">
+    <span>24+ landing pages</span>
+    <span>8 CF7 forms per page (template)</span>
+    <span>CF7 → HubSpot</span>
+  </div>
+  <div class="flow-steps">
+    <strong>Finding:</strong> Every landing page loads the <strong>exact same set of 8 CF7 forms</strong> from the WordPress template. These are not unique per-page forms — they're global components embedded in the theme.
+  </div>
+
+  <h4 style="margin-top: 20px;">The 8 Forms on Every Landing Page</h4>
+  <table>
+    <tr><th>CF7 ID</th><th>Instances</th><th>Fields</th><th>Has Context?</th><th>Purpose</th></tr>
+    <tr>
+      <td><code>#14462</code></td><td>3x</td>
+      <td><code>your-name-yefl1</code>, <code>your-email-yefl1</code>, <code>text-phone-yefl1</code></td>
+      <td style="color: var(--hg-red);">No</td>
+      <td>Inline CTA forms (hero, mid-page, footer)</td>
+    </tr>
+    <tr>
+      <td><code>#14422</code></td><td>1x</td>
+      <td><code>cmatext-name</code>, <code>cmatext-email</code>, <code>cmatext-phone</code></td>
+      <td style="color: var(--hg-red);">No</td>
+      <td>"Compare My Assessment" form</td>
+    </tr>
+    <tr>
+      <td><code>#14296</code></td><td>1x</td>
+      <td><code>your-name-cflp</code>, <code>your-email-cflp</code>, <code>text-phone-cflp</code></td>
+      <td style="color: var(--hg-red);">No</td>
+      <td>"Contact from Landing Page" form</td>
+    </tr>
+    <tr>
+      <td><code>#14061</code></td><td>1x</td>
+      <td><code>name-discovercapacity</code>, <code>email-discovercapacity</code>, <code>phone-discovercapacity</code>, <code>menu-108</code>, <code>textarea-803</code></td>
+      <td style="color: var(--hg-green);">Yes (dropdown + textarea)</td>
+      <td>"Discover Capacity" form</td>
+    </tr>
+    <tr>
+      <td><code>#14060</code></td><td>1x</td>
+      <td><code>name-findaloan</code>, <code>email-findaloan</code>, <code>phone-findaloan</code>, <code>menu-109</code>, <code>textarea-804</code></td>
+      <td style="color: var(--hg-green);">Yes (dropdown + textarea)</td>
+      <td>"Find a Loan" form</td>
+    </tr>
+    <tr>
+      <td><code>#14059</code></td><td>1x</td>
+      <td><code>name-checkaloan</code>, <code>email-checkaloan</code>, <code>phone-checkaloan</code>, <code>menu-107</code>, <code>textarea-802</code></td>
+      <td style="color: var(--hg-green);">Yes (dropdown + textarea)</td>
+      <td>"Check a Loan" form</td>
+    </tr>
+    <tr>
+      <td><code>#11832</code></td><td>4x</td>
+      <td><code>text-name</code>, <code>text-email</code>, <code>text-phone</code>, <code>transaction_type</code>, <code>source_url</code>, <code>how_much_are_you_looking_at_spending_on_your_first_home_</code>, <code>how_much_do_you_have_in_savings_deposit_</code></td>
+      <td style="color: var(--hg-green);">Yes (full context)</td>
+      <td>Assessment quiz popup (= F-04)</td>
+    </tr>
+  </table>
+
+  <h4>Pages Verified (24 pages scanned via Playwright)</h4>
+  <table>
+    <tr><th>Category</th><th>Pages</th></tr>
+    <tr><td>First Home Buyer</td><td><a href="https://www.huntergalloway.com.au/first-home-buyer-loans/" target="_blank"><code>/first-home-buyer-loans/</code></a>, <a href="https://www.huntergalloway.com.au/get-a-stress-free-first-home-loan/" target="_blank"><code>/get-a-stress-free-first-home-loan/</code></a></td></tr>
+    <tr><td>Refinance &amp; Upgrade</td><td><a href="https://www.huntergalloway.com.au/refinance-home-loan/" target="_blank"><code>/refinance-home-loan/</code></a>, <a href="https://www.huntergalloway.com.au/upgrade-my-home/" target="_blank"><code>/upgrade-my-home/</code></a>, <a href="https://www.huntergalloway.com.au/ready-to-upgrade/" target="_blank"><code>/ready-to-upgrade/</code></a></td></tr>
+    <tr><td>Investment</td><td><a href="https://www.huntergalloway.com.au/investment-loans-queensland/" target="_blank"><code>/investment-loans-queensland/</code></a>, <a href="https://www.huntergalloway.com.au/buy-to-let-mortgage/" target="_blank"><code>/buy-to-let-mortgage/</code></a>, <a href="https://www.huntergalloway.com.au/apartment-mortgage/" target="_blank"><code>/apartment-mortgage/</code></a></td></tr>
+    <tr><td>Professional Programs</td><td><a href="https://www.huntergalloway.com.au/home-loans-for-doctors/" target="_blank"><code>/home-loans-for-doctors/</code></a>, <a href="https://www.huntergalloway.com.au/nurse-home-loan/" target="_blank"><code>/nurse-home-loan/</code></a>, <a href="https://www.huntergalloway.com.au/nurses-midwives/" target="_blank"><code>/nurses-midwives/</code></a>, <a href="https://www.huntergalloway.com.au/teachers/" target="_blank"><code>/teachers/</code></a>, <a href="https://www.huntergalloway.com.au/home-loans-for-nurses/" target="_blank"><code>/home-loans-for-nurses/</code></a>, <a href="https://www.huntergalloway.com.au/home-loans-pharmacists/" target="_blank"><code>/home-loans-pharmacists/</code></a></td></tr>
+    <tr><td>Guarantor</td><td><a href="https://www.huntergalloway.com.au/guarantor-home-loan/" target="_blank"><code>/guarantor-home-loan/</code></a></td></tr>
+    <tr><td>Geographic</td><td><a href="https://www.huntergalloway.com.au/mortgage-broker-brisbane/" target="_blank"><code>/mortgage-broker-brisbane/</code></a>, <a href="https://www.huntergalloway.com.au/home-loans-brisbane/" target="_blank"><code>/home-loans-brisbane/</code></a>, <a href="https://www.huntergalloway.com.au/best-mortgage-broker-brisbane/" target="_blank"><code>/best-mortgage-broker-brisbane/</code></a>, <a href="https://www.huntergalloway.com.au/kiwi-first-home-buyers/" target="_blank"><code>/kiwi-first-home-buyers/</code></a>, <a href="https://www.huntergalloway.com.au/mortgage-broker-perth/" target="_blank"><code>/mortgage-broker-perth/</code></a></td></tr>
+    <tr><td>Suburb Pages</td><td><a href="https://www.huntergalloway.com.au/paddington-mortgage-brokers/" target="_blank"><code>/paddington-mortgage-brokers/</code></a>, <a href="https://www.huntergalloway.com.au/mortgage-broker-red-hill/" target="_blank"><code>/mortgage-broker-red-hill/</code></a>, <a href="https://www.huntergalloway.com.au/mortgage-broker-toowong/" target="_blank"><code>/mortgage-broker-toowong/</code></a>, <a href="https://www.huntergalloway.com.au/mortgage-broker-kelvin-grove/" target="_blank"><code>/mortgage-broker-kelvin-grove/</code></a> (+ 30 more)</td></tr>
+  </table>
+
+  <div class="info-box">
+    <h3>Key Insight: Same 14462 Data Loss Issue</h3>
+    <p>The same CF7 #14462 form that's broken on <code>/lower-your-rate/</code> (no context fields) is also the <strong>primary inline CTA form on every landing page</strong> — appearing 3 times per page. These forms capture name/email/phone but <strong>no page source, no transaction type, no context</strong> about what the user was looking at.</p>
+    <p>By contrast, the popup quiz form (#11832) on the same pages <em>does</em> capture <code>transaction_type</code>, <code>source_url</code>, and spending/savings data. The inline forms are the weak link.</p>
+  </div>
+
+  <div class="success-box">
+    <h3>Investigation Complete</h3>
+    <p>All 24 landing pages use the same WordPress template. No unique per-page forms exist. The "5+ landing pages" from the original inventory is actually <strong>24+ pages</strong> all sharing the same 8 global CF7 forms. Some pages (teachers, pharmacists, buy-to-let, apartment) also include a <code>pum_form_popup_id</code> field for popup tracking.</p>
+  </div>
+</div>
+
+<!-- F-08 -->
+<div class="item-card ok">
+  <div class="item-id">F-08 &middot; QUIZ SYSTEM</div>
+  <h3>Mortgage Report — "Quizr" 13-Step Quiz</h3>
+  <div class="item-meta">
+    <span><a href="https://www.huntergalloway.com.au/mortgage-report/" target="_blank"><code>/mortgage-report/</code></a></span>
+    <span>WP Page #67145</span>
+    <span>"Quizr" custom quiz system</span>
+    <span>CF7 #67146 + #67147 → HubSpot</span>
+  </div>
+
+  <div class="info-box">
+    <h3>Third Separate Quiz System</h3>
+    <p>This page uses a <strong>completely different quiz engine</strong> from both the homepage quiz (<code>nextStep()</code>) and the <code>/lower-your-rate/</code> quiz (<code>moveToForm()</code>). It uses CSS classes prefixed with <code>quizr__</code> and has its own step navigation, progress indicators, and result generation.</p>
+  </div>
+
+  <div class="flow-steps">
+    <strong>13-Step Flow:</strong><br>
+    Step 1: Intro (Nathan persona welcome) →
+    Step 2: Property type (House / Apartment / Townhouse / Land) →
+    Step 3: Location (QLD / NSW / VIC / Other) →
+    Step 4: Employment (Employed / Self-employed / Other) →
+    Step 5: Journey stage (Browsing / Actively searching / Found a property / Already own) →
+    Step 6: Property price (slider or manual input) →
+    Step 7: Deposit amount (slider or manual input) →
+    Step 8: Partner? (Yes / No) →
+    Step 9: Annual income (slider or manual input) →
+    Step 10: Loading animation →
+    Step 11: Report preview (6 sections shown with default values) →
+    Step 12: Email gate — CF7 #67146 (must enter email to view full report) →
+    Step 13: "Get your loan approved" CTA — CF7 #67147
+  </div>
+
+  <h4 style="margin-top: 20px;">Quiz Data Fields (Steps 2–9)</h4>
+  <table>
+    <tr><th>Step</th><th>Field</th><th>Input Type</th><th>In CF7?</th><th>Submitted to HubSpot?</th></tr>
+    <tr><td>2</td><td>Property type</td><td>Button select (4 options)</td><td style="color: var(--hg-red);">No</td><td style="color: #92400e;">Client-side only — feeds report calc</td></tr>
+    <tr><td>3</td><td>Location / State</td><td>Button select (4 options)</td><td style="color: var(--hg-red);">No</td><td style="color: #92400e;">Client-side only — feeds stamp duty calc</td></tr>
+    <tr><td>4</td><td>Employment status</td><td>Button select (3 options)</td><td style="color: var(--hg-red);">No</td><td style="color: #92400e;">Client-side only</td></tr>
+    <tr><td>5</td><td>Journey stage</td><td>Button select (4 options)</td><td style="color: var(--hg-red);">No</td><td style="color: #92400e;">Client-side only</td></tr>
+    <tr><td>6</td><td>Property price</td><td>Slider + manual input</td><td style="color: var(--hg-red);">No</td><td style="color: #92400e;">Client-side only — feeds report calc</td></tr>
+    <tr><td>7</td><td>Deposit amount</td><td>Slider + manual input</td><td style="color: var(--hg-red);">No</td><td style="color: #92400e;">Client-side only — feeds LVR/LMI calc</td></tr>
+    <tr><td>8</td><td>Partner (couple/single)</td><td>Button select (Yes/No)</td><td style="color: var(--hg-red);">No</td><td style="color: #92400e;">Client-side only — feeds capacity calc</td></tr>
+    <tr><td>9</td><td>Annual income</td><td>Slider + manual input</td><td style="color: var(--hg-red);">No</td><td style="color: #92400e;">Client-side only — feeds capacity calc</td></tr>
+  </table>
+
+  <h4>CF7 Form #67146 — Email Gate (Step 12)</h4>
+  <p>Appears after the report preview. User must enter email to "unlock" the full report.</p>
+  <table>
+    <tr><th>Field</th><th>Name</th><th>Type</th><th>HubSpot?</th></tr>
+    <tr><td>Name</td><td><code>your-name</code></td><td>text</td><td style="color: var(--hg-green);">Yes — <code>firstname</code> + <code>lastname</code></td></tr>
+    <tr><td>Email</td><td><code>your-email</code></td><td>email</td><td style="color: var(--hg-green);">Yes — <code>email</code></td></tr>
+    <tr><td>Newsletter</td><td><code>newsletter</code></td><td>checkbox</td><td style="color: #92400e;">TBD</td></tr>
+  </table>
+  <p><code>data-hs-cf-bound="true"</code> — HubSpot integration active.</p>
+
+  <h4>CF7 Form #67147 — Assessment CTA (Step 13 / Below Report)</h4>
+  <p>"Get your loan approved — arrange a free introductory assessment"</p>
+  <table>
+    <tr><th>Field</th><th>Name</th><th>Type</th><th>HubSpot?</th></tr>
+    <tr><td>Phone</td><td><code>your-phone</code></td><td>text</td><td style="color: var(--hg-green);">Yes — <code>phone</code></td></tr>
+    <tr><td>What are you looking to do?</td><td><code>your-message</code></td><td>textarea</td><td style="color: var(--hg-green);">Yes — <code>message</code></td></tr>
+    <tr><td>Name</td><td><code>your-name</code></td><td>text</td><td style="color: var(--hg-green);">Yes — <code>firstname</code> + <code>lastname</code></td></tr>
+    <tr><td>Email</td><td><code>your-email</code></td><td>email</td><td style="color: var(--hg-green);">Yes — <code>email</code></td></tr>
+  </table>
+  <p><code>data-hs-cf-bound="true"</code> — HubSpot integration active.</p>
+
+  <h4>Report Sections Generated (Step 11)</h4>
+  <p>The quiz answers feed a client-side calculation that generates a personalised mortgage report with 6 sections. Default placeholder values are shown before quiz completion:</p>
+  <table>
+    <tr><th>Section</th><th>Shows</th><th>Default Value</th></tr>
+    <tr><td>Borrowing Capacity</td><td>Max borrowing amount</td><td>$1,500,000</td></tr>
+    <tr><td>Stamp Duty</td><td>State-based stamp duty estimate</td><td>Varies by state selection</td></tr>
+    <tr><td>LMI</td><td>Lenders Mortgage Insurance estimate</td><td>Based on LVR from deposit/price</td></tr>
+    <tr><td>Deposit Breakdown</td><td>Deposit % and gap analysis</td><td>$50,000 on $500,000</td></tr>
+    <tr><td>Repayment Estimate</td><td>Monthly repayment projection</td><td>Based on borrowing amount</td></tr>
+    <tr><td>Next Steps</td><td>Personalised recommendations</td><td>Generic advice</td></tr>
+  </table>
+
+  <div class="info-box">
+    <h3>Architecture: Clever Lead Capture Funnel</h3>
+    <p>The data flow is: <strong>Quiz inputs → Client-side calculation → DOM update (report sections) → Email gate (CF7 #67146) → User sees report → Assessment CTA (CF7 #67147)</strong>.</p>
+    <p>The quiz data (property type, price, deposit, income, etc.) is used <em>only</em> for the client-side report generation — it is <strong>not submitted to HubSpot</strong>. Only the contact details (name, email, phone) from forms #67146 and #67147 reach HubSpot.</p>
+    <p>This is the same pattern as the homepage purchase path where situation/finance fields feed the borrowing calculator but aren't submitted to the backend.</p>
+  </div>
+
+  <div class="success-box">
+    <h3>Status: Working as Designed</h3>
+    <p>Both CF7 forms (#67146 and #67147) are HubSpot-bound and capture contact details. The quiz answers intentionally stay client-side to power the report generator. The page also loads the standard popup forms (11832 ×4, 14462 ×3, 14422, 14296, 14061, 14060, 14059) via the global template.</p>
+  </div>
+</div>
+
+<!-- F-09 -->
+<div class="item-card has-bug">
+  <div class="item-id">F-09 &middot; QUIZ</div>
+  <h3>Refinance Quiz (Lower Your Rate)</h3>
+  <div class="item-meta">
+    <span><a href="https://www.huntergalloway.com.au/lower-your-rate/" target="_blank"><code>/lower-your-rate/</code></a></span>
+    <span>CF7 #14462 + Custom JS quiz</span>
+    <span>CF7 → HubSpot (partial)</span>
+  </div>
+  <div class="flow-steps">
+    <strong>Flow:</strong> Step 1: Current interest rate → Step 2: Amount owing → Step 3: Remaining term → Step 4: Refinancing priority → Step 5: Contact form (name, email, phone) → Confirmation
+  </div>
+  <table>
+    <tr><th>Field</th><th>Name</th><th>In CF7?</th><th>Submitted?</th></tr>
+    <tr><td>Interest Rate</td><td><code>interest-rate</code></td><td style="color: var(--hg-red);">No</td><td style="color: var(--hg-red);">Lost</td></tr>
+    <tr><td>Loan Amount</td><td><code>loan-amount</code></td><td style="color: var(--hg-red);">No</td><td style="color: var(--hg-red);">Lost</td></tr>
+    <tr><td>Loan Term</td><td><code>loan-term</code></td><td style="color: var(--hg-red);">No</td><td style="color: var(--hg-red);">Lost</td></tr>
+    <tr><td>Refinancing Priority</td><td><code>priority</code></td><td style="color: var(--hg-red);">No</td><td style="color: var(--hg-red);">Lost</td></tr>
+    <tr><td>Transaction Type</td><td><code>transaction_type</code></td><td style="color: var(--hg-red);">No</td><td style="color: var(--hg-red);">Lost</td></tr>
+    <tr><td>Name</td><td><code>your-name-yefl1</code></td><td style="color: var(--hg-green);">Yes</td><td style="color: var(--hg-green);">Yes</td></tr>
+    <tr><td>Email</td><td><code>your-email-yefl1</code></td><td style="color: var(--hg-green);">Yes</td><td style="color: var(--hg-green);">Yes</td></tr>
+    <tr><td>Phone</td><td><code>text-phone-yefl1</code></td><td style="color: var(--hg-green);">Yes</td><td style="color: var(--hg-green);">Yes</td></tr>
+  </table>
+  <div class="bug-box">
+    <h3>BUG: Quiz data is discarded on submit</h3>
+    <p>CF7 form #14462 only captures name/email/phone. All quiz answers (interest rate, loan amount, loan term, priority) are stored in JS but never written to hidden fields. The <code>transaction_type</code> property works in HubSpot (form #11832 populates it correctly) but #14462 does not send it.</p>
+    <p><strong>Full report:</strong> <a href="lower-your-rate-form.html">Form Data Loss Bug Report</a></p>
+    <p><strong>Playwright tests:</strong> <code>tests/forms/lower-your-rate.spec.ts</code> (15 tests)</p>
+  </div>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="calculators">Calculators</h2>
+
+<p>All calculators are display-only (results shown on screen, no data submitted). Some link to broker contact forms after the calculation.</p>
+
+<table>
+  <tr><th>ID</th><th>Calculator</th><th>Page</th><th>Inputs</th><th>Leads To</th><th>Status</th></tr>
+  <tr>
+    <td><code>C-01</code></td>
+    <td>Mortgage Calculator</td>
+    <td><a href="https://www.huntergalloway.com.au/mortgage-calculator/" target="_blank"><code>/mortgage-calculator/</code></a></td>
+    <td>Situation + finances → borrowing power</td>
+    <td>F-03 (quiz contact form)</td>
+    <td><span class="badge badge-ok">OK</span></td>
+  </tr>
+  <tr>
+    <td><code>C-02</code></td>
+    <td>Equity Calculator</td>
+    <td><a href="https://www.huntergalloway.com.au/equity-calculator/" target="_blank"><code>/equity-calculator/</code></a></td>
+    <td><strong>Working calc:</strong> property value + loan balance → equity<br><strong>Banner calc:</strong> single orphaned input → broken</td>
+    <td>None (display only)</td>
+    <td><span class="badge badge-bug">BUG</span></td>
+  </tr>
+  <tr>
+    <td><code>C-03</code></td>
+    <td>LVR Calculator</td>
+    <td><a href="https://www.huntergalloway.com.au/lvr-calculator/" target="_blank"><code>/lvr-calculator/</code></a></td>
+    <td>Loan amount, property value → LVR %</td>
+    <td>F-05 (Gravity Form #10)</td>
+    <td><span class="badge badge-ok">OK</span></td>
+  </tr>
+  <tr>
+    <td><code>C-04</code></td>
+    <td>LMI Calculator</td>
+    <td><a href="https://www.huntergalloway.com.au/ytd-calculator/" target="_blank"><code>/ytd-calculator/</code></a></td>
+    <td>Income components → YTD total</td>
+    <td>F-06 (Gravity Form #9)</td>
+    <td><span class="badge badge-ok">OK</span></td>
+  </tr>
+  <tr>
+    <td><code>C-05</code></td>
+    <td>Mortgage vs Rent</td>
+    <td><a href="https://www.huntergalloway.com.au/mortgage-vs-rent-calculator/" target="_blank"><code>/mortgage-vs-rent-calculator/</code></a></td>
+    <td>Rent, property price, deposit → comparison</td>
+    <td>None (display only)</td>
+    <td><span class="badge badge-ok">OK</span></td>
+  </tr>
+  <tr>
+    <td><code>C-06</code></td>
+    <td>Deposit Calculator</td>
+    <td><a href="https://www.huntergalloway.com.au/deposit-calculator/" target="_blank"><code>/deposit-calculator/</code></a></td>
+    <td>Property price → deposit needed</td>
+    <td>None (display only)</td>
+    <td><span class="badge badge-ok">OK</span></td>
+  </tr>
+  <tr>
+    <td><code>C-07</code></td>
+    <td>Stamp Duty QLD</td>
+    <td><a href="https://www.huntergalloway.com.au/stamp-duty-calculator-queensland/" target="_blank"><code>/stamp-duty-calculator-queensland/</code></a></td>
+    <td>Property price, type → stamp duty</td>
+    <td>None (display only)</td>
+    <td><span class="badge badge-ok">OK</span></td>
+  </tr>
+  <tr>
+    <td><code>C-08</code></td>
+    <td>LMI Calculator</td>
+    <td><a href="https://www.huntergalloway.com.au/lmi-calculator/" target="_blank"><code>/lmi-calculator/</code></a></td>
+    <td>Loan amount, property value → LMI estimate</td>
+    <td>None (display only)</td>
+    <td><span class="badge badge-ok">OK</span></td>
+  </tr>
+  <tr>
+    <td><code>C-09</code></td>
+    <td>Extra Repayments</td>
+    <td><a href="https://www.huntergalloway.com.au/home-loan-extra-repayment-calculator/" target="_blank"><code>/home-loan-extra-repayment-calculator/</code></a></td>
+    <td>N/A — redirects</td>
+    <td>Own page (does NOT redirect — originally documented as redirect, but verified it loads independently)</td>
+    <td><span class="badge badge-tbd">TBD</span></td>
+  </tr>
+</table>
+
+<h3>C-02: Equity Calculator — Broken Hero Banner</h3>
+
+<div class="item-card has-bug">
+  <div class="item-id">C-02 &middot; CALCULATOR</div>
+  <h3>Equity Calculator — Two Calculators, One Broken</h3>
+  <div class="item-meta">
+    <span><a href="https://www.huntergalloway.com.au/equity-calculator/" target="_blank"><code>/equity-calculator/</code></a></span>
+    <span>Custom JS</span>
+    <span>Display only</span>
+  </div>
+  <p>There are <strong>two separate calculators</strong> on this page. The one further down the page works. The hero banner calculator at the top is completely broken.</p>
+
+  <div class="success-box">
+    <h3>Working Calculator (below the fold)</h3>
+    <p>Located inside <code>#h_equity_calculator</code>. Has proper inputs (<code>equity_loan_amount</code>, <code>equity_property_value</code>, investment/owner-occupier toggle) and a "Calculate" button with <code>onclick="h_equity_calculator()"</code> that runs the actual equity math. This one works fine.</p>
+  </div>
+
+  <div class="bug-box">
+    <h3>Broken Hero Banner Calculator (top of page)</h3>
+    <p>Three problems:</p>
+    <p><strong>1. Orphaned input.</strong> The input is <code>&lt;input class="input-banner" placeholder="e.g. 200,000"&gt;</code> with no <code>name</code>, no <code>id</code>, and zero JavaScript anywhere on the page (160k chars of scripts checked) that references it. Nothing reads its value. It's a completely dead input field.</p>
+    <p><strong>2. "Calculate" button is a self-link.</strong> It's <code>&lt;a href="/equity-calculator" class="btn_yellow"&gt;Calculate&lt;/a&gt;</code> — which is the current page. Clicking it reloads the page and the input value is lost. No <code>onclick</code> handler, no JS attached.</p>
+    <p><strong>3. Missing input.</strong> There's only one input field, but an equity calculation needs two values (property value AND loan balance). Even if the JS was wired up, you can't calculate equity from one number.</p>
+    <p style="margin-top: 12px; color: #666;">This looks like someone added a hero banner template with a decorative calculator input (probably copied from another page's design) but never connected it to anything.</p>
+  </div>
+
+  <div class="info-box">
+    <h3>Recommended Fix</h3>
+    <p><strong>Option A:</strong> Wire the banner input to scroll down to the working calculator and pre-fill one of its fields.</p>
+    <p><strong>Option B:</strong> Remove the fake banner calculator entirely since it does nothing but confuse users.</p>
+    <p>Option B is simpler and avoids maintaining two calculator UIs.</p>
+  </div>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="bugs">Known Bugs Summary</h2>
+
+<table>
+  <tr><th>ID</th><th>Item</th><th>Bug</th><th>Impact</th><th>Fix Doc</th></tr>
+  <tr>
+    <td><code>F-03</code></td>
+    <td>Homepage Quiz</td>
+    <td>No branching in <code>nextStep()</code> — all paths use same linear flow</td>
+    <td>Refinance users asked about deposit. Build/Commercial users go through full quiz instead of capacity screens. Explorers forced through borrowing calculator.</td>
+    <td><a href="index.html">Quiz Flow Spec</a></td>
+  </tr>
+  <tr>
+    <td><code>F-04</code></td>
+    <td>Assessment Popup</td>
+    <td>Same branching issue as F-03</td>
+    <td>Same as above — shared <code>nextStep()</code> code</td>
+    <td><a href="index.html">Quiz Flow Spec</a></td>
+  </tr>
+  <tr>
+    <td><code>F-09</code></td>
+    <td>Refinance Quiz</td>
+    <td>CF7 form #14462 missing hidden fields — quiz answers discarded</td>
+    <td>12+ "empty" submissions in HubSpot with no transaction type. All quiz engagement data lost.</td>
+    <td><a href="lower-your-rate-form.html">Form Data Loss</a></td>
+  </tr>
+  <tr>
+    <td><code>C-02</code></td>
+    <td>Equity Calculator</td>
+    <td>Hero banner calculator is completely broken — orphaned input (no name/id, no JS reads it), "Calculate" button is a self-link that reloads page, and only 1 input where 2 are needed</td>
+    <td>Users see a fake calculator at top of page that does nothing. Real calculator is below the fold.</td>
+    <td>—</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="data-flow">Data Flow Overview</h2>
+
+<div class="mermaid">
+flowchart TD
+    subgraph Forms ["Lead Capture Forms"]
+        F01["F-01: Contact Us<br/>(CF7)"]
+        F02["F-02: Free Assessment<br/>(CF7 #68942)"]
+        F03["F-03: Homepage Quiz<br/>(Custom JS)"]
+        F04["F-04: Assessment Popup<br/>(CF7 #11832)"]
+        F05["F-05: LVR Broker<br/>(GF #10)"]
+        F06["F-06: YTD Broker<br/>(GF #9)"]
+        F07["F-07: Landing Pages<br/>(CF7)"]
+        F08["F-08: Mortgage Report<br/>(CF7 #67146 + #67147)"]
+        F09["F-09: Refi Quiz<br/>(CF7 #14462)"]
+    end
+
+    subgraph Calcs ["Calculators (display only)"]
+        C01["C-01: Mortgage"]
+        C02["C-02: Equity<br/>(banner broken)"]
+        C03["C-03: LVR"]
+        C04["C-04: YTD"]
+        C05["C-05: Mort vs Rent"]
+        C06["C-06: Deposit"]
+        C07["C-07: Stamp Duty"]
+        C08["C-08: LMI"]
+    end
+
+    C01 --> F03
+    C03 --> F05
+    C04 --> F06
+
+    F01 --> HS["HubSpot CRM"]
+    F02 --> HS
+    F03 --> HS
+    F04 --> HS
+    F07 --> HS
+    F08 --> HS
+    F09 -. "partial data only" .-> HS
+    F05 -. "TBD" .-> HS
+    F06 -. "TBD" .-> HS
+
+    style HS fill:#d1fae5,stroke:#10b981,color:#065f46
+    style F09 fill:#fef2f2,stroke:#e74c3c,color:#000
+    style F03 fill:#fef2f2,stroke:#e74c3c,color:#000
+    style F04 fill:#fef2f2,stroke:#e74c3c,color:#000
+    style C02 fill:#fef2f2,stroke:#e74c3c,color:#000
+</div>
+
+<hr>
+
+<div style="background: var(--hg-gray); border-radius: 12px; padding: 24px; margin-top: 48px;">
+  <h3 style="margin-top: 0;">Related Documents</h3>
+  <table>
+    <tr><th>Document</th><th>Description</th></tr>
+    <tr><td><a href="index.html">Quiz Flow Specification</a></td><td>Detailed spec for homepage quiz branching fix — purchase, build, commercial, refinance, exploring flows</td></tr>
+    <tr><td><a href="cf7-14462-context-loss.html">CF7 #14462 Site-Wide Context Loss</a></td><td>The primary inline CTA form on 24+ pages captures no source URL or transaction type — 72+ blind form instances</td></tr>
+    <tr><td><a href="lower-your-rate-form.html">Refinance Quiz Data Loss</a></td><td>CF7 form #14462 on /lower-your-rate/ — quiz answers discarded, fix instructions</td></tr>
+    <tr><td><a href="implementation.html">Implementation Notes</a></td><td>Code changes required for quiz fix</td></tr>
+    <tr><td><a href="index-uk.html">Quiz Spec (Ukrainian)</a></td><td>Ukrainian translation of quiz flow specification</td></tr>
+  </table>
+</div>
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'neutral',
+    flowchart: { curve: 'basis', padding: 16 },
+    themeVariables: {
+      primaryColor: '#FEF7EA',
+      primaryBorderColor: '#FDB948',
+      primaryTextColor: '#1a1a2e',
+      lineColor: '#999',
+      fontSize: '13px'
+    }
+  });
+</script>
+
+</body>
+</html>
+
+(function(){

@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hunter Galloway — Специфікація потоків квізу та звіт про помилку</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"></script>
+<style>
+  :root {
+    --hg-gold: #FDB948;
+    --hg-gold-light: #FEF7EA;
+    --hg-dark: #1a1a2e;
+    --hg-red: #e74c3c;
+    --hg-green: #27ae60;
+    --hg-blue: #2E75B6;
+    --hg-gray: #f8f9fa;
+    --hg-border: #e0e0e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6; color: #333; background: #fff;
+    max-width: 1100px; margin: 0 auto; padding: 40px 24px;
+  }
+  h1 { font-size: 28px; color: var(--hg-dark); margin-bottom: 8px; }
+  h2 { font-size: 22px; color: var(--hg-dark); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--hg-gold); }
+  h3 { font-size: 18px; color: var(--hg-dark); margin: 32px 0 12px; }
+  h4 { font-size: 15px; color: #555; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: #666; font-size: 16px; margin-bottom: 32px; }
+  .meta { display: flex; gap: 24px; margin-bottom: 40px; font-size: 13px; color: #888; flex-wrap: wrap; }
+  .meta span { background: var(--hg-gray); padding: 4px 12px; border-radius: 4px; }
+
+  /* Bug callout */
+  .bug-box {
+    background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid var(--hg-red);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .bug-box h3 { color: var(--hg-red); margin: 0 0 8px; font-size: 16px; }
+  .bug-box p { margin-bottom: 6px; }
+  .bug-box code { background: #fee2e2; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+
+  /* Info box */
+  .info-box {
+    background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid var(--hg-blue);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .info-box h3 { color: var(--hg-blue); margin: 0 0 8px; font-size: 16px; }
+
+  /* Success box */
+  .success-box {
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid var(--hg-green);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .success-box h3 { color: var(--hg-green); margin: 0 0 8px; font-size: 16px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  th { background: var(--hg-dark); color: #fff; text-align: left; padding: 10px 14px; font-weight: 600; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--hg-border); }
+  tr:nth-child(even) { background: var(--hg-gray); }
+
+  /* Flow path cards */
+  .path-card {
+    border: 1px solid var(--hg-border); border-radius: 12px; padding: 24px;
+    margin: 24px 0; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .path-card.blocked { border-color: var(--hg-red); background: #fffbfb; }
+  .path-card.modified { border-color: var(--hg-gold); background: #fffdf5; }
+  .path-card.new-path { border-color: var(--hg-green); background: #f9fefb; }
+  .path-label {
+    display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; padding: 3px 10px; border-radius: 4px; margin-bottom: 12px;
+  }
+  .path-label.dead-end { background: var(--hg-red); color: #fff; }
+  .path-label.redesign { background: var(--hg-gold); color: var(--hg-dark); }
+  .path-label.keep { background: var(--hg-green); color: #fff; }
+
+  /* Wireframe */
+  .wireframe {
+    border: 2px dashed #ccc; border-radius: 16px; padding: 24px; margin: 16px 0;
+    background: #fafafa; font-family: 'Courier New', monospace; font-size: 13px;
+    max-width: 480px;
+  }
+  .wireframe .wf-title { font-weight: 700; font-size: 16px; margin-bottom: 12px; text-align: center; font-family: 'Segoe UI', sans-serif; }
+  .wireframe .wf-subtitle { font-size: 12px; color: #888; text-align: center; margin-bottom: 16px; font-family: 'Segoe UI', sans-serif; }
+  .wf-option {
+    border: 1px solid #ddd; border-radius: 8px; padding: 10px 14px; margin: 6px 0;
+    background: #fff; cursor: default; display: flex; align-items: center; gap: 8px;
+  }
+  .wf-option .radio { width: 16px; height: 16px; border: 2px solid #bbb; border-radius: 50%; flex-shrink: 0; }
+  .wf-input {
+    border: 1px solid #ddd; border-radius: 8px; padding: 10px 14px; margin: 6px 0;
+    background: #fff; color: #aaa; width: 100%;
+  }
+  .wf-select {
+    border: 1px solid #ddd; border-radius: 8px; padding: 10px 14px; margin: 6px 0;
+    background: #fff; color: #aaa; width: 100%; display: flex; justify-content: space-between;
+  }
+  .wf-btn {
+    background: var(--hg-gold); color: var(--hg-dark); border: none; border-radius: 8px;
+    padding: 12px 24px; font-weight: 700; width: 100%; margin-top: 16px; text-align: center;
+    font-size: 14px;
+  }
+  .wf-btn.secondary { background: #eee; color: #555; }
+  .wf-label { font-weight: 600; margin: 12px 0 4px; font-family: 'Segoe UI', sans-serif; font-size: 13px; }
+  .wf-hint { font-size: 11px; color: #999; margin-bottom: 6px; font-family: 'Segoe UI', sans-serif; }
+  .wf-icon { font-size: 24px; text-align: center; margin-bottom: 8px; }
+  .wf-message {
+    background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px;
+    margin: 8px 0; font-family: 'Segoe UI', sans-serif; font-size: 13px; line-height: 1.5;
+  }
+  .wf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+  /* Mermaid diagram */
+  .mermaid { margin: 24px 0; overflow-x: auto; }
+  .mermaid svg { max-width: 100%; }
+
+  /* Code blocks */
+  pre {
+    background: #1e1e2e; color: #cdd6f4; padding: 16px 20px; border-radius: 8px;
+    overflow-x: auto; font-size: 13px; margin: 12px 0 20px; line-height: 1.5;
+  }
+  code { font-family: 'Fira Code', 'Consolas', monospace; }
+
+  /* Table of Contents */
+  .toc { background: var(--hg-gray); border-radius: 12px; padding: 24px; margin: 24px 0; }
+  .toc h3 { margin: 0 0 12px; font-size: 16px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin: 4px 0; }
+  .toc a { color: var(--hg-blue); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  hr { border: none; border-top: 1px solid var(--hg-border); margin: 48px 0; }
+
+  /* Compare sections */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .compare > div { padding: 16px; border-radius: 8px; }
+  .compare .current { background: #fef2f2; border: 1px solid #fecaca; }
+  .compare .proposed { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .compare h4 { margin-top: 0; }
+  @media (max-width: 700px) { .compare { grid-template-columns: 1fr; } }
+
+  .lang-switch { float: right; font-size: 13px; margin-top: -4px; }
+  .lang-switch a { color: var(--hg-blue); text-decoration: none; padding: 4px 10px; border-radius: 4px; background: var(--hg-gray); }
+</style>
+</head>
+<body><script>(function(){var k="hg_audit_auth",p="huntergalloway2026";if(sessionStorage.getItem(k)===p)return;var v=prompt("Access code:");if(v===p){sessionStorage.setItem(k,p)}else{document.write("<div style=\"text-align:center;padding:100px;font-family:sans-serif;color:\#999\">Access denied.</div>");document.close()}})()</script>
+
+<div style="float: right; font-size: 13px; margin-top: -4px;">
+<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #555; margin-right: 6px;">Системні доки</a>
+<a href="directory.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #1a1a2e; margin-right: 6px;">Каталог</a>
+<a href="test-coverage.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #27ae60; margin-right: 6px;">Тести (142)</a>
+<a href="index.html" style="color: #2E75B6; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #f8f9fa;">English version</a>
+</div>
+
+<h1>Секція квізу — Специфікація потоків та звіт про помилку</h1>
+<p class="subtitle">Документація для розробників щодо виправлення квізу на головній сторінці <code>huntergalloway.com.au</code></p>
+<div class="meta">
+  <span>Дата: 2 квітня 2026</span>
+  <span>Секція: <code>#home_quiz > div > div > div.quiz_card</code></span>
+  <span>Пріоритет: Високий</span>
+  <span>Статус: Регресія — логіку упрощено</span>
+</div>
+
+<!-- ЗМІСТ -->
+<div class="toc">
+  <h3>Зміст</h3>
+  <ol>
+    <li><a href="#bug">Опис помилки</a></li>
+    <li><a href="#current">Поточний (зламаний) потік</a></li>
+    <li><a href="#master">Головна діаграма потоків</a></li>
+    <li><a href="#path-purchase">Шлях 1 — Купівля нерухомості</a></li>
+    <li><a href="#path-build">Шлях 2 — Будівництво (як Купівля)</a></li>
+    <li><a href="#path-commercial">Шлях 3 — Комерційний / бізнес-кредит (тупик)</a></li>
+    <li><a href="#path-refinance">Шлях 4 — Рефінансування</a></li>
+    <li><a href="#path-exploring">Шлях 5 — Просто дивлюсь</a></li>
+    <li><a href="#implementation">Нотатки щодо реалізації</a></li>
+    <li><a href="#data">Довідник полів та даних</a></li>
+  </ol>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="bug">1. Опис помилки</h2>
+
+<div class="bug-box">
+  <h3>Регресія: всі шляхи квізу використовують однаковий лінійний потік</h3>
+  <p>Функція <code>nextStep()</code> в JavaScript квізу <strong>не має умовного розгалуження</strong>. Незалежно від того, що користувач обирає на кроці 1, квіз завжди проходить через однакові 5 кроків:</p>
+  <p><code>Крок 1 (вибір) → Крок 2 (ситуація) → Крок 3 (фінанси) → Крок 4 (контакти) → Крок 5 (результат)</code></p>
+  <p>Це означає:</p>
+  <p style="margin-left: 16px;">
+    — <strong>"Будівництво"</strong> повинно слідувати тому ж шляху, що й Купівля (калькулятор кредитоспроможності) — це правильно.<br>
+    — <strong>"Комерційний або бізнес-кредит"</strong> проходить через питання для житлових кредитів — HG має обмежену пропускну здатність для комерційних кредитів і наразі не приймає нових клієнтів.<br>
+    — <strong>"Рефінансування"</strong> запитує "Чи ви перший покупець житла?" та "Який ваш депозит?" — це не стосується рефінансування.<br>
+    — <strong>"Просто дивлюсь"</strong> змушує проходити повний калькулятор кредитоспроможності, що занадто агресивно для тих, хто лише досліджує.
+  </p>
+</div>
+
+<h3>Першопричина</h3>
+<p>Функція <code>nextStep()</code> просто збільшує <code>currentStep++</code> без зчитування значення radio-кнопки <code>looking</code>:</p>
+
+<pre><code>function nextStep() {
+  // БАГ: Немає розгалуження на основі answers.looking
+  if (currentStep === totalSteps - 1) {
+    const data = calculateLoanCapacity(answers);
+    borrow.textContent = data.maxPropertyValue;
+    maxBorrow.textContent = data.improvedPropertyValue;
+    submitForm();
+    return;
+  }
+  if (currentStep < totalSteps) {
+    stepElements[currentStep - 1].classList.remove('active');
+    currentStep++;
+    stepElements[currentStep - 1].classList.add('active');
+    updateButton();
+    disableMainButton();
+  }
+}</code></pre>
+
+<p>Немає коду, який перевіряє <code>answers.looking</code> (або значення radio елемента <code>name="looking"</code>) для розгалуження потоку.</p>
+
+<div class="info-box">
+  <h3>Де знайти код</h3>
+  <p><strong>Квіз HTML:</strong> Всередині <code>#home_quiz &gt; div &gt; div &gt; div.quiz_card</code> — це секція на головній сторінці (<code>/</code>) та на <code>/mortgage-calculator/</code>.</p>
+  <table>
+    <tr><th>Що</th><th>Де</th></tr>
+    <tr><td>HTML контейнер квізу</td><td><code>.quiz_card</code> — <strong>тільки на головній сторінці (<code>/</code>)</strong>. Сторінка <code>/mortgage-calculator/</code> НЕ має цього квізу (перевірено Playwright).</td></tr>
+    <tr><td>Елементи кроків</td><td><code>.step_1</code> ... <code>.step_5</code> — видимість перемикається через клас <code>.active</code></td></tr>
+    <tr><td>Radio кнопки кроку 1</td><td><code>input[name="looking"]</code> — значення: <code>purchase</code>, <code>build</code>, <code>commercial</code>, <code>refinance</code>, <code>exploring</code></td></tr>
+    <tr><td>Квіз JS</td><td>Вбудований <code>&lt;script&gt;</code> в тілі сторінки (не окремий файл). Функції: <code>nextStep()</code>, <code>handleBackButton()</code>, <code>disableMainButton()</code>, <code>submitForm()</code></td></tr>
+    <tr><td>Калькулятор</td><td><code>calculateLoanCapacity(answers)</code> — завантажується з зовнішнього скрипта. Повертає <code>{ maxPropertyValue, improvedPropertyValue }</code></td></tr>
+    <tr><td>Відправка форми</td><td><code>submitForm()</code> → <code>submitToContactForm7(formAnswers)</code> → POST на <code>/wp-json/contact-form-7/v1/contact-forms/<strong>72896</strong>/feedback</code> (стейджинг: <code>72338</code>)</td></tr>
+    <tr><td>Дані, що відправляються</td><td><code>formAnswers = { name, email, phone }</code> — <strong>дані квізу з об'єкту <code>answers</code> НЕ відправляються</strong>, вони живлять лише клієнтський калькулятор</td></tr>
+    <tr><td>Індикатор прогресу</td><td><code>#current_step</code> — показує "X / 5" жорстко закодовано для всіх шляхів</td></tr>
+  </table>
+  <p style="margin-top: 12px;"><strong>Тести Playwright:</strong> <code>npx playwright test tests/forms/homepage-quiz-branching.spec.ts</code> (5 тестів). Повний набір (142 тести): <code>npx playwright test</code>. Деталі: <a href="test-coverage.html">Трекер тестового покриття</a></p>
+  <p><strong>Пов'язані баг-репорти:</strong> <a href="lower-your-rate-form.html">Втрата даних квізу на /lower-your-rate/</a> · <a href="cf7-14462-context-loss.html">CF7 #14462 втрата контексту</a></p>
+</div>
+
+<div class="bug-box">
+  <h3>Граничні випадки та пастки для розробників</h3>
+  <p>Наступні проблеми виявлені при інспекції живого JS. Вони зламають вашу реалізацію, якщо їх не врахувати.</p>
+</div>
+
+<h3>1. <code>disableMainButton()</code> жорстко кодує номери кроків</h3>
+<p>Логіка перевіряє конкретні номери кроків: крок 2 = maritalStatus, крок 3 = income/deposit, крок 4 = name/email/phone. Для нових потоків (рефінансування, дослідник) ці номери не збігатимуться. <strong>Потрібно рефакторити</strong> на перевірку полів поточного кроку, а не жорстко закодованих номерів.</p>
+
+<h3>2. <code>totalSteps = 5</code> жорстко закодовано</h3>
+<p>Контролює індикатор прогресу та логіку кнопки "Submit". Рефінансування має 6 кроків. Дослідник має 2–4. Потрібно зробити динамічним для кожного потоку.</p>
+
+<h3>3. <code>submitToContactForm7()</code> вже відправляє поля рефінансування — як прочерки</h3>
+<pre><code>r.append("mortgage-rate", "-");
+r.append("still-owe", "-");
+r.append("loan-term", "-");
+r.append("important", "-");</code></pre>
+<p><strong>Це важливо:</strong> CF7 форма #72896 вже має поля для даних рефінансування — вони просто жорстко закодовані як <code>"-"</code>. Для потоку рефінансування заповніть їх реальними відповідями замість додавання нових полів. Маппінг HubSpot може вже бути налаштований.</p>
+
+<h3>4. <code>updateButton()</code> використовує <code>totalSteps</code> для Submit vs Continue</h3>
+<p>З динамічною кількістю кроків потрібно перевіряти загальну кількість поточного потоку, а не глобальний <code>totalSteps</code>.</p>
+
+<h3>5. <code>answers</code> та <code>formAnswers</code> — окремі об'єкти</h3>
+<p><code>answers</code> живить калькулятор. <code>formAnswers</code> відправляється. Для рефінансування додайте дані до відправки, маппячи на існуючі назви полів CF7: <code>mortgage-rate</code>, <code>still-owe</code>, <code>loan-term</code>, <code>important</code>.</p>
+
+<h3>6. Event listeners прив'язані до ID елементів</h3>
+<p>Існуючий код прив'язує <code>addEventListener</code> до <code>#income</code>, <code>#deposit</code>, <code>#state</code> тощо по ID. Нові поля рефінансування потребують власних listeners для оновлення об'єкту <code>answers</code> та виклику <code>disableMainButton()</code>.</p>
+
+<h3>7. Відсутня аналітика</h3>
+<p>Квіз не має жодних подій GTM, Google Analytics або Facebook Pixel. Немає трекінгу якого шляху йде користувач, де відвалюється, або конверсій по потоку. Розгляньте додавання <code>dataLayer.push</code> при реалізації розгалуження.</p>
+
+<h3>8. Немає OTP/верифікації телефону</h3>
+<p>Незважаючи на згадки OTP у деяких потоках, квіз на головній сторінці не має SMS верифікації. Телефон — звичайне текстове поле з валідацією формату AU на стороні клієнта.</p>
+
+<h3>9. <code>stepElements</code> виконується один раз при завантаженні</h3>
+<p><code>document.querySelectorAll(".step")</code> захоплює всі елементи <code>.step</code> при завантаженні сторінки. Якщо ви додаєте нові div кроків динамічно — вони не будуть у цьому NodeList. Додайте весь HTML кроків при збірці, або перезапитайте після додавання.</p>
+
+<h3>10. Індикатор прогресу <code>"/ 5"</code> жорстко закодований у HTML</h3>
+<p>Індикатор прогресу:</p>
+<pre><code>&lt;div class="progress_indicator"&gt;
+  &lt;span id="current_step"&gt;1&lt;/span&gt; / 5
+&lt;/div&gt;</code></pre>
+<p>JS оновлює текст <code>#current_step</code>, але <code>/ 5</code> — статичний HTML. Щоб зробити динамічним, загорніть загальну кількість у <code>&lt;span&gt;</code>, щоб JS міг змінити її для кожного потоку.</p>
+
+<h3>11. Кроки мають різну висоту контенту — без анімації</h3>
+<p>Висоти кроків: Крок 1 = 376px, Крок 2 = 531px, Крок 3 = 492px. Картка квізу не має фіксованої висоти, переходів чи анімацій. При зміні кроків висота стрибає миттєво. Розгляньте додавання <code>transition: height 0.3s</code> або <code>min-height</code>.</p>
+
+<h3>12. Кроки використовують <code>display: none</code> для приховування</h3>
+<p>Приховані кроки мають <code>display: none</code>. JS видаляє клас <code>.active</code> з поточного кроку і додає до наступного. Переконайтесь, що ваш CSS прив'язує <code>.active</code> до <code>display: block</code>, а стандартний <code>.step</code> має <code>display: none</code>. Нові div кроків потребують тих самих CSS правил.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="current">2. Поточний (зламаний) потік</h2>
+
+<div class="mermaid">
+flowchart TD
+    S1["<b>Крок 1:</b> Що вас цікавить?"]
+    S2["<b>Крок 2:</b> Ваша ситуація<br/>(подружжя/одинак, першовласник, штат, утримавці)"]
+    S3["<b>Крок 3:</b> Фінанси<br/>(дохід, депозит)"]
+    S4["<b>Крок 4:</b> Контактна інформація<br/>(ім'я, email, телефон + OTP)"]
+    S5["<b>Крок 5:</b> Результат кредитоспроможності"]
+
+    S1 -->|"Купівля"| S2
+    S1 -->|"Будівництво"| S2
+    S1 -->|"Комерційний"| S2
+    S1 -->|"Рефінансування"| S2
+    S1 -->|"Дивлюсь"| S2
+    S2 --> S3 --> S4 --> S5
+
+    style S1 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style S2 fill:#fef2f2,stroke:#e74c3c,color:#000
+    style S3 fill:#fef2f2,stroke:#e74c3c,color:#000
+    style S4 fill:#fef2f2,stroke:#e74c3c,color:#000
+    style S5 fill:#fef2f2,stroke:#e74c3c,color:#000
+</div>
+
+<p>Кожний вибір проходить через <strong>однаковий шлях</strong>. Квіз, напевно, було розроблено з розгалуженням, але логіка була втрачена під час редизайну або A/B-тесту.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="master">3. Коректна головна діаграма потоків</h2>
+
+<p>Нижче наведена повна логіка розгалуження, яку повинна реалізувати функція <code>nextStep()</code>. Кожний шлях позначений кольором і детально описаний у розділах нижче.</p>
+
+<div class="mermaid">
+flowchart TD
+    S1["<b>Крок 1:</b> Що вас цікавить?"]
+
+    S1 -->|"purchase"| P_S2["<b>Купівля крок 2:</b><br/>Про ваше домогосподарство"]
+    P_S2 --> P_S3["<b>Купівля крок 3:</b><br/>Ваш дохід та заощадження"]
+    P_S3 --> P_S4["<b>Купівля крок 4:</b><br/>Контактна інформація"]
+    P_S4 --> P_S5["<b>Купівля крок 5:</b><br/>Ваша кредитоспроможність"]
+
+    S1 -->|"build"| P_S2
+
+    S1 -->|"commercial"| C_END["<b>Комерційний — на межі пропускної здатності</b><br/>Обмежена пропускна здатність,<br/>наразі недоступно"]
+    C_END --> C_CTA["Перенаправити на Купівлю<br/>або сторінку контактів"]
+
+    S1 -->|"refinance"| R_S2["<b>Реф крок 2:</b><br/>Поточна ставка"]
+    R_S2 --> R_S3["<b>Реф крок 3:</b><br/>Сума кредиту"]
+    R_S3 --> R_S4["<b>Реф крок 4:</b><br/>Залишок терміну"]
+    R_S4 --> R_S5["<b>Реф крок 5:</b><br/>Пріоритет"]
+    R_S5 --> R_S6["<b>Реф крок 6:</b><br/>Контактна інформація"]
+    R_S6 --> R_DONE["<b>Реф готово:</b><br/>Підтвердження"]
+
+    S1 -->|"exploring"| E_S2["<b>Дивлюсь крок 2:</b><br/>На якому етапі ви?"]
+    E_S2 -->|"Готовий купувати"| P_S2
+    E_S2 -->|"Цікавить рефінансування"| R_S2
+    E_S2 -->|"Досліджую /<br/>6–12 місяців"| E_FORK{"Хочете дізнатися вашу<br/>кредитоспроможність?"}
+    E_FORK -->|"Так, покажіть"| E_SIT["<b>Дивлюсь крок 3:</b><br/>Про ваше домогосподарство"]
+    E_SIT --> E_FIN["<b>Дивлюсь крок 4:</b><br/>Ваш дохід та заощадження"]
+    E_FIN --> E_RESULT["<b>Дивлюсь готово:</b><br/>Кредитоспроможність +<br/>ресурси"]
+    E_FORK -->|"Поки що ні"| E_RES["<b>Дивлюсь готово:</b><br/>Ресурси + м'який CTA"]
+
+    style S1 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style P_S2 fill:#e8f5e9,stroke:#27ae60,color:#000
+    style P_S3 fill:#e8f5e9,stroke:#27ae60,color:#000
+    style P_S4 fill:#e8f5e9,stroke:#27ae60,color:#000
+    style P_S5 fill:#e8f5e9,stroke:#27ae60,color:#000
+    style C_END fill:#fef2f2,stroke:#e74c3c,color:#000
+    style C_CTA fill:#fef2f2,stroke:#e74c3c,color:#000
+    style R_S2 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style R_S3 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style R_S4 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style R_S5 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style R_S6 fill:#FEF7EA,stroke:#FDB948,color:#000
+    style R_DONE fill:#FEF7EA,stroke:#FDB948,color:#000
+    style E_S2 fill:#eff6ff,stroke:#2E75B6,color:#000
+    style E_FORK fill:#eff6ff,stroke:#2E75B6,color:#000
+    style E_SIT fill:#eff6ff,stroke:#2E75B6,color:#000
+    style E_FIN fill:#eff6ff,stroke:#2E75B6,color:#000
+    style E_RESULT fill:#eff6ff,stroke:#2E75B6,color:#000
+    style E_RES fill:#eff6ff,stroke:#2E75B6,color:#000
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="path-purchase">4. Шлях 1 — Купівля нерухомості</h2>
+
+<div class="path-card modified">
+  <span class="path-label redesign">Зберегти наявні кроки — виправити лише розгалуження</span>
+  <h3>Зберегти калькулятор позики як хук для конверсії.</h3>
+  <p>Кроки ситуації та фінансів (подружжя/одинак, першовласник, штат, утримавці, дохід, депозит) не передаються на backend — Typeform збирає їх все заново. Однак вони <strong>живлять калькулятор позики</strong>, який показує результат "$550k → $750k з нашою допомогою". Це сильний психологічний хук, що керує конверсіями, тому ми його зберігаємо.</p>
+  <p>Єдина зміна, необхідна для купівлі, це <strong>переконатися, що логіка розгалуження маршрутизує сюди правильно</strong> — наявний 5-кроковий потік повністю підходить.</p>
+</div>
+
+<h3>Потік: Купівля (5 кроків — наявний потік, збережено таким, яким є)</h3>
+<div class="mermaid">
+flowchart LR
+    A["Крок 1<br/>Вибір: Купівля"] --> B["Крок 2<br/>Про ваше домогосподарство"] --> C["Крок 3<br/>Ваш дохід та заощадження"] --> D["Крок 4<br/>Контактна інформація"] --> E["Крок 5<br/>Ваша кредитоспроможність"]
+    style A fill:#FEF7EA,stroke:#FDB948
+    style B fill:#e8f5e9,stroke:#27ae60
+    style C fill:#e8f5e9,stroke:#27ae60
+    style D fill:#e8f5e9,stroke:#27ae60
+    style E fill:#e8f5e9,stroke:#27ae60
+</div>
+
+<div class="info-box">
+  <h3>Чому зберегти додаткові кроки?</h3>
+  <p>Екран результату калькулятора позики ("Ви можете позичити $550,000 → $750,000 з нашою допомогою!") є перевіреним хуком конверсії. Щоб показати це число, квіз потребує введення доходу та депозиту для живлення <code>calculateLoanCapacity()</code>. Дані не передаються на backend, але вони живлять калькулятор, який керує конверсіями.</p>
+</div>
+
+<h4>Крок 2 — Про ваше домогосподарство (наявний, оновлений мікрокопі)</h4>
+<table>
+  <tr><th>Поле</th><th>Тип</th><th>Назва</th><th>Примітка</th></tr>
+  <tr><td>Подружжя або одинак?</td><td>Radio</td><td><code>maritalStatus</code></td><td>Живить лише калькулятор</td></tr>
+  <tr><td>Першовласник?</td><td>Radio</td><td><code>isFirstOwner</code></td><td>Живить лише калькулятор</td></tr>
+  <tr><td>Штат</td><td>Select</td><td><code>state</code></td><td>Живить лише калькулятор</td></tr>
+  <tr><td>Утримавці</td><td>Select</td><td><code>dependants</code></td><td>Живить лише калькулятор</td></tr>
+</table>
+
+<h4>Крок 3 — Ваш дохід та заощадження (наявний, оновлений мікрокопі)</h4>
+<table>
+  <tr><th>Поле</th><th>Тип</th><th>Назва</th><th>Примітка</th></tr>
+  <tr><td>Дохід домогосподарства</td><td>Number/slider</td><td><code>income</code></td><td>Живить лише калькулятор</td></tr>
+  <tr><td>Сума депозиту</td><td>Number/slider</td><td><code>deposit</code></td><td>Живить лише калькулятор</td></tr>
+</table>
+
+<h4>Крок 4 — Контактна інформація (наявний, без змін)</h4>
+<table>
+  <tr><th>Поле</th><th>Тип</th><th>Назва</th></tr>
+  <tr><td>Повне ім'я</td><td>Text</td><td><code>name</code></td></tr>
+  <tr><td>Email</td><td>Email</td><td><code>email</code></td></tr>
+  <tr><td>Телефон + OTP перевірка</td><td>Tel + код</td><td><code>phone</code></td></tr>
+</table>
+
+<h4>Крок 5 — Ваша кредитоспроможність (наявний, без змін)</h4>
+<p>Показує розраховану кредитоспроможність за допомогою <code>calculateLoanCapacity(answers)</code>, а потім up-sell "з нашою допомогою". Це хук, що керує конверсіями.</p>
+
+<div class="success-box">
+  <h3>Не потрібні зміни до самого потоку купівлі</h3>
+  <p>Наявний 5-кроковий потік купівлі працює правильно. Єдине виправлення — переконатися, що <code>nextStep()</code> правильно маршрутизує сюди (що він робить за замовчуванням, оскільки це наявний лінійний потік). Дані ситуації/фінансів живлять калькулятор на стороні клієнта — їх не потрібно передавати.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="path-build">5. Шлях 2 — Будівництво (як Купівля)</h2>
+
+<div class="path-card">
+  <span class="path-label keep">Зберегти — той самий потік, що й Купівля</span>
+  <h3>Будівництво слідує тому самому шляху, що й Купівля.</h3>
+  <p>Коли користувач обирає "Будівництво", вони проходять той самий 5-кроковий потік, що й Купівля: домогосподарство → дохід та заощадження → контактні дані → результат кредитоспроможності. Значення <code>looking</code> зберігається як <code>"build"</code> у передачі форми, щоб команда знала, що це запит на будівництво.</p>
+</div>
+
+<h3>Потік: Будівництво</h3>
+<div class="mermaid">
+flowchart LR
+    A["Крок 1<br/>Вибір: Будівництво"] --> B["Крок 2<br/>Про ваше домогосподарство"] --> C["Крок 3<br/>Ваш дохід та заощадження"] --> D["Крок 4<br/>Контактна інформація"] --> E["Крок 5<br/>Ваша кредитоспроможність"]
+    style A fill:#FEF7EA,stroke:#FDB948
+    style B fill:#e8f5e9,stroke:#27ae60
+    style C fill:#e8f5e9,stroke:#27ae60
+    style D fill:#e8f5e9,stroke:#27ae60
+    style E fill:#e8f5e9,stroke:#27ae60
+</div>
+
+<div class="success-box">
+  <h3>Окремий потік не потрібен</h3>
+  <p>Будівництво використовує ті ж кроки, поля та калькулятор, що й Купівля. Єдина відмінність — значення <code>looking = "build"</code> у передачі форми, що дозволяє команді маршрутизувати лід відповідно.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="path-commercial">6. Шлях 3 — Комерційний / бізнес-кредит (тупик)</h2>
+
+<div class="path-card blocked">
+  <span class="path-label dead-end">Обмеження пропускної здатності — м'яка розвантаження</span>
+  <h3>Комерційні/бізнес-кредити пропонуються, але HG наразі на межі пропускної здатності.</h3>
+  <p>Однакова схема як у будівництві — показати повідомлення, що пояснює обмежену пропускну здатність через складність, а потім перенаправити на інші варіанти.</p>
+</div>
+
+<h3>Потік: Комерційний</h3>
+<div class="mermaid">
+flowchart LR
+    A["Крок 1<br/>Вибір: Комерційний"] --> B["Екран пропускної здатності<br/>Наразі на межі пропускної здатності"]
+    B --> C["CTA: 'Шукаю купити<br/>дім замість цього?'"]
+    B --> D["CTA: 'Зв'яжіться<br/>з нами'"]
+    style A fill:#FEF7EA,stroke:#FDB948
+    style B fill:#fef2f2,stroke:#e74c3c
+    style C fill:#e8f5e9,stroke:#27ae60
+    style D fill:#eff6ff,stroke:#2E75B6
+</div>
+
+<h4>Макет — Екран пропускної здатності для комерційних кредитів</h4>
+<div class="wireframe">
+  <div class="wf-icon">🏢</div>
+  <div class="wf-title">Комерційні кредити — наразі на межі пропускної здатності</div>
+  <div class="wf-message">
+    Через складність комерційних і бізнес-кредитів ми маємо <strong>обмежену пропускну здатність</strong> для цих заявок. На жаль, ми <strong>наразі на межі пропускної здатності</strong> і не можемо прийняти нових клієнтів з комерційними кредитами на цей час.<br><br>
+    Ми б все ще хотіли допомогти, якщо ви шукаєте <strong>купити дім чи інвестиційну нерухомість</strong>, або <strong>рефінансувати існуючий кредит</strong> — це то, у чому ми по-справжньому сяємо!
+  </div>
+  <div class="wf-btn">Також шукаю купити дім →</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-btn secondary">Зв'яжіться з нами все одно</div>
+  <div style="height: 8px;"></div>
+  <div style="text-align: center; font-size: 11px; color: #999; font-family: sans-serif;">
+    <a href="#" style="color: #999;">← Почати спочатку</a>
+  </div>
+</div>
+
+<h3>Логіка реалізації</h3>
+<pre><code>if (looking === 'commercial') {
+  showDeadEndScreen('commercial');
+  return;
+}</code></pre>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="path-refinance">7. Шлях 4 — Рефінансування кредиту</h2>
+
+<div class="path-card modified">
+  <span class="path-label redesign">Редизайн — упрощені, різні питання</span>
+  <h3>Рефінансування потребує різних питань — і менше їх.</h3>
+  <p>Поточний потік запитує про нерелевантні питання (першовласника, депозит, подружжя/одинака, утримавців, дохід). Жодні з цих даних не передаються далі — Typeform збирає їх заново. Тримайте квіз в тонусі: запитайте лише про рефінансування, а потім захопіть лід.</p>
+</div>
+
+<h3>Потік: Рефінансування</h3>
+<div class="mermaid">
+flowchart LR
+    A["Крок 1<br/>Вибір: Рефінансування"] --> B["Реф крок 2<br/>Поточна ставка"]
+    B --> C["Реф крок 3<br/>Сума кредиту"]
+    C --> D["Реф крок 4<br/>Залишок терміну"]
+    D --> E["Реф крок 5<br/>Пріоритет рефінансування"]
+    E --> F["Реф крок 6<br/>Контактна інформація"]
+    F --> G["Реф готово<br/>Підтвердження"]
+    style A fill:#FEF7EA,stroke:#FDB948
+    style B fill:#FEF7EA,stroke:#FDB948
+    style C fill:#FEF7EA,stroke:#FDB948
+    style D fill:#FEF7EA,stroke:#FDB948
+    style E fill:#FEF7EA,stroke:#FDB948
+    style F fill:#FEF7EA,stroke:#FDB948
+    style G fill:#FEF7EA,stroke:#FDB948
+</div>
+
+<div class="compare">
+  <div class="current">
+    <h4>❌ Поточні (неправильні) питання</h4>
+    <p>Ви подаєте заявку як подружжя або одинак? ← не передається далі</p>
+    <p>Чи ви <strong>першовласник</strong>? ← нерелевантне</p>
+    <p>У якому штаті ви купуєте? ← рефінансування, не купівля</p>
+    <p>Скільки у вас утримавців? ← не передається далі</p>
+    <p>Дохід домогосподарства? ← запитується заново в Typeform</p>
+    <p>Скільки у вас <strong>депозит</strong>? ← нерелевантне</p>
+  </div>
+  <div class="proposed">
+    <h4>✅ Пропонований потік рефінансування (упрощений)</h4>
+    <p>Яка ваша поточна процентна ставка?</p>
+    <p>Скільки ви ще заборгували?</p>
+    <p>Який залишок терміну кредиту?</p>
+    <p>Що найважливіше у рефінансуванні?</p>
+    <p>Контактна інформація (ім'я, email, телефон)</p>
+    <p>Підтвердження + наступні кроки</p>
+  </div>
+</div>
+
+<div class="info-box">
+  <h3>Довідка: існуючий живий квіз рефінансування</h3>
+  <p>Вже існує живий квіз рефінансування на <code>huntergalloway.com.au/lower-your-rate/</code>, який використовує мультикроковий формат з одним питанням на екрані. Шлях рефінансування квізу на головній сторінці повинен відповідати цій структурі для узгодженості.</p>
+</div>
+
+<h4>Реф крок 2 — Поточна процентна ставка</h4>
+<table>
+  <tr><th>Поле</th><th>Тип</th><th>Варіанти</th><th>Назва</th></tr>
+  <tr><td>Яка ваша поточна процентна ставка по іпотеці?</td><td>Radio (5)</td><td>Нижче 5% · 5 - 5.25% · 5.25 - 5.5% · Вище 5.5% · Не впевнений</td><td><code>interestRate</code></td></tr>
+</table>
+
+<div class="wireframe">
+  <div class="wf-title">Яка ваша поточна процентна ставка по іпотеці?</div>
+  <div class="wf-option"><div class="radio"></div> Нижче 5%</div>
+  <div class="wf-option"><div class="radio"></div> 5 - 5.25%</div>
+  <div class="wf-option"><div class="radio"></div> 5.25 - 5.5%</div>
+  <div class="wf-option"><div class="radio"></div> Вище 5.5%</div>
+  <div class="wf-option"><div class="radio"></div> Не впевнений</div>
+</div>
+
+<h4>Реф крок 3 — Сума кредиту</h4>
+<table>
+  <tr><th>Поле</th><th>Тип</th><th>Варіанти</th><th>Назва</th></tr>
+  <tr><td>Скільки ви ще заборгували по іпотеці?</td><td>Radio (3)</td><td>Менше $300,000 · $300,000 - $500,000 · Більше $500,000</td><td><code>loanAmount</code></td></tr>
+</table>
+
+<div class="wireframe">
+  <div class="wf-title">Скільки ви ще заборгували по іпотеці?</div>
+  <div class="wf-option"><div class="radio"></div> Менше $300,000</div>
+  <div class="wf-option"><div class="radio"></div> $300,000 - $500,000</div>
+  <div class="wf-option"><div class="radio"></div> Більше $500,000</div>
+</div>
+
+<h4>Реф крок 4 — Залишок терміну кредиту</h4>
+<table>
+  <tr><th>Поле</th><th>Тип</th><th>Варіанти</th><th>Назва</th></tr>
+  <tr><td>Який залишок терміну вашого кредиту?</td><td>Radio (3)</td><td>Менше 5 років · 5 - 10 років · Більше 10 років</td><td><code>loanTerm</code></td></tr>
+</table>
+
+<div class="wireframe">
+  <div class="wf-title">Який залишок терміну вашого кредиту?</div>
+  <div class="wf-option"><div class="radio"></div> Менше 5 років</div>
+  <div class="wf-option"><div class="radio"></div> 5 - 10 років</div>
+  <div class="wf-option"><div class="radio"></div> Більше 10 років</div>
+</div>
+
+<h4>Реф крок 5 — Пріоритет рефінансування</h4>
+<table>
+  <tr><th>Поле</th><th>Тип</th><th>Варіанти</th><th>Назва</th></tr>
+  <tr><td>Що для вас найважливіше у рефінансуванні?</td><td>Radio (4)</td><td>Нижчий щомісячний платіж · Швидше погасити кредит · Вивести капітал · Зафіксувати ставку</td><td><code>refiPriority</code></td></tr>
+</table>
+
+<div class="wireframe">
+  <div class="wf-title">Що для вас найважливіше у рефінансуванні?</div>
+  <div class="wf-option"><div class="radio"></div> Нижчий щомісячний платіж</div>
+  <div class="wf-option"><div class="radio"></div> Швидше погасити кредит</div>
+  <div class="wf-option"><div class="radio"></div> Вивести капітал</div>
+  <div class="wf-option"><div class="radio"></div> Зафіксувати ставку</div>
+</div>
+
+<h4>Реф крок 6 — Контактна інформація</h4>
+<p>Ім'я, email та телефон. Відповідає живому квізу на <code>/lower-your-rate/</code>.</p>
+<table>
+  <tr><th>Поле</th><th>Тип</th><th>Плейсхолдер</th><th>Назва</th></tr>
+  <tr><td>Ім'я</td><td>Text</td><td>Введіть ваше ім'я</td><td><code>name</code></td></tr>
+  <tr><td>Email</td><td>Email</td><td>Введіть ваш email</td><td><code>email</code></td></tr>
+  <tr><td>Телефон</td><td>Tel</td><td>Введіть ваш телефон</td><td><code>phone</code></td></tr>
+</table>
+
+<h4>Реф готово — Екран підтвердження</h4>
+<p>Екран підтвердження. Відповідає повідомленню успіху живого квізу.</p>
+
+<div class="wireframe">
+  <div class="wf-icon">✅</div>
+  <div class="wf-title">Дякуємо! Ми незабаром вам напишемо</div>
+  <div class="wf-message">
+    Ми отримали ваш запит і надіслали вам підтверджувальний email. <strong>Ми зв'яжемося з вами протягом 4 робочих годин.</strong><br><br>
+    Ми з нетерпінням чекаємо зустрічі з вами і допоможемо знайти правильне рішення для ваших потреб!<br><br>
+    <strong>Тим часом, ось кілька корисних ресурсів:</strong><br>
+    📖 <a href="#">Посібник з рефінансування</a><br>
+    📖 <a href="#">Посібник покупця першого житла</a><br>
+    📖 <a href="#">Посібник з інвестування в нерухомість</a>
+  </div>
+</div>
+
+<div class="success-box">
+  <h3>Узгоджено з живим квізом</h3>
+  <p>Цей потік рефінансування відповідає існуючому живому квізу на <code>/lower-your-rate/</code>. Ті ж питання, варіанти та форма контакту використовуються — забезпечуючи узгоджений досвід незалежно від того, з якої сторінки користувач починає.</p>
+</div>
+
+<div class="bug-box">
+  <h3>Маппінг назв полів CF7 — використовуйте існуючі поля</h3>
+  <p><code>submitToContactForm7()</code> вже відправляє поля рефінансування у CF7 #72896 — вони просто жорстко закодовані як <code>"-"</code>. Маппіть відповіді квізу на ці <strong>існуючі</strong> назви полів CF7:</p>
+  <table>
+    <tr><th>Поле квізу (назва в специфікації)</th><th>Назва поля CF7 (у FormData)</th><th>Поточне значення</th><th>Повинно бути</th></tr>
+    <tr><td><code>interestRate</code></td><td><code>mortgage-rate</code></td><td><code>"-"</code></td><td>Вибір користувача (напр. "5-5.25")</td></tr>
+    <tr><td><code>loanAmount</code></td><td><code>still-owe</code></td><td><code>"-"</code></td><td>Вибір користувача (напр. "300k-500k")</td></tr>
+    <tr><td><code>loanTerm</code></td><td><code>loan-term</code></td><td><code>"-"</code></td><td>Вибір користувача (напр. "5-10")</td></tr>
+    <tr><td><code>refiPriority</code></td><td><code>important</code></td><td><code>"-"</code></td><td>Вибір користувача (напр. "lower-payment")</td></tr>
+  </table>
+  <p><strong>НЕ створюйте нові поля CF7 для цих даних.</strong> Визначення форми CF7 та маппінг HubSpot можуть вже бути налаштовані для цих назв полів.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="path-exploring">8. Шлях 5 — Просто дивлюсь</h2>
+
+<div class="path-card new-path">
+  <span class="path-label redesign">Редизайн — двофорковий підхід</span>
+  <h3>Дослідники отримують тріаж за етапом, а потім кредитоспроможність як опціональна цінність.</h3>
+  <p>Хтось, хто обирає "Просто дивлюсь", не готовий віддавати дані про дохід і проходити перевірку телефону. Але багато дослідників <em>цікавляться</em> своєю кредитоспроможністю. Цей потік сортує за етапом: користувачі, які далі на шляху, перенаправляються до потоків Купівлі або Рефінансування, а дослідники на ранньому етапі отримують опціональну перевірку кредитоспроможності — без тиску, лише цінність.</p>
+</div>
+
+<h3>Потік: Дивлюсь (двофорковий дизайн)</h3>
+<div class="mermaid">
+flowchart TD
+    A["Крок 1<br/>Вибір: Дивлюсь"] --> B["Дивлюсь крок 2<br/>На якому етапі ви?"]
+    B -->|"Готовий купувати"| REDIR_P["Перенаправлення → потік Купівлі<br/>'Здається, ви далі на шляху<br/>ніж думаєте!'"]
+    B -->|"Цікавить рефінансування"| REDIR_R["Перенаправлення → потік Рефінансування<br/>'Давайте розглянемо ваші<br/>варіанти рефінансування.'"]
+    B -->|"Досліджую /<br/>6–12 місяців"| FORK{"'Хочете дізнатися скільки<br/>ви можете позичити?<br/>Це займе 30 секунд.'"}
+    FORK -->|"Так, покажіть"| E_SIT["Дивлюсь крок 3<br/>Про ваше домогосподарство"]
+    E_SIT --> E_FIN["Дивлюсь крок 4<br/>Ваш дохід та заощадження"]
+    E_FIN --> E_RESULT["Дивлюсь готово<br/>Результат кредитоспроможності<br/>+ ресурси + м'який CTA"]
+    FORK -->|"Поки що ні,<br/>покажіть ресурси"| E_RES["Дивлюсь готово<br/>Ресурси + м'який CTA"]
+    style A fill:#FEF7EA,stroke:#FDB948
+    style B fill:#eff6ff,stroke:#2E75B6
+    style REDIR_P fill:#e8f5e9,stroke:#27ae60
+    style REDIR_R fill:#FEF7EA,stroke:#FDB948
+    style FORK fill:#eff6ff,stroke:#2E75B6
+    style E_SIT fill:#eff6ff,stroke:#2E75B6
+    style E_FIN fill:#eff6ff,stroke:#2E75B6
+    style E_RESULT fill:#eff6ff,stroke:#2E75B6
+    style E_RES fill:#eff6ff,stroke:#2E75B6
+</div>
+
+<h4>Дивлюсь крок 2 — На якому етапі ви?</h4>
+<table>
+  <tr><th>Поле</th><th>Тип</th><th>Варіанти</th><th>Назва</th><th>Поведінка</th></tr>
+  <tr><td>Де ви у своєму шляху?</td><td>Radio (4)</td><td>Тільки починаю досліджувати</td><td rowspan="4"><code>exploreStage</code></td><td>→ Форк кредитоспроможності</td></tr>
+  <tr><td></td><td></td><td>Планую купити за 6–12 місяців</td><td>→ Форк кредитоспроможності</td></tr>
+  <tr><td></td><td></td><td>Готовий купувати, порівнюю варіанти</td><td>→ Перенаправлення на потік <strong>Купівлі</strong> (крок 2)</td></tr>
+  <tr><td></td><td></td><td>Цікавить рефінансування існуючого кредиту</td><td>→ Перенаправлення на потік <strong>Рефінансування</strong> (крок 2)</td></tr>
+</table>
+
+<h4>Макет — Дивлюсь крок 2</h4>
+<div class="wireframe">
+  <div class="wf-title">Де ви у своєму шляху?</div>
+  <div class="wf-subtitle">Без тиску — ми тут, щоб допомогти на будь-якому етапі.</div>
+  <div class="wf-option"><div class="radio"></div> Тільки починаю досліджувати</div>
+  <div class="wf-option"><div class="radio"></div> Планую купити за 6–12 місяців</div>
+  <div class="wf-option"><div class="radio"></div> Готовий купувати, порівнюю варіанти</div>
+  <div class="wf-option"><div class="radio"></div> Цікавить рефінансування</div>
+</div>
+
+<div class="info-box">
+  <h3>Перенаправлення на основі етапу</h3>
+  <p><strong>"Готовий купувати, порівнюю варіанти"</strong> → Встановити <code>answers.looking = 'purchase'</code> і перейти до кроку 2 Купівлі, з перехідним повідомленням: <em>"Здається, ви далі на шляху, ніж думаєте! Давайте подивимось, скільки ви можете позичити."</em></p>
+  <p><strong>"Цікавить рефінансування"</strong> → Встановити <code>answers.looking = 'refinance'</code> і перейти до кроку 2 Рефінансування, з перехідним повідомленням: <em>"Чудово — давайте розглянемо ваші варіанти рефінансування."</em></p>
+  <p>Ці перенаправлення входять у повні потоки Купівлі/Рефінансування (включаючи контактні дані та результати). Значення <code>exploreStage</code> зберігається у передачі форми, щоб CRM знала, що вони увійшли через шлях дослідника.</p>
+</div>
+
+<h4>Форк кредитоспроможності (для дослідників на ранньому етапі)</h4>
+<p>Користувачі, які обирають <strong>"Тільки починаю досліджувати"</strong> або <strong>"Планую купити за 6–12 місяців"</strong>, бачать екран з пропозицією швидкої перевірки кредитоспроможності.</p>
+
+<div class="wireframe">
+  <div class="wf-icon">💡</div>
+  <div class="wf-title">Хочете дізнатися скільки ви можете позичити?</div>
+  <div class="wf-message">
+    Відповідте на кілька швидких питань і ми оцінимо вашу кредитоспроможність — <strong>займе приблизно 30 секунд</strong>. Без зобов'язань, без телефонного дзвінка.
+  </div>
+  <div class="wf-btn">Так, покажіть мою кредитоспроможність →</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-btn secondary">Поки що ні — просто покажіть ресурси</div>
+</div>
+
+<h4>Форк А: "Так, покажіть" → Дивлюсь кроки 3–4 (Перевірка кредитоспроможності)</h4>
+<p>Збирає ті ж дані про ситуацію та фінанси, що й потік Купівлі, для роботи калькулятора кредитоспроможності. Однак <strong>контактні дані або перевірка телефону не потрібні</strong> — це зберігає досвід без зобов'язань.</p>
+
+<table>
+  <tr><th colspan="4">Дивлюсь крок 3 — Про ваше домогосподарство</th></tr>
+  <tr><th>Поле</th><th>Тип</th><th>Варіанти</th><th>Назва</th></tr>
+  <tr><td>Подружжя або одинак?</td><td>Radio (2)</td><td>Подружжя · Одинак</td><td><code>maritalStatus</code></td></tr>
+  <tr><td>Першовласник?</td><td>Radio (2)</td><td>Так · Ні</td><td><code>isFirstOwner</code></td></tr>
+  <tr><td>Штат</td><td>Select</td><td>NSW · VIC · QLD · тощо</td><td><code>state</code></td></tr>
+  <tr><td>Утримавці</td><td>Radio (4)</td><td>Немає · 1 · 2 · 3+</td><td><code>dependants</code></td></tr>
+</table>
+
+<table>
+  <tr><th colspan="4">Дивлюсь крок 4 — Ваш дохід та заощадження</th></tr>
+  <tr><th>Поле</th><th>Тип</th><th>Плейсхолдер</th><th>Назва</th></tr>
+  <tr><td>Загальний дохід домогосподарства (до оподаткування)</td><td>Валютне введення</td><td>напр. 50,000</td><td><code>income</code></td></tr>
+  <tr><td>Сума депозиту</td><td>Валютне введення</td><td>напр. 40,000</td><td><code>deposit</code></td></tr>
+</table>
+
+<h4>Дивлюсь готово (Форк А) — Результат кредитоспроможності + ресурси</h4>
+<p>Показує той самий розрахунок кредитоспроможності, що й потік Купівлі, але з м'якішим тоном і без зобов'язань продовжувати. Включає ресурси та опціональний CTA контакту.</p>
+
+<div class="wireframe">
+  <div class="wf-icon">🎯</div>
+  <div class="wf-title">Ваша орієнтовна кредитоспроможність</div>
+  <div class="wf-message">
+    На основі ваших даних, ви можете позичити приблизно до:<br><br>
+    <div style="text-align: center; font-size: 24px; font-weight: 700; color: #27ae60; margin: 12px 0;">$XXX,XXX</div>
+    <div style="text-align: center; font-size: 12px; color: #999; margin-bottom: 12px;">Це лише оцінка — фактичні суми залежать від критеріїв кредитора.</div>
+    <strong>Корисні ресурси:</strong><br>
+    📖 Посібник покупця першого житла <span style="font-size:11px; color:#999;">(якщо isFirstOwner=yes)</span><br>
+    📖 Хаб купівлі нерухомості<br>
+    📖 Розуміння вашої кредитоспроможності<br><br>
+    Коли будете готові, наша команда може надати вам <strong>безплатну, персоналізовану оцінку</strong> від більше ніж 30 кредиторів.
+  </div>
+  <div class="wf-btn">Записатись на безплатну консультацію</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-label" style="text-align: center;">Ваш email <span style="color: #aaa; font-weight: 400;">(факультативно — ми надішлемо ваш результат)</span></div>
+  <div class="wf-input">you@email.com</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-btn secondary">← Назад на головну</div>
+</div>
+
+<h4>Форк Б: "Поки що ні" → Тільки ресурси</h4>
+<p>Пропускає збір даних. Показує підібрані ресурси та м'який CTA.</p>
+
+<div class="wireframe">
+  <div class="wf-icon">📚</div>
+  <div class="wf-title">Ось кілька ресурсів для початку</div>
+  <div class="wf-message">
+    <strong>Безплатні посібники для вашого шляху:</strong><br><br>
+    📖 <a href="#">Посібник покупця першого житла</a><br>
+    📖 <a href="#">Хаб купівлі нерухомості</a><br>
+    📖 <a href="#">Розуміння вашої кредитоспроможності</a><br>
+    📖 <a href="#">Скільки я можу позичити?</a><br><br>
+    Коли будете готові зробити наступний крок, наша команда може надати вам <strong>безплатну оцінку без зобов'язань</strong>.
+  </div>
+  <div class="wf-btn">Записатись на безплатну консультацію</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-label" style="text-align: center;">Ваш email <span style="color: #aaa; font-weight: 400;">(факультативно — ми надішлемо посібники)</span></div>
+  <div class="wf-input">you@email.com</div>
+  <div style="height: 8px;"></div>
+  <div class="wf-btn secondary">← Назад на головну</div>
+</div>
+
+<div class="info-box">
+  <h3>Чому два форки?</h3>
+  <p><strong>Опціональна перевірка кредитоспроможності</strong> — ключовий інсайт: нав'язування фінансових даних тому, хто сказав "просто дивлюсь", занадто агресивне і спричинить відтік. Але <em>пропозиція</em> як обмін цінністю ("дізнайтесь скільки ви можете позичити за 30 секунд") конвертує цікавих дослідників у теплі ліди з повними даними — без тиску контактних даних чи перевірки телефону.</p>
+  <p><strong>Перенаправлення на основі етапу</strong> захоплюють користувачів, які обрали "дивлюсь", але насправді далі на шляху. Замість того, щоб давати їм розмитий досвід, направте їх у повні потоки Купівлі чи Рефінансування, де вони отримають найбільше цінності.</p>
+</div>
+
+<div class="success-box">
+  <h3>Передача даних</h3>
+  <p>Дослідники, які обирають перевірку кредитоспроможності, збирають ті ж поля, що й кроки ситуації + фінансів Купівлі (<code>maritalStatus</code>, <code>isFirstOwner</code>, <code>state</code>, <code>dependants</code>, <code>income</code>, <code>deposit</code>). Ці дані подаються безпосередньо в існуючу функцію <code>calculateLoanCapacity()</code>. Передача форми включає <code>looking=exploring</code> та <code>exploreStage</code>, щоб CRM могла відрізнити ці ліди від прямих запитів на купівлю.</p>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="implementation">9. Нотатки щодо реалізації</h2>
+
+<h3>Основна зміна: розгалуження у <code>nextStep()</code></h3>
+
+<p>Основне виправлення полягає у зміні <code>nextStep()</code> для читання <code>answers.looking</code> після кроку 1 і маршрутизації на правильний потік. Ось запропонований псевдокод:</p>
+
+<pre><code>// Запропонована рефакторна nextStep()
+function nextStep() {
+  const looking = answers.looking;
+
+  // Після кроку 1: розгалуження на основі вибору
+  if (currentStep === 1) {
+    switch (looking) {
+      case 'purchase':
+        goToStep('purchase_situation'); // наявний крок_2 (зберегти повний 5-кроковий потік з калькулятором)
+        break;
+      case 'build':
+        goToStep('purchase_situation'); // Той самий потік, що й purchase
+        break;
+      case 'commercial':
+        showDeadEndScreen('commercial');
+        return;
+      case 'refinance':
+        goToStep('refi_situation');
+        break;
+      case 'exploring':
+        goToStep('explore_stage'); // Крок 2: На якому етапі?
+        break;
+    }
+    updateProgressIndicator();
+    return;
+  }
+
+  // Дивлюсь крок 2: розгалуження на основі етапу
+  if (looking === 'exploring' && currentStep === 'explore_stage') {
+    const stage = answers.exploreStage;
+    if (stage === 'ready_to_buy') {
+      answers.looking = 'purchase';
+      goToStep('purchase_situation');
+      return;
+    }
+    if (stage === 'curious_refi') {
+      answers.looking = 'refinance';
+      goToStep('refi_situation');
+      return;
+    }
+    // Ранній етап: показати форк кредитоспроможності
+    goToStep('explore_borrowing_fork');
+    return;
+  }
+
+  // Форк кредитоспроможності для дослідників
+  if (looking === 'exploring' && currentStep === 'explore_borrowing_fork') {
+    if (answers.wantsBorrowingPower) {
+      goToStep('explore_situation'); // збір домогосподарства + фінансів
+    } else {
+      goToStep('explore_resources'); // перехід до ресурсів
+    }
+    return;
+  }
+
+  // У межах кожного потоку: перейти до наступного кроку в цьому потоку
+  advanceCurrentFlow();
+}
+
+// Помічник: показати екран тупика для непідтримуваних послуг
+function showDeadEndScreen(type) {
+  hideAllSteps();
+  const screen = document.querySelector(`.dead-end-${type}`);
+  screen.classList.add('active');
+  // Оновити індикатор прогресу на стан "завершено"
+  updateProgressIndicator('dead-end');
+}
+
+// CTA тупика: перенаправити на потік купівлі
+function redirectToPurchase() {
+  answers.looking = 'purchase';
+  goToStep('purchase_situation');
+}</code></pre>
+
+<h3>Варіанти архітектури</h3>
+
+<table>
+  <tr><th>Підхід</th><th>Переваги</th><th>Недоліки</th></tr>
+  <tr>
+    <td><strong>A: Умовні кроки в існуючому HTML</strong><br>Додати нові div кроків (refi_step2, explore_step2 тощо) та показувати/приховувати на основі <code>looking</code></td>
+    <td>Мінімальна реструктуризація. Працює в межах існуючого контейнера quiz_card.</td>
+    <td>Більше прихованих DOM елементів. Логіка індикатора прогресу стає складніша.</td>
+  </tr>
+  <tr>
+    <td><strong>B: Масиви кроків на основі потоку</strong><br>Визначити послідовності кроків на потік (напр. <code>purchaseSteps = [1, 2, 3, 4, 5]</code>, <code>refiSteps = [1, 6, 7, 4, 8]</code>) та навігувати за допомогою масиву</td>
+    <td>Чисто, масштабно. Легко додавати нові потоки пізніше. Індикатор прогресу працює природно (крок X з N).</td>
+    <td>Потребує рефакторингу моделі навігації кроків.</td>
+  </tr>
+  <tr>
+    <td><strong>C: Повний переписування компонента</strong><br>Перейти на правильну машину стану або React-подібний компонент</td>
+    <td>Найбільш надійний. Тестовий. Правильне управління станом.</td>
+    <td>Найбільше зусиль. Може бути недоправданим для 5-крокового квізу.</td>
+  </tr>
+</table>
+
+<div class="success-box">
+  <h3>Рекомендація: Підхід B (масиви кроків на основі потоку)</h3>
+  <p>Це дає вам найчистіше розгалуження з мінімальною реструктуризацією. Визначте кожен потік як впорядкований масив ID кроків, а потім логіка навігації стає простим збільшенням індексу в межах активного масиву потоку.</p>
+</div>
+
+<h3>Індикатор прогресу</h3>
+<p>Поточний індикатор прогресу показує "X / 5" для всіх шляхів. Це повинно адаптуватися на потік:</p>
+<table>
+  <tr><th>Потік</th><th>Всього кроків</th><th>Індикатор</th></tr>
+  <tr><td>Купівля</td><td>5</td><td>1/5 → 2/5 → 3/5 → 4/5 → 5/5</td></tr>
+  <tr><td>Будівництво</td><td>5</td><td>1/5 → 2/5 → 3/5 → 4/5 → 5/5 (як Купівля)</td></tr>
+  <tr><td>Комерційний (перенаправлення)</td><td>1</td><td>Приховано або "—"</td></tr>
+  <tr><td>Рефінансування</td><td>6</td><td>1/6 → 2/6 → 3/6 → 4/6 → 5/6 → 6/6</td></tr>
+  <tr><td>Дивлюсь (з кредитоспроможністю)</td><td>4</td><td>1/4 → 2/4 → 3/4 → 4/4</td></tr>
+  <tr><td>Дивлюсь (лише ресурси)</td><td>2</td><td>1/2 → 2/2</td></tr>
+</table>
+
+<h3>Передача форми</h3>
+<p>Поточна функція <code>submitForm()</code> спрацьовує на кроці контакту. Корисні навантаження тепер набагато простіші, тому що дані про ситуацію/фінанси живлять калькулятор на стороні клієнта:</p>
+
+<table>
+  <tr><th>Потік</th><th>Поля корисного навантаження</th></tr>
+  <tr><td>Купівля</td><td><code>looking, name, email, phone</code> (поля ситуації/фінансів живлять калькулятор лише на стороні клієнта)</td></tr>
+  <tr><td>Рефінансування</td><td><code>looking, interestRate, loanAmount, loanTerm, refiPriority, name, email, phone</code></td></tr>
+  <tr><td>Дивлюсь (кредитоспроможність)</td><td><code>looking, exploreStage, maritalStatus, isFirstOwner, state, dependants, income, deposit, email</code> (ім'я та телефон факультативні)</td></tr>
+  <tr><td>Дивлюсь (лише ресурси)</td><td><code>looking, exploreStage, email</code> (все факультативне крім looking)</td></tr>
+  <tr><td>Будівництво</td><td><code>looking, name, email, phone</code> (як Купівля, поля ситуації/фінансів живлять калькулятор)</td></tr>
+  <tr><td>Комерційний</td><td>Без передачі (екран перенаправлення з CTA)</td></tr>
+</table>
+
+<h3>Кнопка назад</h3>
+<p>Поточна функція <code>handleBackButton()</code> зменшує <code>currentStep</code>. З розгалуженням вона повинна навігувати назад у межах активного масиву потоку. Для екранів тупика кнопка назад повинна повернутися на крок 1.</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="data">10. Довідник полів та даних</h2>
+
+<h3>Усі поля у всіх потоках</h3>
+<table>
+  <tr><th>Назва поля</th><th>Тип</th><th>Використовується в</th><th>Передається?</th></tr>
+  <tr><td><code>looking</code></td><td>Radio</td><td>Усі потоки (крок 1)</td><td>Так</td></tr>
+  <tr><td><code>maritalStatus</code></td><td>Radio</td><td>Купівля, Дивлюсь (кредитоспроможність)</td><td>Ні — лише калькулятор</td></tr>
+  <tr><td><code>isFirstOwner</code></td><td>Radio</td><td>Купівля, Дивлюсь (кредитоспроможність)</td><td>Ні — лише калькулятор</td></tr>
+  <tr><td><code>state</code></td><td>Select</td><td>Купівля, Дивлюсь (кредитоспроможність)</td><td>Ні — лише калькулятор</td></tr>
+  <tr><td><code>dependants</code></td><td>Select</td><td>Купівля, Дивлюсь (кредитоспроможність)</td><td>Ні — лише калькулятор</td></tr>
+  <tr><td><code>income</code></td><td>Number</td><td>Купівля, Дивлюсь (кредитоспроможність)</td><td>Ні — лише калькулятор</td></tr>
+  <tr><td><code>deposit</code></td><td>Number</td><td>Купівля, Дивлюсь (кредитоспроможність)</td><td>Ні — лише калькулятор</td></tr>
+  <tr><td><code>exploreStage</code></td><td>Radio</td><td>Лише дивлюсь</td><td>Так</td></tr>
+  <tr><td><code>wantsBorrowingPower</code></td><td>Вибір кнопки</td><td>Лише дивлюсь (форк раннього етапу)</td><td>Так</td></tr>
+  <tr><td><code>interestRate</code></td><td>Radio</td><td>Лише рефінансування (крок 2)</td><td>Так</td></tr>
+  <tr><td><code>loanAmount</code></td><td>Radio</td><td>Лише рефінансування (крок 3)</td><td>Так</td></tr>
+  <tr><td><code>loanTerm</code></td><td>Radio</td><td>Лише рефінансування (крок 4)</td><td>Так</td></tr>
+  <tr><td><code>refiPriority</code></td><td>Radio</td><td>Лише рефінансування (крок 5)</td><td>Так</td></tr>
+  <tr><td><code>name</code></td><td>Text</td><td>Купівля, рефінансування</td><td>Так</td></tr>
+  <tr><td><code>email</code></td><td>Email</td><td>Купівля, рефінансування</td><td>Так</td></tr>
+  <tr><td><code>phone</code></td><td>Tel + OTP</td><td>Купівля, рефінансування</td><td>Так</td></tr>
+</table>
+<p style="color: #888; font-style: italic;">Поля ситуації та фінансів (maritalStatus, isFirstOwner, state, dependants, income, deposit) зберігаються у потоці купівлі для живлення <code>calculateLoanCapacity()</code> на стороні клієнта — вони НЕ передаються на backend. Typeform збирає їх заново після конверсії.</p>
+
+<h3>Довідник значень radio (крок 1)</h3>
+<table>
+  <tr><th>Мітка</th><th>Значення введення</th><th>Потік</th></tr>
+  <tr><td>Купити нерухомість</td><td><code>purchase</code></td><td>Повний потік купівлі (5 кроків, з калькулятором)</td></tr>
+  <tr><td>Будівництво</td><td><code>build</code></td><td>Той самий потік, що й Купівля (5 кроків)</td></tr>
+  <tr><td>Комерційний або бізнес-кредит</td><td><code>commercial</code></td><td>Екран тупика</td></tr>
+  <tr><td>Рефінансування кредиту</td><td><code>refinance</code></td><td>Потік рефінансування (6 кроків — відповідає /lower-your-rate/ квізу)</td></tr>
+  <tr><td>Просто дивлюсь</td><td><code>exploring</code></td><td>Потік дивлюсь (2–4 кроки, залежно від форку)</td></tr>
+</table>
+
+<hr>
+
+<div style="background: var(--hg-gray); border-radius: 12px; padding: 24px; margin-top: 48px;">
+  <h3 style="margin-top: 0;">Резюме необхідних змін</h3>
+  <table>
+    <tr><th>Пріоритет</th><th>Змова</th><th>Зусилля</th></tr>
+    <tr><td>🔴 P0</td><td>Додати логіку розгалуження до <code>nextStep()</code> на основі <code>answers.looking</code></td><td>Мале</td></tr>
+    <tr><td>🔴 P0</td><td>Створити екран перенаправлення для К��мерційного (Будівницт��о використовує потік Купівлі)</td><td>Мале</td></tr>
+    <tr><td>🔴 P0</td><td>Купівля: зберегти наявний 5-кроковий потік (ситуація → фінанси → контакт → результат) — лише виправити логіку розгалуження для маршрутизації сюди</td><td>Мале</td></tr>
+    <tr><td>🔴 P0</td><td>Створити крок рефінансування (лише refiGoal radio) → контакт → підтвердження</td><td>Мале</td></tr>
+    <tr><td>🔴 P0</td><td>Створити потік дивлюсь: тріаж етапу, форк кредитоспроможності, два кінцевих екрани</td><td>Середнє</td></tr>
+    <tr><td>🟡 P1</td><td>Перенаправлення на основі етапу: Дивлюсь → Купівля/Рефінансування для готових користувачів</td><td>Мале</td></tr>
+    <tr><td>🟡 P1</td><td>Оновити індикатор прогресу, щоб показувати правильну кількість кроків на потік</td><td>Мале</td></tr>
+    <tr><td>🟡 P1</td><td>Оновити <code>handleBackButton()</code> для навігації, що розуміє потік</td><td>Мале</td></tr>
+    <tr><td>🟡 P1</td><td>Упростити корисне навантаження передачи форми (лише looking + refiGoal + поля контакту)</td><td>Мале</td></tr>
+    <tr><td>🟢 P2</td><td>Розглянути можливість передачі даних про ситуацію/фінанси на backend у майбутньому (наразі лише для калькулятора, не передається)</td><td>Мале</td></tr>
+  </table>
+
+  <h3 style="margin-top: 24px;">Фази реалізації (деплойте поступово)</h3>
+  <table>
+    <tr><th>Фаза</th><th>Що деплоїти</th><th>Результат</th></tr>
+    <tr><td><strong>Фаза 1</strong><br>Мінімальний фікс</td><td>Додати <code>switch(looking)</code> в <code>nextStep()</code> після кроку 1. Маршрутизувати <code>commercial</code> на екран тупика. Маршрутизувати <code>build</code> на існуючий потік купівлі. Залишити <code>refinance</code> і <code>exploring</code> на існуючому лінійному потоці поки що.</td><td>Комерційні користувачі перестають бачити нерелевантні питання. Будівельні користувачі отримують правильний досвід.</td></tr>
+    <tr><td><strong>Фаза 2</strong><br>Потік рефінансування</td><td>Додати нові div кроків для 4 питань рефінансування (ставка, сума, термін, пріоритет). Маршрутизувати <code>refinance</code> на ці кроки. Додати екран підтвердження.</td><td>Користувачі рефінансування отримують релевантні питання, що відповідають квізу на <code>/lower-your-rate/</code>.</td></tr>
+    <tr><td><strong>Фаза 3</strong><br>Потік дослідника</td><td>Додати тріаж за етапом, форк кредитоспроможності та екран ресурсів. Підключити перенаправлення на купівлю/рефінансування для готових користувачів.</td><td>Дослідники отримують досвід без тиску з опціональною перевіркою кредитоспроможності.</td></tr>
+  </table>
+
+  <h3 style="margin-top: 24px;">Критерії приймання</h3>
+  <table>
+    <tr><th>#</th><th>Сценарій</th><th>Очікуваний результат</th></tr>
+    <tr><td>1</td><td>Обрати "Купівля" → пройти квіз</td><td>Той самий 5-кроковий потік. Результат позики показано. Поведінка не змінюється.</td></tr>
+    <tr><td>2</td><td>Обрати "Будівництво" → пройти квіз</td><td>Як Купівля. <code>looking=build</code> у відправці форми.</td></tr>
+    <tr><td>3</td><td>Обрати "Комерційний"</td><td>Показати екран тупика. Без питань про фінанси/ситуацію. CTA на купівлю або сторінку контактів.</td></tr>
+    <tr><td>4</td><td>Обрати "Рефінансування" → пройти квіз</td><td>4 специфічні питання (ставка, сума, термін, пріоритет) → контакт → підтвердження. Без "першовласник" або "депозит".</td></tr>
+    <tr><td>5</td><td>Обрати "Дивлюсь" → "Готовий купувати"</td><td>Перенаправлення на Купівлю крок 2 з перехідним повідомленням.</td></tr>
+    <tr><td>6</td><td>Обрати "Дивлюсь" → "Досліджую" → "Так, покажіть"</td><td>Перевірка кредитоспроможності: ситуація → фінанси → результат + ресурси. Без перевірки телефону.</td></tr>
+    <tr><td>7</td><td>Обрати "Дивлюсь" → "Досліджую" → "Поки що ні"</td><td>Екран ресурсів з м'яким CTA. Дані не збираються.</td></tr>
+    <tr><td>8</td><td>Кнопка назад на будь-якому кроці</td><td>Повертається на попередній крок поточного потоку. З екрану тупика — на крок 1.</td></tr>
+    <tr><td>9</td><td>Індикатор прогресу</td><td>Показує правильний "X / N" для кожного потоку.</td></tr>
+    <tr><td>10</td><td>Всі 142 тести Playwright проходять</td><td><code>npx playwright test</code> — нуль помилок.</td></tr>
+  </table>
+</div>
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'neutral',
+    flowchart: { curve: 'basis', padding: 16 },
+    themeVariables: {
+      primaryColor: '#FEF7EA',
+      primaryBorderColor: '#FDB948',
+      primaryTextColor: '#1a1a2e',
+      lineColor: '#999',
+      fontSize: '13px'
+    }
+  });
+</script>
+
+</body>
+</html>
+
+(function(){

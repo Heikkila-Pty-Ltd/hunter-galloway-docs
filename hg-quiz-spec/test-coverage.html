@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hunter Galloway — End-to-End Test Coverage Tracker</title>
+<style>
+  :root {
+    --hg-gold: #FDB948;
+    --hg-dark: #1a1a2e;
+    --hg-red: #e74c3c;
+    --hg-green: #27ae60;
+    --hg-blue: #2E75B6;
+    --hg-gray: #f8f9fa;
+    --hg-border: #e0e0e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6; color: #333; background: #fff;
+    max-width: 1200px; margin: 0 auto; padding: 40px 24px;
+  }
+  h1 { font-size: 28px; color: var(--hg-dark); margin-bottom: 8px; }
+  h2 { font-size: 22px; color: var(--hg-dark); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--hg-gold); }
+  h3 { font-size: 18px; color: var(--hg-dark); margin: 32px 0 12px; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: #666; font-size: 16px; margin-bottom: 32px; }
+  .meta { display: flex; gap: 24px; margin-bottom: 40px; font-size: 13px; color: #888; flex-wrap: wrap; }
+  .meta span { background: var(--hg-gray); padding: 4px 12px; border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 13px; }
+  th { background: var(--hg-dark); color: #fff; text-align: left; padding: 8px 10px; font-weight: 600; font-size: 12px; }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--hg-border); vertical-align: top; }
+  tr:nth-child(even) { background: var(--hg-gray); }
+  code { font-family: 'Fira Code', 'Consolas', monospace; background: #eee; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  a { color: var(--hg-blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  hr { border: none; border-top: 1px solid var(--hg-border); margin: 48px 0; }
+  pre { background: #1e1e2e; color: #cdd6f4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 12px 0 20px; line-height: 1.5; }
+
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 2px 6px; border-radius: 3px; white-space: nowrap;
+  }
+  .badge-full { background: #d1fae5; color: #065f46; }
+  .badge-partial { background: #fef3c7; color: #92400e; }
+  .badge-none { background: #fee2e2; color: #991b1b; }
+  .badge-bug { background: #fce7f3; color: #9d174d; }
+  .badge-dry { background: #e0e7ff; color: #3730a3; }
+
+  .info-box {
+    background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid var(--hg-blue);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .info-box h3 { color: var(--hg-blue); margin: 0 0 8px; font-size: 16px; }
+  .success-box {
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid var(--hg-green);
+    padding: 20px 24px; border-radius: 8px; margin: 24px 0;
+  }
+  .success-box h3 { color: var(--hg-green); margin: 0 0 8px; font-size: 16px; }
+
+  .stat-row { display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+  .stat-box { background: var(--hg-gray); border-radius: 12px; padding: 16px 20px; flex: 1; min-width: 120px; text-align: center; }
+  .stat-box .num { font-size: 32px; font-weight: 700; }
+  .stat-box .num.green { color: var(--hg-green); }
+  .stat-box .num.gold { color: #d97706; }
+  .stat-box .num.red { color: var(--hg-red); }
+  .stat-box .label { font-size: 12px; color: #666; margin-top: 4px; }
+
+  .check { color: var(--hg-green); font-weight: 700; }
+  .cross { color: var(--hg-red); font-weight: 700; }
+  .dash { color: #aaa; }
+</style>
+</head>
+<body><script>(function(){var k="hg_audit_auth",p="huntergalloway2026";if(sessionStorage.getItem(k)===p)return;var v=prompt("Access code:");if(v===p){sessionStorage.setItem(k,p)}else{document.write("<div style=\"text-align:center;padding:100px;font-family:sans-serif;color:\#999\">Access denied.</div>");document.close()}})()</script>
+
+<div style="float: right; font-size: 13px; margin-top: -4px;">
+<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #555; margin-right: 6px;">System Docs</a>
+<a href="directory.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: var(--hg-dark); margin-right: 6px;">Directory</a>
+<a href="index.html" style="color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 4px; background: #2E75B6;">Quiz Flow Spec</a>
+</div>
+
+<h1>End-to-End Test Coverage Tracker</h1>
+<p class="subtitle">Maps every form, quiz, and calculator against its Playwright test coverage. Run with <code>npx playwright test</code>.</p>
+
+<div class="meta">
+  <span>Date: 2 April 2026</span>
+  <span>Test Runner: Playwright 1.59</span>
+  <span>Config: <code>playwright.config.ts</code></span>
+  <span>Test Dir: <code>tests/</code></span>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="summary">Coverage Summary</h2>
+
+<div class="stat-row">
+  <div class="stat-box"><div class="num green">15</div><div class="label">Items with tests</div></div>
+  <div class="stat-box"><div class="num gold">2</div><div class="label">Partial coverage</div></div>
+  <div class="stat-box"><div class="num red">2</div><div class="label">No tests</div></div>
+  <div class="stat-box"><div class="num green">142</div><div class="label">Total test cases</div></div>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="forms">Forms & Quizzes</h2>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Item</th>
+    <th>Test File</th>
+    <th>Smoke</th>
+    <th>Fields</th>
+    <th>Validation</th>
+    <th>Flow</th>
+    <th>Bug Regression</th>
+    <th>Dry Run (E2E)</th>
+    <th>Coverage</th>
+  </tr>
+  <tr>
+    <td><code>F-01</code></td>
+    <td>Contact Us<br><code>/contact/</code></td>
+    <td><code>forms/contact-form.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="check">2-step</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-dry">dry-run</span></td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>F-02</code></td>
+    <td>Free Assessment<br><code>/get-free-assessment/</code></td>
+    <td><code>forms/free-assessment.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-dry">dry-run</span></td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>F-03</code></td>
+    <td>Homepage Quiz<br><code>/mortgage-calculator/</code></td>
+    <td><code>calculators/mortgage-calculator.spec.ts</code><br><code>forms/homepage-quiz-branching.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="check">5 steps verified</td>
+    <td class="check"><span class="badge badge-bug">4 bug tests</span></td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>F-04</code></td>
+    <td>Assessment Popup<br>(multiple pages)</td>
+    <td><code>forms/assessment-popups.spec.ts</code></td>
+    <td class="check">6 pages</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td class="check">Basic</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-partial">Partial</span></td>
+  </tr>
+  <tr>
+    <td><code>F-05</code></td>
+    <td>LVR Broker Form<br><code>/lvr-calculator/</code></td>
+    <td class="dash">—</td>
+    <td class="cross">No</td>
+    <td class="cross">No</td>
+    <td class="cross">No</td>
+    <td class="cross">No</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-none">None</span></td>
+  </tr>
+  <tr>
+    <td><code>F-06</code></td>
+    <td>YTD Broker Form<br><code>/ytd-calculator/</code></td>
+    <td class="dash">—</td>
+    <td class="cross">No</td>
+    <td class="cross">No</td>
+    <td class="cross">No</td>
+    <td class="cross">No</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-none">None</span></td>
+  </tr>
+  <tr>
+    <td><code>F-07</code></td>
+    <td>Landing Page Forms<br>(24+ pages, template)</td>
+    <td><code>forms/landing-page-forms.spec.ts</code></td>
+    <td class="check">6 pages</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="check">Template consistency</td>
+    <td class="check"><span class="badge badge-bug">5 bug tests</span></td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>F-08</code></td>
+    <td>Mortgage Report<br><code>/mortgage-report/</code></td>
+    <td><code>forms/mortgage-report.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes (CF7 #67146, #67147)</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>F-09</code></td>
+    <td>Refinance Quiz<br><code>/lower-your-rate/</code></td>
+    <td><code>forms/lower-your-rate.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="check">All 5 steps</td>
+    <td class="check"><span class="badge badge-bug">3 bug tests</span></td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="calculators">Calculators</h2>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Calculator</th>
+    <th>Test File</th>
+    <th>Smoke</th>
+    <th>Inputs</th>
+    <th>Calculation</th>
+    <th>Validation</th>
+    <th>Bug Regression</th>
+    <th>Coverage</th>
+  </tr>
+  <tr>
+    <td><code>C-01</code></td>
+    <td>Mortgage Calculator<br><code>/mortgage-calculator/</code></td>
+    <td><code>calculators/mortgage-calculator.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-partial">Partial</span></td>
+  </tr>
+  <tr>
+    <td><code>C-02</code></td>
+    <td>Equity Calculator<br><code>/equity-calculator/</code></td>
+    <td><code>calculators/equity-calculator.spec.ts</code><br><code>calculators/equity-calculator-banner.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check"><span class="badge badge-bug">4 bug tests</span></td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>C-03</code></td>
+    <td>LVR Calculator<br><code>/lvr-calculator/</code></td>
+    <td><code>calculators/lvr-calculator.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>C-04</code></td>
+    <td>YTD Calculator<br><code>/ytd-calculator/</code></td>
+    <td><code>calculators/ytd-calculator.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>C-05</code></td>
+    <td>Mortgage vs Rent<br><code>/mortgage-vs-rent-calculator/</code></td>
+    <td><code>calculators/mortgage-vs-rent.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>C-06</code></td>
+    <td>Deposit Calculator<br><code>/deposit-calculator/</code></td>
+    <td><code>calculators/deposit-calculator.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>C-07</code></td>
+    <td>Stamp Duty QLD<br><code>/stamp-duty-calculator-queensland/</code></td>
+    <td><code>calculators/stamp-duty-calculator.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>C-08</code></td>
+    <td>LMI Calculator<br><code>/lmi-calculator/</code></td>
+    <td><code>calculators/lmi-calculator.spec.ts</code></td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="check">Yes</td>
+    <td class="dash">—</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-full">Good</span></td>
+  </tr>
+  <tr>
+    <td><code>C-09</code></td>
+    <td>Extra Repayments<br><code>/home-loan-extra-repayment-calculator/</code></td>
+    <td class="dash">—</td>
+    <td class="cross">No</td>
+    <td class="dash">N/A</td>
+    <td class="dash">N/A</td>
+    <td class="dash">N/A</td>
+    <td class="dash">—</td>
+    <td><span class="badge badge-none">None</span></td>
+  </tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="other">Other Test Files</h2>
+
+<table>
+  <tr><th>Test File</th><th>What It Covers</th><th>Tests</th></tr>
+  <tr>
+    <td><code>forms/phone-number-validation.spec.ts</code></td>
+    <td>Phone auto-formatting across forms</td>
+    <td>Cross-cutting validation</td>
+  </tr>
+  <tr>
+    <td><code>forms/homepage-quiz-branching.spec.ts</code></td>
+    <td>Homepage quiz branching bug — verifies nextStep() has no branching, all paths show same steps</td>
+    <td>5 tests (4 bug regression)</td>
+  </tr>
+  <tr>
+    <td><code>forms/landing-page-forms.spec.ts</code></td>
+    <td>CF7 #14462 context loss across 6 landing pages, template consistency, comparison with #11832</td>
+    <td>12 tests (5 bug regression)</td>
+  </tr>
+  <tr>
+    <td><code>forms/mortgage-report.spec.ts</code></td>
+    <td>Mortgage report page — unique forms #67146 (report gate) and #67147 (follow-up)</td>
+    <td>4 tests</td>
+  </tr>
+  <tr>
+    <td><code>calculators/equity-calculator-banner.spec.ts</code></td>
+    <td>Broken hero banner calculator — orphaned input, self-link button, no JS references</td>
+    <td>5 tests (4 bug regression)</td>
+  </tr>
+  <tr>
+    <td><code>calculators/lmi-calculator.spec.ts</code></td>
+    <td>LMI calculator inputs, occupation dropdown, calculation with sample values</td>
+    <td>4 tests</td>
+  </tr>
+  <tr>
+    <td><code>pages/critical-pages.spec.ts</code></td>
+    <td>Key pages load without errors</td>
+    <td>Page load smoke tests</td>
+  </tr>
+  <tr>
+    <td><code>pages/navigation.spec.ts</code></td>
+    <td>Site navigation links work</td>
+    <td>Nav link checks</td>
+  </tr>
+  <tr>
+    <td><code>pages/seo-meta.spec.ts</code></td>
+    <td>Meta tags, titles, OG tags</td>
+    <td>SEO checks</td>
+  </tr>
+  <tr>
+    <td><code>e2e/dry-run-assessment-form.spec.ts</code></td>
+    <td>Full submit → HubSpot → Monday.com verification for F-02</td>
+    <td><span class="badge badge-dry">dry-run</span> (submits real data, excluded from regular runs)</td>
+  </tr>
+  <tr>
+    <td><code>e2e/dry-run-contact-form.spec.ts</code></td>
+    <td>Full submit → HubSpot → Monday.com verification for F-01</td>
+    <td><span class="badge badge-dry">dry-run</span> (submits real data, excluded from regular runs)</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="gaps">Coverage Gaps & Recommended Tests</h2>
+
+<h3>Remaining Gaps</h3>
+<table>
+  <tr><th>ID</th><th>Item</th><th>Gap</th><th>Suggested File</th></tr>
+  <tr>
+    <td><code>F-05</code></td>
+    <td>LVR Broker Form</td>
+    <td>Gravity Forms #10 triggers conditionally after calculator use. Needs interaction-based test: run calc → click "Yes" to broker → verify GF form appears with fields.</td>
+    <td><code>forms/lvr-broker-form.spec.ts</code></td>
+  </tr>
+  <tr>
+    <td><code>F-06</code></td>
+    <td>YTD Broker Form</td>
+    <td>Same as F-05 but for GF #9 on <code>/ytd-calculator/</code>.</td>
+    <td><code>forms/ytd-broker-form.spec.ts</code></td>
+  </tr>
+  <tr>
+    <td><code>C-09</code></td>
+    <td>Extra Repayments</td>
+    <td>Page loads as its own page (not a redirect as originally documented). Needs smoke test.</td>
+    <td><code>calculators/extra-repayments.spec.ts</code></td>
+  </tr>
+</table>
+
+<h3>Optional — Deepen existing coverage</h3>
+<table>
+  <tr><th>ID</th><th>Current Coverage</th><th>What to Add</th></tr>
+  <tr>
+    <td><code>F-01</code></td>
+    <td>Fields + 2-step flow</td>
+    <td>Validation: empty fields blocked. Request type dropdown options correct.</td>
+  </tr>
+  <tr>
+    <td><code>F-04</code></td>
+    <td>CTA click opens popup on 6 pages</td>
+    <td>Add more pages (professional programs, suburb pages). Test popup form fields.</td>
+  </tr>
+  <tr>
+    <td><code>C-01</code></td>
+    <td>Smoke + field presence</td>
+    <td>Test actual calculation with sample inputs. Test borrowing result appears.</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<h2 id="commands">Running Tests</h2>
+
+<pre><code># Run all tests (excludes dry-run)
+npx playwright test
+
+# Run smoke tests only
+npx playwright test --grep @smoke
+
+# Run specific form tests
+npx playwright test tests/forms/
+
+# Run specific calculator tests
+npx playwright test tests/calculators/
+
+# Run dry-run E2E (actually submits forms — use carefully)
+npx playwright test --grep @dry-run
+
+# Run a single test file
+npx playwright test tests/forms/lower-your-rate.spec.ts
+
+# View HTML report
+npx playwright show-report</code></pre>
+
+<hr>
+
+<div style="background: var(--hg-gray); border-radius: 12px; padding: 24px; margin-top: 48px;">
+  <h3 style="margin-top: 0;">Test File → Directory Mapping</h3>
+  <table>
+    <tr><th>Test File</th><th>Directory Items Covered</th></tr>
+    <tr><td><code>forms/contact-form.spec.ts</code></td><td>F-01</td></tr>
+    <tr><td><code>forms/free-assessment.spec.ts</code></td><td>F-02</td></tr>
+    <tr><td><code>calculators/mortgage-calculator.spec.ts</code></td><td>F-03 + C-01</td></tr>
+    <tr><td><code>forms/homepage-quiz-branching.spec.ts</code></td><td>F-03 (branching bug regression)</td></tr>
+    <tr><td><code>forms/assessment-popups.spec.ts</code></td><td>F-04</td></tr>
+    <tr><td><code>forms/landing-page-forms.spec.ts</code></td><td>F-07 (#14462 context loss + template consistency)</td></tr>
+    <tr><td><code>forms/mortgage-report.spec.ts</code></td><td>F-08 (CF7 #67146, #67147)</td></tr>
+    <tr><td><code>forms/lower-your-rate.spec.ts</code></td><td>F-09</td></tr>
+    <tr><td><code>calculators/equity-calculator.spec.ts</code></td><td>C-02 (working calculator)</td></tr>
+    <tr><td><code>calculators/equity-calculator-banner.spec.ts</code></td><td>C-02 (broken banner bug regression)</td></tr>
+    <tr><td><code>calculators/lvr-calculator.spec.ts</code></td><td>C-03</td></tr>
+    <tr><td><code>calculators/ytd-calculator.spec.ts</code></td><td>C-04</td></tr>
+    <tr><td><code>calculators/mortgage-vs-rent.spec.ts</code></td><td>C-05</td></tr>
+    <tr><td><code>calculators/deposit-calculator.spec.ts</code></td><td>C-06</td></tr>
+    <tr><td><code>calculators/stamp-duty-calculator.spec.ts</code></td><td>C-07</td></tr>
+    <tr><td><code>calculators/lmi-calculator.spec.ts</code></td><td>C-08</td></tr>
+    <tr><td><code>e2e/dry-run-assessment-form.spec.ts</code></td><td>F-02 (full E2E)</td></tr>
+    <tr><td><code>e2e/dry-run-contact-form.spec.ts</code></td><td>F-01 (full E2E)</td></tr>
+    <tr><td colspan="2" style="color: var(--hg-red); font-weight: 600;">No test file: F-05, F-06, C-09</td></tr>
+  </table>
+</div>
+
+</body>
+</html>
+
+(function(){
