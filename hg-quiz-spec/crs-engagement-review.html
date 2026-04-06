@@ -94,6 +94,7 @@
     <li><a href="#retention">The Retention Cycle</a></li>
     <li><a href="#qa">CRS's QA: What Was Never Done</a></li>
     <li><a href="#verdict">Verdict</a></li>
+    <li><a href="#status">Current Status (6 April 2026)</a></li>
   </ol>
 </div>
 
@@ -146,6 +147,7 @@
   <p class="claim">Gleb Hodorovskiy, 2 April 2026: "If we had known about the Zapier automation... it's the first time we've heard"</p>
   <p class="truth">Ihor Sokolov (CRS team lead), 19 July 2024: "We have verified that the conversions from the previous version are being streamed to Zapier and the following email addresses: ... 9wymd7m4@robot.zapier.com"</p>
   <p style="font-size: 12px; margin-top: 8px;">CRS verified the exact Zapier webhook address 20 months before claiming ignorance. This is not a mistake in memory — it is a documented, searchable email from their own team lead.</p>
+  <p style="font-size: 12px; margin-top: 8px; border-top: 1px solid #7f1d1d; padding-top: 8px;"><strong>Update (3 Apr 2026):</strong> When confronted with Ihor's July 2024 email, Gleb shifted from "first time we've heard" to: <em>"I'm copied on a large number of emails and, regrettably, I missed that specific one."</em> The claim moved from "we didn't know" to "I personally missed it" — but CRS is an organisation, not one person. Ihor verified the webhook as part of CRS's deployment process. Institutional knowledge doesn't disappear because the co-founder didn't read the email.</p>
 </div>
 
 <div class="lie-box">
@@ -379,6 +381,12 @@
     <td>Yuliia: <strong>"Issue is on your side."</strong><br>Gleb: <strong>"Small mistake. Never heard of Zapier."</strong></td>
     <td>90 contacts corrupted. Zapier verified in Jul 2024.</td>
   </tr>
+  <tr>
+    <td>3 Apr 2026</td>
+    <td>Simon: shared Ihor's Jul 2024 Zapier email. "I will share the findings tomorrow."</td>
+    <td>Gleb: <strong>"Responsibility for lead loss is shared... it's mostly on the sales team."</strong> Offered to waive one month of Meta Ads.</td>
+    <td>Shifted from denial to blame-sharing. Compensation offer: ~$2-3k against $53k–$93k in damage. No agreement reached.</td>
+  </tr>
 </table>
 
 <hr>
@@ -434,6 +442,44 @@
 
 <hr>
 
+<h2 id="status">12. Current Status (Updated 6 April 2026)</h2>
+
+<h3>CRS's Response &amp; Compensation Offer</h3>
+
+<p>On 3 April 2026, Gleb responded to Simon's email (which cited the Ihor Zapier verification). His position:</p>
+
+<div class="incident">
+  <h4>Gleb's Final Position (3 Apr 2026)</h4>
+  <div class="date">Email: "Re: URGENT 2/2 - Website form not working"</div>
+  <p><strong>Admission:</strong> <em>"I acknowledge that saving the email in the name field was a mistake on our side."</em></p>
+  <p><strong>Zapier walk-back:</strong> <em>"I'm copied on a large number of emails and, regrettably, I missed that specific one."</em> — shifted from "first time we've heard" (2 Apr) to "I personally missed it" (3 Apr).</p>
+  <p><strong>Blame shift:</strong> <em>"pls admit that it's fair to say responsibility for lead loss is shared in this situation and it's mostly on the sales team."</em> — CRS's position is that Hunter Galloway's sales team should have been monitoring HubSpot daily and would have caught the corrupted firstname field.</p>
+  <p><strong>Compensation offer:</strong> <em>"I will not invoice for one month of Meta Ads as a gesture of goodwill from our end."</em> — approximately $2,000–$3,000 against $53,032–$93,158 in documented damage.</p>
+  <p><strong>Minimisation:</strong> <em>"Typically, issues like this tend to result in a few days of inconvenience for the sales team rather than prolonged periods of lost leads."</em></p>
+</div>
+
+<h3>Why the Blame-Shift Fails</h3>
+<ul style="margin: 12px 0 12px 24px;">
+  <li>CRS's own test contacts (<code>Test6677@Mail.Com</code>, 10 Oct 2025) already showed the bug. CRS didn't catch it in their own test data — monitoring is not the client's substitute for QA.</li>
+  <li>Gleb committed to <em>"no item marked ready without production validation"</em> on 23 Dec 2025. Production validation means CRS verifies their own deployments.</li>
+  <li>The bug is not a subtle data formatting issue visible only in HubSpot. It's <code>r.append("mortgage-rate", "-")</code> — hardcoded in CRS's JavaScript. And the email-as-name mapping is a CF7 configuration error, not a monitoring failure.</li>
+  <li>CRS verified Zapier E2E delivery in Jul 2024, establishing end-to-end verification as their own standard. They then stopped doing it for subsequent form deployments.</li>
+  <li>Lead notification emails went to the brokers (Jayden, Nathan, Joshua), not to Simon (the QA/PM consultant). An email reading "Dear Mdaniels.Mmd@Gmail.Com" is easily dismissed as spam or a one-off by busy brokers processing hundreds of leads per month.</li>
+</ul>
+
+<h3>Dispute Status</h3>
+<table>
+  <tr><th>Item</th><th>Status</th></tr>
+  <tr><td>Technical fix (email-as-name, dashes, webhook)</td><td style="color: var(--green);">Resolved — zero new corrupted contacts since 2 Apr</td></tr>
+  <tr><td>CRS compensation offer</td><td style="color: var(--red);">One month Meta Ads (~$2-3k) — not accepted</td></tr>
+  <tr><td>Hunter Galloway damage claim ($53k–$93k)</td><td style="color: var(--red);">No agreement reached</td></tr>
+  <tr><td>Damage report shared with CRS</td><td class="red">Pending — link prepared but not yet sent</td></tr>
+  <tr><td>React migration (deadline: 7 Apr 2026)</td><td class="red">Yuliia claimed "ready to share" on 7 Apr — TBC</td></tr>
+  <tr><td>Engagement continuation</td><td class="red">Unresolved — no decision communicated</td></tr>
+</table>
+
+<hr>
+
 <h2>Supporting Evidence</h2>
 <table>
   <tr><th>Document</th><th>Description</th></tr>
@@ -446,7 +492,7 @@
 </table>
 
 <div style="background: var(--gray); border-radius: 8px; padding: 20px; margin-top: 48px; text-align: center;">
-  <p style="color: #94a3b8; font-size: 12px; margin: 0;">Prepared for Hunter Galloway &nbsp;·&nbsp; 3 April 2026 &nbsp;·&nbsp; All data independently verifiable</p>
+  <p style="color: #94a3b8; font-size: 12px; margin: 0;">Prepared for Hunter Galloway &nbsp;·&nbsp; 3 April 2026, updated 6 April 2026 &nbsp;·&nbsp; All data independently verifiable</p>
 </div>
 
 </body>
