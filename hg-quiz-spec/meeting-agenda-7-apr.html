@@ -173,60 +173,67 @@
 
 <!-- ============================================================ -->
 <hr>
-<h2>5. HG System Overview</h2>
+<h2>5. HG Business Dashboard</h2>
 
-<p>Key numbers from the <a href="../hunter-galloway-documentation-v2.html">System Dashboard</a> (data as of 2 Apr 2026):</p>
+<p>Live data from <a href="../hunter-galloway-documentation-v2.html">System Dashboard</a> + VPS collector (collected 6 Apr 2026 8pm AEST):</p>
 
+<h3>Pipeline &amp; Deals (last 7 days)</h3>
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 14px 0;">
-  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--green);"><div style="font-size: 24px; font-weight: 700; color: var(--green);">14</div><div style="font-size: 11px; color: #64748b;">Contacts today</div></div>
-  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--blue);"><div style="font-size: 24px; font-weight: 700; color: var(--blue);">146</div><div style="font-size: 11px; color: #64748b;">Last 7 days</div></div>
-  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--blue);"><div style="font-size: 24px; font-weight: 700;">96</div><div style="font-size: 11px; color: #64748b;">Deals (7d)</div></div>
-  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--amber);"><div style="font-size: 24px; font-weight: 700;">84</div><div style="font-size: 11px; color: #64748b;">Opportunities (7d)</div></div>
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--green);"><div style="font-size: 24px; font-weight: 700; color: var(--green);">326</div><div style="font-size: 11px; color: #64748b;">New contacts (7d)</div></div>
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--blue);"><div style="font-size: 24px; font-weight: 700; color: var(--blue);">$27.8M</div><div style="font-size: 11px; color: #64748b;">Pipeline value (7d)</div></div>
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--green);"><div style="font-size: 24px; font-weight: 700; color: var(--green);">11</div><div style="font-size: 11px; color: #64748b;">Won deals</div></div>
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--red);"><div style="font-size: 24px; font-weight: 700; color: var(--red);">5</div><div style="font-size: 11px; color: #64748b;">Lost deals</div></div>
 </div>
 
 <table>
-  <tr><th>Lead Source (7d)</th><th>Contacts</th><th>%</th></tr>
-  <tr><td>Offline / Mercury imports</td><td>78</td><td>53%</td></tr>
-  <tr><td>Direct Traffic</td><td>40</td><td>27%</td></tr>
-  <tr><td>Paid Search</td><td>17</td><td>12%</td></tr>
-  <tr><td>Organic Search</td><td>11</td><td>8%</td></tr>
+  <tr><th>Funnel Stage</th><th>Count</th><th></th></tr>
+  <tr><td>Leads</td><td><strong>1,691</strong></td><td style="font-size: 12px; color: #64748b;">Active in pipeline</td></tr>
+  <tr><td>Meetings booked</td><td><strong>173</strong></td><td></td></tr>
+  <tr><td>Applications</td><td><strong>92</strong></td><td></td></tr>
+  <tr><td>Settlements</td><td><strong>223</strong></td><td></td></tr>
+  <tr><td>Realized value (Apr MTD)</td><td><strong>$7.2M</strong></td><td></td></tr>
+  <tr><td>Monthly pacing forecast</td><td><strong>$28.9M</strong></td><td style="font-size: 12px; color: #64748b;">Based on current run rate</td></tr>
 </table>
 
-<table>
-  <tr><th>Broker</th><th>New Contacts (7d)</th></tr>
-  <tr><td>Jayden Vecchio</td><td>~45</td></tr>
-  <tr><td>Nathan Vecchio</td><td>~35</td></tr>
-  <tr><td>Josh Vecchio</td><td>~25</td></tr>
-  <tr><td>Christian Bryant</td><td>~20</td></tr>
-  <tr><td>Ty Farrall</td><td>~10</td></tr>
-</table>
+<h3>Website &amp; Search (last 7 days)</h3>
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 14px 0;">
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center;"><div style="font-size: 20px; font-weight: 700;">8,889</div><div style="font-size: 11px; color: #64748b;">GA4 users</div></div>
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center;"><div style="font-size: 20px; font-weight: 700;">12,509</div><div style="font-size: 11px; color: #64748b;">Pageviews</div></div>
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center;"><div style="font-size: 20px; font-weight: 700;">47,657</div><div style="font-size: 11px; color: #64748b;">GSC impressions</div></div>
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center;"><div style="font-size: 20px; font-weight: 700;">367</div><div style="font-size: 11px; color: #64748b;">GSC clicks</div></div>
+</div>
 
 <details>
-  <summary>System checks + items needing attention</summary>
+  <summary>Daily new contacts trend (last 2 weeks)</summary>
   <div>
-    <p style="margin-top: 8px;"><strong style="color: var(--green);">Passing:</strong></p>
-    <ul style="font-size: 13px;">
-      <li>HubSpot receiving web leads (latest: Samantha Harrison, 07:07 today, with transaction_type)</li>
-      <li>Contact owners being assigned — no orphans</li>
-      <li>Deals being created — 96 in 7 days</li>
-      <li>Lifecycle stages advancing — 84 to Opportunity</li>
+    <table style="margin-top: 8px;">
+      <tr><th>Date</th><th>New Contacts</th><th>Deals</th><th>Pipeline ($)</th></tr>
+      <tr><td>Mon 24 Mar</td><td>17</td><td>28</td><td>$4.98M</td></tr>
+      <tr><td>Tue 25 Mar</td><td>27</td><td>18</td><td>$3.92M</td></tr>
+      <tr><td>Wed 26 Mar</td><td>19</td><td>14</td><td>$0.21M</td></tr>
+      <tr><td>Thu 27 Mar</td><td>15</td><td>7</td><td>—</td></tr>
+      <tr><td>Fri 28 Mar</td><td>4</td><td>1</td><td>—</td></tr>
+      <tr><td>Sat 29 Mar</td><td>14</td><td>5</td><td>—</td></tr>
+      <tr><td>Sun 30 Mar</td><td>27</td><td>20</td><td>$1.37M</td></tr>
+      <tr><td>Mon 31 Mar</td><td>26</td><td>18</td><td>$1.65M</td></tr>
+      <tr><td style="color: var(--red);"><strong>Tue 1 Apr</strong></td><td style="color: var(--red);"><strong>19</strong></td><td>21</td><td>$3.01M</td></tr>
+      <tr><td style="color: var(--red);"><strong>Wed 2 Apr</strong></td><td style="color: var(--red);"><strong>10</strong></td><td>18</td><td>$0.72M</td></tr>
+      <tr><td>Thu 3 Apr</td><td>5</td><td>4</td><td>—</td></tr>
+      <tr><td>Fri 4 Apr (Good Fri)</td><td>4</td><td>5</td><td>—</td></tr>
+      <tr><td>Sat 5 Apr</td><td>12</td><td>6</td><td>—</td></tr>
+    </table>
+    <p style="font-size: 12px; color: #64748b; margin-top: 8px;">Note: 3-5 Apr (Easter long weekend) shows expected low volume. The 1-2 Apr dip to 19→10 contacts coincides with the lead loss incident discovery — but the technical fix was in place by 2 Apr, so subsequent days reflect holiday, not the bug.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Dashboard health issues (2 items)</summary>
+  <div>
+    <ul style="font-size: 13px; margin-top: 8px;">
+      <li><span class="badge red">Broken</span> <strong>YouTube collector</strong> — OAuth token expired: <code>invalid_grant: Token has been expired or revoked</code>. Needs re-auth. YouTube data stale since 13 Mar.</li>
+      <li><span class="badge red">Broken</span> <strong>Matrix notifications</strong> — Access token invalid (<code>M_UNKNOWN_TOKEN</code>). Alert delivery to Matrix is failing silently.</li>
     </ul>
-    <p><strong style="color: var(--amber);">Needs attention:</strong></p>
-    <ul style="font-size: 13px;">
-      <li>Mercury placeholder contacts (mercury_*@connective.com.au) — system artifacts</li>
-      <li>CRS test submission "Yehor Check" (checkform11@gmail.com) — need test contact filter</li>
-      <li>"AI_REFERRALS" source appearing (Samantha Harrison) — new channel, possibly ChatGPT referral</li>
-      <li>No automated lead audit process — <a href="lead-monitoring-proposal.html">proposal ready</a></li>
-      <li>HubSpot Pro API key can expire silently — add to monitoring checklist</li>
-    </ul>
-    <p><strong style="color: var(--red);">All-time lead sources</strong> (36,724 contacts):</p>
-    <ul style="font-size: 13px;">
-      <li>Call Centre / Phone: 9,367 (25.5%)</li>
-      <li>Popup Quiz (#11832): 6,538 (17.8%) — <strong>richest data</strong></li>
-      <li>OptinMonster (PDF downloads): 5,366 (14.6%) — email only</li>
-      <li>CF7 Generic (#14462): 4,011 (10.9%) — <strong>thin data, no context</strong></li>
-      <li>Typeform (Free Assessment): ~3,500 (9.5%)</li>
-    </ul>
+    <p style="font-size: 12px; color: #64748b;">GA4, HubSpot, and GSC collectors are all working. Fix YouTube + Matrix tokens when convenient — not urgent.</p>
   </div>
 </details>
 
