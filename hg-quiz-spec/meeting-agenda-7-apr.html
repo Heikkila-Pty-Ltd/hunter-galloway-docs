@@ -173,21 +173,64 @@
 
 <!-- ============================================================ -->
 <hr>
-<h2>5. General — HG System Overview</h2>
+<h2>5. HG System Overview</h2>
 
-<p>Beyond the CRS situation, the full system documentation covers lead flows, integrations, tracking scripts, form inventory, and what can break:</p>
+<p>Key numbers from the <a href="../hunter-galloway-documentation-v2.html">System Dashboard</a> (data as of 2 Apr 2026):</p>
 
-<p><a href="../hunter-galloway-documentation-v2.html"><strong>Hunter Galloway System Dashboard</strong></a> — full system docs including:</p>
-<ul>
-  <li>How leads flow (website → CF7 → HubSpot → Zapier → Monday.com → broker notifications)</li>
-  <li>All tracking scripts and third-party integrations</li>
-  <li>Incident log (updated 4 Apr with this week's incidents)</li>
-  <li>Form inventory and WordPress → HubSpot field mappings</li>
-  <li>What can break (critical risks, with the new webhook checklist)</li>
-  <li>Open questions and outstanding items</li>
-</ul>
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 14px 0;">
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--green);"><div style="font-size: 24px; font-weight: 700; color: var(--green);">14</div><div style="font-size: 11px; color: #64748b;">Contacts today</div></div>
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--blue);"><div style="font-size: 24px; font-weight: 700; color: var(--blue);">146</div><div style="font-size: 11px; color: #64748b;">Last 7 days</div></div>
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--blue);"><div style="font-size: 24px; font-weight: 700;">96</div><div style="font-size: 11px; color: #64748b;">Deals (7d)</div></div>
+  <div style="background: var(--gray); border-radius: 8px; padding: 12px; text-align: center; border-top: 3px solid var(--amber);"><div style="font-size: 24px; font-weight: 700;">84</div><div style="font-size: 11px; color: #64748b;">Opportunities (7d)</div></div>
+</div>
 
-<p style="font-size: 13px; color: #64748b;">Worth a quick scan to flag anything else that needs attention outside of the CRS situation.</p>
+<table>
+  <tr><th>Lead Source (7d)</th><th>Contacts</th><th>%</th></tr>
+  <tr><td>Offline / Mercury imports</td><td>78</td><td>53%</td></tr>
+  <tr><td>Direct Traffic</td><td>40</td><td>27%</td></tr>
+  <tr><td>Paid Search</td><td>17</td><td>12%</td></tr>
+  <tr><td>Organic Search</td><td>11</td><td>8%</td></tr>
+</table>
+
+<table>
+  <tr><th>Broker</th><th>New Contacts (7d)</th></tr>
+  <tr><td>Jayden Vecchio</td><td>~45</td></tr>
+  <tr><td>Nathan Vecchio</td><td>~35</td></tr>
+  <tr><td>Josh Vecchio</td><td>~25</td></tr>
+  <tr><td>Christian Bryant</td><td>~20</td></tr>
+  <tr><td>Ty Farrall</td><td>~10</td></tr>
+</table>
+
+<details>
+  <summary>System checks + items needing attention</summary>
+  <div>
+    <p style="margin-top: 8px;"><strong style="color: var(--green);">Passing:</strong></p>
+    <ul style="font-size: 13px;">
+      <li>HubSpot receiving web leads (latest: Samantha Harrison, 07:07 today, with transaction_type)</li>
+      <li>Contact owners being assigned — no orphans</li>
+      <li>Deals being created — 96 in 7 days</li>
+      <li>Lifecycle stages advancing — 84 to Opportunity</li>
+    </ul>
+    <p><strong style="color: var(--amber);">Needs attention:</strong></p>
+    <ul style="font-size: 13px;">
+      <li>Mercury placeholder contacts (mercury_*@connective.com.au) — system artifacts</li>
+      <li>CRS test submission "Yehor Check" (checkform11@gmail.com) — need test contact filter</li>
+      <li>"AI_REFERRALS" source appearing (Samantha Harrison) — new channel, possibly ChatGPT referral</li>
+      <li>No automated lead audit process — <a href="lead-monitoring-proposal.html">proposal ready</a></li>
+      <li>HubSpot Pro API key can expire silently — add to monitoring checklist</li>
+    </ul>
+    <p><strong style="color: var(--red);">All-time lead sources</strong> (36,724 contacts):</p>
+    <ul style="font-size: 13px;">
+      <li>Call Centre / Phone: 9,367 (25.5%)</li>
+      <li>Popup Quiz (#11832): 6,538 (17.8%) — <strong>richest data</strong></li>
+      <li>OptinMonster (PDF downloads): 5,366 (14.6%) — email only</li>
+      <li>CF7 Generic (#14462): 4,011 (10.9%) — <strong>thin data, no context</strong></li>
+      <li>Typeform (Free Assessment): ~3,500 (9.5%)</li>
+    </ul>
+  </div>
+</details>
+
+<p style="font-size: 13px; color: #64748b;">Full details: <a href="../hunter-galloway-documentation-v2.html">HG System Dashboard</a> — lead flows, form inventory, tracking scripts, risk register, open questions.</p>
 
 <!-- ============================================================ -->
 <hr>
