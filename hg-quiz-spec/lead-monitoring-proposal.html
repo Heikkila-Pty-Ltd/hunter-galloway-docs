@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Monitoring Proposal — Hunter Galloway</title>
+<style>
+  :root { --dark: #1a1a2e; --red: #dc2626; --green: #16a34a; --blue: #2563eb; --gray: #f8fafc; --border: #e2e8f0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.7; color: #1e293b; background: #fff; max-width: 860px; margin: 0 auto; padding: 48px 32px; font-size: 15px; }
+  h1 { font-size: 24px; color: var(--dark); margin-bottom: 4px; }
+  h2 { font-size: 19px; color: var(--dark); margin: 40px 0 14px; padding-bottom: 6px; border-bottom: 2px solid var(--blue); }
+  h3 { font-size: 16px; color: var(--dark); margin: 24px 0 8px; }
+  p { margin-bottom: 12px; }
+  .subtitle { color: #64748b; font-size: 14px; margin-bottom: 28px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+  th { background: #1e293b; color: #fff; text-align: left; padding: 8px 12px; font-weight: 600; font-size: 12px; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) { background: var(--gray); }
+  code { font-family: 'Fira Code', monospace; background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; font-size: 13px; overflow-x: auto; margin: 12px 0 20px; line-height: 1.5; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+  .option { border: 2px solid var(--border); border-radius: 12px; padding: 24px; margin: 20px 0; }
+  .option.recommended { border-color: var(--green); }
+  .option-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .option-header h3 { margin: 0; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+  .badge.green { background: #dcfce7; color: var(--green); }
+  .badge.blue { background: #dbeafe; color: var(--blue); }
+  .badge.gray { background: #f1f5f9; color: #64748b; }
+  .pro { color: var(--green); }
+  .con { color: var(--red); }
+  ul { margin: 8px 0 12px 20px; }
+  li { margin-bottom: 4px; }
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .comparison > div { background: var(--gray); border-radius: 8px; padding: 16px; }
+  .comparison h4 { font-size: 13px; color: #64748b; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .step { display: flex; gap: 12px; margin: 12px 0; }
+  .step-num { background: var(--blue); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .step-body { flex: 1; }
+  .callout { background: #fef3c7; border: 1px solid #fde68a; border-left: 4px solid #d97706; padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 16px 0; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<h1>Lead Monitoring Proposal</h1>
+<p class="subtitle">Two options to ensure form/integration failures are detected within hours, not months. For discussion with Jayden — 7 April 2026.</p>
+
+<hr>
+
+<h2>Why This Is Needed</h2>
+
+<p>The CRS form corruption (Oct 2025 – Apr 2026) ran undetected for <strong>6 months</strong> because no automated monitoring existed between form submission and HubSpot data arrival. The frontend showed "Thank you!" while data arrived corrupted. The existing Playwright test suite (142 tests) catches frontend bugs but cannot verify what arrives in HubSpot.</p>
+
+<p>Two separate detection layers are proposed. They complement each other — Option A catches problems passively, Option B catches them proactively.</p>
+
+<hr>
+
+<div class="option recommended">
+  <div class="option-header">
+    <h3>Option A: HubSpot Active Lists + Workflow Alerts</h3>
+    <span class="badge green">Recommended — do this first</span>
+  </div>
+
+  <div class="comparison">
+    <div>
+      <h4>Effort</h4>
+      <p style="margin:0;">30 minutes to set up. No code. No API keys. No external tools.</p>
+    </div>
+    <div>
+      <h4>Detection Speed</h4>
+      <p style="margin:0;">Within minutes of a corrupted contact being created. Runs continuously — 24/7.</p>
+    </div>
+  </div>
+
+  <h3>What to Build</h3>
+
+  <p>Three <strong>active lists</strong> in HubSpot that auto-populate when matching contacts appear, plus a <strong>workflow</strong> that sends an alert email when a contact enters any of these lists.</p>
+
+  <table>
+    <tr><th>List Name</th><th>Filter Criteria</th><th>What It Catches</th></tr>
+    <tr>
+      <td><code>ALERT: Email as Firstname</code></td>
+      <td><code>firstname</code> CONTAINS <code>.com</code><br>OR <code>firstname</code> CONTAINS <code>.org</code><br>OR <code>firstname</code> CONTAINS <code>@</code></td>
+      <td>The exact bug that corrupted 90 contacts. If any form ever maps email → firstname again, this fires immediately.</td>
+    </tr>
+    <tr>
+      <td><code>ALERT: Quiz Data = Dashes</code></td>
+      <td><code>what_is_your_current_mortgage_interest_rate_</code> IS EQUAL TO <code>-</code><br>AND <code>createdate</code> IS AFTER <code>2026-04-03</code></td>
+      <td>Hardcoded dash values. Date filter ensures it only catches NEW contacts (not the existing 167).</td>
+    </tr>
+    <tr>
+      <td><code>ALERT: No Form Attribution</code></td>
+      <td><code>first_conversion_event_name</code> IS UNKNOWN<br>AND <code>createdate</code> IS IN THE LAST <code>7 days</code></td>
+      <td>Contacts entering HubSpot with no record of which form captured them. Rolling 7-day window.</td>
+    </tr>
+  </table>
+
+  <h3>Setup Steps</h3>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body"><strong>Create the active lists.</strong> HubSpot → Contacts → Lists → Create list → Active list. Add the filter criteria above. Save each list.</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body"><strong>Create a workflow for each list.</strong> HubSpot → Automation → Workflows → Create workflow → Contact-based. Enrollment trigger: "Contact is a member of list [ALERT list]." Action: Send internal notification email to <code>simon.heikkila@gmail.com</code> + <code>jayden.vecchio@huntergalloway.com.au</code>.</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body"><strong>Test it.</strong> Submit a test form with an email address in the name field. Verify the alert fires. Delete the test contact.</div>
+  </div>
+
+  <h3>Pros &amp; Cons</h3>
+  <ul>
+    <li class="pro"><strong>Pro:</strong> Zero code, zero maintenance, zero cost (uses existing HubSpot)</li>
+    <li class="pro"><strong>Pro:</strong> Fires within minutes — real-time detection</li>
+    <li class="pro"><strong>Pro:</strong> Works regardless of who deploys forms (CRS, future devs, WordPress plugin updates)</li>
+    <li class="con"><strong>Con:</strong> Only catches known patterns (email-as-name, dashes, missing attribution). A novel bug type would be missed.</li>
+    <li class="con"><strong>Con:</strong> Passive — relies on real leads being submitted. If a form breaks completely (zero submissions), this won't alert.</li>
+  </ul>
+</div>
+
+<div class="option">
+  <div class="option-header">
+    <h3>Option B: Automated E2E Form Verification (Playwright + HubSpot API)</h3>
+    <span class="badge blue">Comprehensive — build after Option A</span>
+  </div>
+
+  <div class="comparison">
+    <div>
+      <h4>Effort</h4>
+      <p style="margin:0;">2–4 hours to build. Requires HubSpot Private App token. Runs as a cron job or CI schedule.</p>
+    </div>
+    <div>
+      <h4>Detection Speed</h4>
+      <p style="margin:0;">Depends on schedule — daily catches issues within 24 hours. Weekly within 7 days.</p>
+    </div>
+  </div>
+
+  <h3>How It Works</h3>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body"><strong>Playwright submits a test form</strong> on the live site with known sentinel values:<br><code>firstname: __monitor_test</code><br><code>email: monitor.[timestamp]@heikkila.dev</code><br><code>phone: 0400000000</code></div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body"><strong>Wait 90 seconds</strong> for HubSpot ingestion (CF7 → HubSpot Collected Forms pipeline).</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body"><strong>Query HubSpot API</strong> to find the test contact by email. Verify:
+      <ul>
+        <li><code>firstname</code> = <code>__monitor_test</code> (not an email address)</li>
+        <li><code>email</code> = the submitted email</li>
+        <li>Quiz fields (if applicable) contain real values, not <code>"-"</code></li>
+        <li><code>transaction_type</code> is populated (on forms that should send it)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body"><strong>Delete the test contact</strong> from HubSpot via API to keep the CRM clean.</div>
+  </div>
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body"><strong>Report results.</strong> If any check fails → send alert email. If all pass → log success silently.</div>
+  </div>
+
+  <h3>Test Coverage</h3>
+
+  <table>
+    <tr><th>Form</th><th>Page</th><th>Fields Verified</th></tr>
+    <tr><td>Homepage quiz (CF7 #72896)</td><td><code>/</code></td><td>firstname, email, phone, mortgage-rate, still-owe, loan-term, important</td></tr>
+    <tr><td>Popup quiz (CF7 #11832)</td><td>Any page with popup</td><td>firstname, email, phone, transaction_type</td></tr>
+    <tr><td>Inline CTA (CF7 #14462)</td><td>Any landing page</td><td>firstname, email, phone (+ flag missing transaction_type)</td></tr>
+    <tr><td>Refinance quiz</td><td><code>/lower-your-rate/</code></td><td>firstname, email, phone, quiz answer fields</td></tr>
+  </table>
+
+  <h3>Example Test Code</h3>
+
+<pre>// tests/monitoring/e2e-hubspot-verification.spec.ts
+import { test, expect } from '@playwright/test';
+
+const HUBSPOT_TOKEN = process.env.HUBSPOT_PRIVATE_APP_TOKEN;
+const SENTINEL_NAME = '__monitor_test';
+
+test('Homepage quiz → HubSpot field mapping is correct', async ({ page }) => {
+  const timestamp = Date.now();
+  const testEmail = `monitor.${timestamp}@heikkila.dev`;
+
+  // Step 1: Submit the homepage quiz
+  await page.goto('https://www.huntergalloway.com.au/');
+  // ... fill quiz steps, submit with sentinel values ...
+
+  // Step 2: Wait for HubSpot ingestion
+  await page.waitForTimeout(90_000);
+
+  // Step 3: Query HubSpot API
+  const res = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/search', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${HUBSPOT_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      filterGroups: [{
+        filters: [{ propertyName: 'email', operator: 'EQ', value: testEmail }]
+      }],
+      properties: ['firstname', 'email', 'what_is_your_current_mortgage_interest_rate_',
+                    'how_much_do_you_still_owe_on_your_mortgage_',
+                    'what_is_your_remaining_loan_term_',
+                    'what_s_most_important_to_you_in_refinancing_']
+    })
+  });
+  const data = await res.json();
+
+  // Step 4: Verify field mappings
+  expect(data.total).toBe(1);
+  const contact = data.results[0].properties;
+  expect(contact.firstname).toBe(SENTINEL_NAME);        // Not an email
+  expect(contact.firstname).not.toContain('@');          // Double check
+  expect(contact.firstname).not.toContain('.com');       // Triple check
+  // Quiz fields should not be dashes (if refinance path was taken)
+
+  // Step 5: Cleanup — delete test contact
+  const contactId = data.results[0].id;
+  await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${HUBSPOT_TOKEN}` }
+  });
+});
+</pre>
+
+  <h3>Scheduling</h3>
+
+  <table>
+    <tr><th>Option</th><th>How</th><th>Cost</th></tr>
+    <tr><td>GitHub Actions cron</td><td><code>schedule: cron: '0 8 * * 1-5'</code> (8am AEST weekdays)</td><td>Free (within GitHub Actions minutes)</td></tr>
+    <tr><td>Local cron</td><td><code>crontab</code> on any always-on machine</td><td>Free</td></tr>
+    <tr><td>Manual</td><td><code>npx playwright test tests/monitoring/</code></td><td>Free, run anytime</td></tr>
+  </table>
+
+  <h3>Prerequisites</h3>
+  <ul>
+    <li>HubSpot Private App token with <code>crm.objects.contacts.read</code> and <code>crm.objects.contacts.write</code> scopes</li>
+    <li>An email domain for test submissions (e.g. <code>@heikkila.dev</code>) that won't pollute real lead data</li>
+    <li>Playwright installed (already in the repo)</li>
+  </ul>
+
+  <h3>Pros &amp; Cons</h3>
+  <ul>
+    <li class="pro"><strong>Pro:</strong> Catches ANY form breakage — not just known patterns. Tests the full pipeline end-to-end.</li>
+    <li class="pro"><strong>Pro:</strong> Catches total form failure (zero submissions) — Option A can't do this.</li>
+    <li class="pro"><strong>Pro:</strong> Catches new bug types that haven't been seen before.</li>
+    <li class="pro"><strong>Pro:</strong> Provides ongoing regression testing as forms change.</li>
+    <li class="con"><strong>Con:</strong> Creates test contacts in HubSpot (cleaned up automatically, but briefly visible).</li>
+    <li class="con"><strong>Con:</strong> Requires HubSpot Private App setup (one-time, 10 minutes).</li>
+    <li class="con"><strong>Con:</strong> 90-second wait per form makes the test suite slower (~6 min for all 4 forms).</li>
+  </ul>
+</div>
+
+<hr>
+
+<h2>Recommendation</h2>
+
+<div class="comparison">
+  <div style="border: 2px solid var(--green); border-radius: 8px; padding: 16px;">
+    <h4 style="color: var(--green);">This Week</h4>
+    <p style="margin:0;">Set up <strong>Option A</strong> (HubSpot lists + alerts). Takes 30 minutes. Catches the known failure modes immediately. Zero risk.</p>
+  </div>
+  <div style="border: 2px solid var(--blue); border-radius: 8px; padding: 16px;">
+    <h4 style="color: var(--blue);">When React Ships</h4>
+    <p style="margin:0;">Build <strong>Option B</strong> (E2E verification) as part of the React site launch QA. Run it daily via GitHub Actions. This becomes the permanent safety net.</p>
+  </div>
+</div>
+
+<div class="callout">
+  <strong>Note on Monday.com integration:</strong> If the sales team processes leads in Monday.com rather than directly in HubSpot, Option B can be extended to also verify arrival in Monday.com via their API. This requires Monday.com API access (pending from Jayden).
+</div>
+
+<hr>
+
+<div style="background: var(--gray); border-radius: 8px; padding: 16px; text-align: center;">
+  <p style="color: #94a3b8; font-size: 12px; margin: 0;">Prepared for Hunter Galloway &nbsp;·&nbsp; April 2026 &nbsp;·&nbsp; Simon Heikkila</p>
+</div>
+
+</body>
+</html>

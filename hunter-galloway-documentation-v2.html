@@ -451,7 +451,7 @@
   <div class="sidebar-header">
     <h1>Hunter Galloway</h1>
     <div class="subtitle">Website & Lead System Docs</div>
-    <div class="updated">Updated 2 April 2026</div>
+    <div class="updated">Updated 4 April 2026</div>
     <div style="font-size: 10px; opacity: 0.3; margin-top: 6px;">/ search &nbsp; ← → navigate &nbsp; Esc close</div>
   </div>
 
@@ -511,7 +511,7 @@
 <!-- ==================== SYSTEM HEALTH ==================== -->
 <div class="section active" id="sec-health">
   <h2 class="section-title">System Health</h2>
-  <p class="section-desc">Live snapshot from HubSpot as of 2 April 2026. Data pulled directly from HubSpot API (account 4607234). Full site sweep completed — 23 unique conversion events across 36,724 contacts.</p>
+  <p class="section-desc">Live snapshot from HubSpot as of 2 April 2026 (incident log updated 4 April 2026). Data pulled directly from HubSpot API (account 4607234). Full site sweep completed — 23 unique conversion events across 36,724 contacts.</p>
 
   <div class="stat-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 16px;">
     <div class="stat-card" style="border-top: 3px solid var(--success);"><div class="num" style="color: var(--success);">14</div><div class="label">Contacts Today</div></div>
@@ -635,6 +635,9 @@
       <div>&#9888; <strong>Mercury placeholder contacts</strong> — mercury_*@connective.com.au emails being created (system artifacts, not real leads)</div>
       <div>&#9888; <strong>Test submissions detected</strong> — "Yehor Check" (checkform11@gmail.com) created today — consider adding a test contact filter</div>
       <div>&#9888; <strong>AI Referrals source appearing</strong> — Samantha Harrison came from "AI_REFERRALS" source, which is a new/unusual channel. Investigate if this is ChatGPT or similar referring traffic</div>
+      <div>&#9888; <strong>Perfmatters plugin security vulnerability (4 Apr 2026)</strong> — WP Engine issued a security notification. Plugin needs to be patched/updated. Outstanding.</div>
+      <div>&#9888; <strong>No automated lead audit process</strong> — No mechanism to detect silent lead loss (as demonstrated by the 1-4 Apr incident). Automated test submissions on a schedule have been proposed — pending API access to Zapier and Monday.com.</div>
+      <div>&#9888; <strong>WP Contact Form HubSpot Pro API key can expire</strong> — API key expired silently, contributing to lead loss. Should be checked periodically or added to a monitoring checklist.</div>
     </div>
   </div>
 
@@ -644,6 +647,15 @@
       <div>&#10060; <strong>Gravity Forms NOT found on LVR/YTD pages</strong> — Fetched /lvr-calculator/ and /ytd-calculator/ source code on 1 April 2026. Neither page contains Gravity Forms markup (no gform_wrapper, gform_9, gform_10). Both pages use CF7 + Popup Maker popup quiz instead. <strong>The F-05/F-06 "unknown destination" risk is likely resolved</strong> — the forms were replaced with the popup assessment system (F-04) that feeds into HubSpot normally.</div>
       <div>&#10060; <strong>HubSpot tracking code not visible in raw HTML</strong> — The tracking script (js.hs-scripts.com/4607234.js) was not found in the HTML source. However, NitroPack CDN is active on all pages and may be deferring the script load. Since web leads ARE arriving in HubSpot, the tracking code IS working — it's just loaded asynchronously via NitroPack or Google Tag Manager.</div>
       <div>&#10060; <strong>Landing page form data quality gap</strong> — 24+ landing pages scanned (2 Apr 2026). All use CF7 #14462 "Discovery Session" popup (name/email/phone only — no context) alongside CF7 #11832 assessment quiz (rich data). 4,011 contacts arrived thin via #14462 path. See <a onclick="showSection('j-landing')" style="color: var(--danger); cursor: pointer; text-decoration: underline;">Landing Pages</a> for full analysis.</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left: 4px solid var(--danger); margin-top: 16px;">
+    <h3 class="card-title" style="color: var(--danger);">Incident Log — 1-4 April 2026</h3>
+    <div style="font-size: 13px; line-height: 2;">
+      <div>&#10060; <strong>Website forms not capturing leads (1-4 Apr 2026)</strong> — conversionrate.store (CRS) created new contact forms but did not carry over existing Zapier webhook integrations. The Refinance quiz form was also missing its webhook. An unknown number of leads dating back to October 2025 were not captured — estimated 80+ leads lost. Additionally, the WP Contact Form HubSpot Pro plugin API key had expired and needed to be re-entered. <strong>Status: Resolved 4 April 2026.</strong></div>
+      <div>&#9888; <strong>Perfmatters plugin vulnerability (4 Apr 2026)</strong> — WP Engine issued a security notification about a vulnerability in the Perfmatters plugin on the HG WordPress site. <strong>Status: Outstanding — needs patch/update.</strong></div>
+      <div>&#9888; <strong>Lead audit process (proposed)</strong> — Jayden has requested a formal lead audit process. Simon offered to build automated daily/weekly test runs using Zapier and Monday.com APIs, pending API access. <strong>Status: Planned — awaiting API access.</strong></div>
     </div>
   </div>
 
@@ -657,6 +669,7 @@
       <div>&#10003; <strong>Facebook Pixel</strong> — connect.facebook.net</div>
       <div>&#10003; <strong>Hotjar</strong> — static.hotjar.com + script.hotjar.com</div>
       <div>&#10003; <strong>NitroPack CDN</strong> — nitroscripts.com (defers all script loading)</div>
+      <div>&#9888; <strong>Perfmatters</strong> — Performance optimization plugin. <span style="color: var(--danger); font-weight: 600;">Security vulnerability reported by WP Engine on 4 Apr 2026 — needs patch/update (outstanding)</span></div>
       <div>&#10060; <strong>Calendly</strong> — Not detected on any page tested</div>
       <div>&#10060; <strong>Intercom / Live Chat</strong> — Not detected</div>
     </div>
@@ -764,7 +777,7 @@
     <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #3182ce; margin-right: 6px;"></span><strong style="color: var(--text);">WordPress</strong> — frontend forms</div>
     <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ff7a59; margin-right: 6px;"></span><strong style="color: var(--text);">HubSpot</strong> — CRM, 58 workflows</div>
     <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #805ad5; margin-right: 6px;"></span><strong style="color: var(--text);">Mercury</strong> — loan lifecycle</div>
-    <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #d69e2e; margin-right: 6px;"></span><strong style="color: var(--text);">Zapier</strong> — Mercury→HubSpot only</div>
+    <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #d69e2e; margin-right: 6px;"></span><strong style="color: var(--text);">Zapier</strong> — Mercury→HubSpot + form webhook integrations (critical — see <a onclick="showSection('risks')" style="color: var(--danger); cursor: pointer;">Apr 2026 incident</a>)</div>
     <div><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #38a169; margin-right: 6px;"></span><strong style="color: var(--text);">Typeform</strong> — extended assessment</div>
   </div>
 </div>
@@ -772,7 +785,7 @@
 <!-- ==================== WHAT CAN BREAK ==================== -->
 <div class="section" id="sec-risks">
   <h2 class="section-title">What Can Break</h2>
-  <p class="section-desc">Single points of failure and known risks across the entire lead system, ranked by impact. These are the things to monitor and test regularly.</p>
+  <p class="section-desc">Single points of failure and known risks across the entire lead system, ranked by impact. These are the things to monitor and test regularly. Updated 4 April 2026 with two new critical risks from the Zapier webhook / API key incident.</p>
 
   <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--danger);">Critical — Leads Lost Silently</h3>
 
@@ -812,6 +825,33 @@
       2. Check WF-002 and WF-003 are ON and not paused in <a href="https://app-ap1.hubspot.com/workflows/4607234/view/default" target="_blank">Workflows</a><br>
       3. Check the <code>adviser</code> property is being set correctly (it maps CA codes to brokers)<br>
       4. Manual fix: use WF-003 (MANUAL version) to re-run assignment on affected contacts
+    </div>
+  </div>
+
+  <div class="risk-card critical">
+    <div class="risk-title"><span class="risk-severity critical">Critical</span> Zapier webhook integrations lost when forms are modified or recreated</div>
+    <div class="risk-detail"><strong>Incident: 1-4 April 2026.</strong> CRS created new contact forms but did not copy over existing Zapier webhook integrations. The Refinance quiz form was also missing its webhook. An estimated 80+ leads dating back to October 2025 were silently lost — forms submitted successfully but data never reached the downstream systems (HubSpot/Monday.com). This is a silent failure with no error visible to the user or the form creator.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> Any form with a Zapier webhook integration &nbsp;·&nbsp; <strong>Detection:</strong> Compare form submissions in WordPress vs contacts created in HubSpot. A mismatch = broken webhook.</div>
+    <div style="margin-top: 10px; padding: 10px 14px; background: rgba(255,255,255,0.7); border-radius: 6px; font-size: 12px; line-height: 1.8;">
+      <strong style="color: var(--danger);">Mandatory checklist — when creating or modifying any form:</strong><br>
+      1. Document all existing Zapier webhook URLs attached to the form BEFORE making changes<br>
+      2. After creating/modifying the form, verify every Zapier webhook has been carried over<br>
+      3. Test end-to-end: submit the form → check Zapier task history → confirm contact appears in HubSpot and Monday.com<br>
+      4. Do NOT deploy until E2E verification is complete<br>
+      5. Check the WP Contact Form HubSpot Pro plugin API key is valid (it can expire silently)
+    </div>
+  </div>
+
+  <div class="risk-card critical">
+    <div class="risk-title"><span class="risk-severity critical">Critical</span> WP Contact Form HubSpot Pro API key expires silently</div>
+    <div class="risk-detail"><strong>Incident: April 2026.</strong> The API key for the WP Contact Form HubSpot Pro plugin expired, causing leads to stop flowing from WordPress to HubSpot. There is no alert or notification when this happens — leads are silently lost.</div>
+    <div style="margin-top: 8px; font-size: 12px;"><strong>Affects:</strong> All CF7 forms that rely on this plugin for HubSpot integration &nbsp;·&nbsp; <strong>Detection:</strong> If leads stop appearing in HubSpot but forms still submit in WordPress, check this API key first.</div>
+    <div style="margin-top: 10px; padding: 10px 14px; background: rgba(255,255,255,0.7); border-radius: 6px; font-size: 12px; line-height: 1.8;">
+      <strong style="color: var(--primary);">Debug steps:</strong><br>
+      1. WP Admin → Settings → WP Contact Form HubSpot Pro → check if API key is valid<br>
+      2. Re-enter the API key if expired<br>
+      3. Submit a test form and verify the contact appears in HubSpot within 2 minutes<br>
+      4. Add API key expiry date to a calendar reminder for proactive renewal
     </div>
   </div>
 
@@ -1663,7 +1703,7 @@
 
   <div class="card">
     <h3 class="card-title">WordPress → HubSpot Form Mapping</h3>
-    <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">All WordPress forms are captured by the HubSpot tracking code installed on the site. The tracking code detects CF7, Gravity Forms, and custom JS form submissions and creates "Collected Forms" in HubSpot. This is the primary integration path — <strong>not Zapier</strong>.</p>
+    <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">All WordPress forms are captured by the HubSpot tracking code installed on the site. The tracking code detects CF7, Gravity Forms, and custom JS form submissions and creates "Collected Forms" in HubSpot. This is the primary integration path. However, <strong>some forms also have Zapier webhook integrations</strong> that feed data to Monday.com and other systems. These webhooks are NOT automatically carried over when forms are recreated — see the <a onclick="showSection('risks')" style="color: var(--danger); cursor: pointer; text-decoration: underline;">April 2026 incident</a> in What Can Break.</p>
     <div class="table-wrapper">
       <table>
         <thead>
@@ -1862,6 +1902,10 @@
     <div class="risk-card high">
       <div class="risk-title"><span class="risk-severity high">High</span> CF7 #14462 "Discovery Session" sends thin data to HubSpot (4,011 contacts affected)</div>
       <div class="risk-detail">The "Claim Your Free Discovery Session" popup on all 24+ landing pages captures only name/email/phone — no <code>transaction_type</code>, no <code>source_url</code>, no financial data. These leads arrive in HubSpot via the generic <code>.wpcf7-form, .submitting</code> collected form and require manual qualification. By contrast, the assessment quiz popup (#11832) on the same pages captures rich data. See the <a onclick="showSection('j-landing')" style="color: var(--primary-light); cursor: pointer;">Landing Pages</a> section for the full comparison.</div>
+    </div>
+    <div class="risk-card critical">
+      <div class="risk-title"><span class="risk-severity critical">Critical — Resolved</span> Zapier webhooks silently dropped when CRS recreated forms (1-4 Apr 2026)</div>
+      <div class="risk-detail">CRS created new contact forms without copying over Zapier webhook integrations. The Refinance quiz form webhook was also missing. 80+ leads lost dating back to October 2025. The WP Contact Form HubSpot Pro API key had also expired. <strong>Action: When any form is created or modified, verify all Zapier webhooks are carried over and test E2E before deploying.</strong></div>
     </div>
     <div class="risk-card" style="border-left-color: var(--success); background: rgba(56,161,105,0.03);">
       <div class="risk-title"><span class="risk-severity" style="background: var(--success);">Resolved</span> HS-CF-01 vs HS-CF-02 — mystery solved (2 Apr 2026)</div>
@@ -2299,7 +2343,8 @@
       <strong style="color: var(--success);">Gravity Forms mystery (F-05/F-06):</strong> Resolved 1 Apr 2026. Gravity Forms #9 and #10 no longer exist on the LVR/YTD calculator pages. Both pages now use CF7 + Popup Maker assessment quiz, feeding into HubSpot via the standard tracking code path.<br>
       <strong style="color: var(--success);">Landing page form audit (F-07):</strong> Resolved 2 Apr 2026. 24+ landing pages scanned via Playwright + Chrome DOM inspection. All use identical WordPress template with 12 CF7 forms in Popup Maker containers. Two primary forms identified: CF7 #14462 ("Discovery Session" — thin data, name/email/phone only) and CF7 #11832 (assessment quiz — rich data with transaction_type, source_url, spending, savings). Both confirmed reaching HubSpot. 4,011 contacts via thin path vs 6,538 via rich path.<br>
       <strong style="color: var(--success);">HS-CF-01 vs HS-CF-02 mystery:</strong> Resolved 2 Apr 2026. Two genuinely different forms on /contact/ — HS-CF-01 is a CRS phone-verified custom HTML form with SMS OTP (229 contacts), HS-CF-02 is CF7 #11830.<br>
-      <strong style="color: var(--success);">Full site sweep (23 conversion events):</strong> Completed 2 Apr 2026. Identified 36,724 contacts across 23 unique conversion event names. Found: CRS phone-verified forms (homepage + contact), OptinMonster as collected form (5,366), call centre manual entry (9,367 = 25.5%), blog post CF7 leads, legacy GF deposit calculator (32, now removed).
+      <strong style="color: var(--success);">Full site sweep (23 conversion events):</strong> Completed 2 Apr 2026. Identified 36,724 contacts across 23 unique conversion event names. Found: CRS phone-verified forms (homepage + contact), OptinMonster as collected form (5,366), call centre manual entry (9,367 = 25.5%), blog post CF7 leads, legacy GF deposit calculator (32, now removed).<br>
+      <strong style="color: var(--success);">Zapier webhook / form lead loss (1-4 Apr 2026):</strong> Resolved 4 Apr 2026. CRS recreated forms without carrying over Zapier webhook integrations. Refinance quiz form webhook also missing. WP Contact Form HubSpot Pro API key had expired. 80+ leads lost dating back to October 2025. Root cause identified: no checklist or verification step when forms are modified. Webhooks and API key restored.
     </p>
   </div>
 
@@ -2309,6 +2354,8 @@
       <table>
         <thead><tr><th>Priority</th><th>Question</th><th>How to Investigate</th></tr></thead>
         <tbody>
+          <tr style="background: rgba(229,62,62,0.05);"><td><span class="risk-severity critical">Critical</span></td><td>Build automated lead audit process (daily/weekly)</td><td>Jayden has requested a formal lead audit. Simon to build automated test submissions through live forms on a scheduled basis, with results checked against HubSpot and Monday.com. Requires Zapier and Monday.com API access. <strong>Status: Planned — awaiting API access.</strong> Intent: automated test submissions on a schedule that verify the full pipeline (form → Zapier webhook → HubSpot contact → Monday.com item) is working. Would have caught the Oct 2025 - Apr 2026 silent lead loss.</td></tr>
+          <tr style="background: rgba(229,62,62,0.05);"><td><span class="risk-severity high">High</span></td><td>Perfmatters plugin vulnerability — needs patch/update</td><td>WP Engine issued a security notification on 4 April 2026 about a vulnerability in the Perfmatters plugin on the HG WordPress site. Check WP Admin → Plugins → Perfmatters for available updates. Coordinate with WP Engine support if needed. <strong>Status: Outstanding.</strong></td></tr>
           <tr><td><span class="risk-severity high">High</span></td><td>What spam protection is active on forms?</td><td>Inspect CF7 form settings in WordPress admin. Check for reCAPTCHA keys, honeypot plugins, or Akismet.</td></tr>
           <tr><td><span class="risk-severity medium">Medium</span></td><td>How does Typeform (hello.huntergalloway.com.au) connect to HubSpot?</td><td>Check Typeform admin for HubSpot integration settings or Zapier connections.</td></tr>
           <tr><td><span class="risk-severity medium">Medium</span></td><td>What happens with partial quiz/popup abandonment?</td><td>Start the F-03 quiz, abandon at step 3, check if any data appears in HubSpot.</td></tr>
