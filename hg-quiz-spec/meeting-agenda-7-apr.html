@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Agenda — 7 April 2026</title>
+<style>
+  :root { --dark: #1a1a2e; --red: #dc2626; --green: #16a34a; --blue: #2563eb; --gray: #f8fafc; --border: #e2e8f0; --amber: #d97706; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.7; color: #1e293b; background: #fff; max-width: 820px; margin: 0 auto; padding: 48px 32px; font-size: 15px; }
+  h1 { font-size: 24px; color: var(--dark); margin-bottom: 4px; }
+  h2 { font-size: 18px; color: var(--dark); margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--blue); }
+  h3 { font-size: 15px; color: var(--dark); margin: 20px 0 8px; }
+  p { margin-bottom: 10px; }
+  .subtitle { color: #64748b; font-size: 14px; margin-bottom: 28px; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 16px; font-size: 13px; }
+  th { background: #1e293b; color: #fff; text-align: left; padding: 8px 12px; font-weight: 600; font-size: 12px; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) { background: var(--gray); }
+  code { font-family: monospace; background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+  ul, ol { margin: 8px 0 12px 20px; }
+  li { margin-bottom: 4px; }
+  .option { border: 2px solid var(--border); border-radius: 10px; padding: 20px; margin: 14px 0; }
+  .option.recommended { border-color: var(--green); }
+  .option h3 { margin: 0 0 8px; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+  .badge.green { background: #dcfce7; color: var(--green); }
+  .badge.amber { background: #fef3c7; color: var(--amber); }
+  .badge.red { background: #fef2f2; color: var(--red); }
+  .badge.blue { background: #dbeafe; color: var(--blue); }
+  .callout { background: #f8fafc; border: 1px solid var(--border); border-left: 4px solid var(--blue); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 14px 0; font-size: 14px; }
+  .callout.amber { border-left-color: var(--amber); background: #fffbeb; }
+  .callout.red { border-left-color: var(--red); background: #fef2f2; }
+  .quote { background: #f8fafc; border-left: 3px solid #cbd5e1; padding: 8px 14px; margin: 10px 0; font-style: italic; font-size: 13px; color: #475569; }
+  .section-time { font-size: 12px; color: #94a3b8; font-weight: 600; }
+  .private { background: #fef3c7; border: 1px dashed var(--amber); border-radius: 6px; padding: 12px 16px; margin: 14px 0; font-size: 13px; }
+  .private::before { content: 'INTERNAL — not for CRS'; display: block; font-size: 11px; font-weight: 700; color: var(--amber); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+</style>
+</head>
+<body><script>(function(){var k="hg_audit_auth",p="huntergalloway2026";if(sessionStorage.getItem(k)===p)return;var v=prompt("Access code:");if(v===p){sessionStorage.setItem(k,p)}else{document.write("<div style=\"text-align:center;padding:100px;font-family:sans-serif;color:\#999\">Access denied.</div>");document.close()}})()</script>
+
+<h1>Meeting Agenda — Monday 7 April 2026</h1>
+<p class="subtitle">Simon + Jayden catch-up. Covers: CRS response, reply strategy, React deadline, lead monitoring, and forward plan.</p>
+
+<hr>
+
+<h2>1. Quick Status Check <span class="section-time">5 min</span></h2>
+
+<table>
+  <tr><th>Item</th><th>Status</th></tr>
+  <tr><td>Email-as-name / dash-value bugs</td><td><span class="badge green">Fixed</span> Zero new corrupted contacts since 2 Apr</td></tr>
+  <tr><td>Refinance webhook</td><td><span class="badge green">Fixed</span> Jayden connected it himself, 2 Apr</td></tr>
+  <tr><td>HubSpot Pro API key</td><td><span class="badge green">Fixed</span> Re-entered 4 Apr</td></tr>
+  <tr><td>Perfmatters vulnerability</td><td><span class="badge amber">Outstanding</span> Staging + speed test only (v1.9.4). Needs WP Engine patch.</td></tr>
+  <tr><td>React migration (deadline: today)</td><td><span class="badge red">TBC</span> Yuliia claimed "ready to share on April 7th" on Fri. Check if anything has been delivered.</td></tr>
+  <tr><td>Damage report</td><td><span class="badge blue">Ready</span> Approved by Jayden. Not yet sent to CRS.</td></tr>
+  <tr><td>Playwright test suite</td><td><span class="badge green">Done</span> 142 tests, all passing</td></tr>
+  <tr><td>Documentation</td><td><span class="badge green">Done</span> System docs, quiz spec, forms directory, priority triage, test coverage — all deployed</td></tr>
+</table>
+
+<hr>
+
+<h2>2. Gleb's Response — What He Said <span class="section-time">5 min</span></h2>
+
+<p>Gleb replied to Simon's email on <strong>Friday 3 April at 1:17pm CEST</strong>. Both emails are currently <strong>unread/unanswered</strong>. Key points from his response:</p>
+
+<table>
+  <tr><th>What Gleb Said</th><th>Translation</th></tr>
+  <tr>
+    <td><em>"I acknowledge that saving the email in the name field was a mistake on our side."</em></td>
+    <td>Partial admission. First time they've admitted fault in writing.</td>
+  </tr>
+  <tr>
+    <td><em>"I'm copied on a large number of emails and, regrettably, I missed that specific one."</em></td>
+    <td>Walked back from "first time we've heard of Zapier" (2 Apr) to "I personally missed it" (3 Apr). Still not taking institutional responsibility.</td>
+  </tr>
+  <tr>
+    <td><em>"pls admit that it's fair to say responsibility for lead loss is shared in this situation and it's mostly on the sales team."</em></td>
+    <td>Asking us to accept blame in writing. His argument: if your brokers checked HubSpot daily, they'd have caught the corrupted names sooner.</td>
+  </tr>
+  <tr>
+    <td><em>"I will not invoice for one month of Meta Ads as a gesture of goodwill."</em></td>
+    <td>Compensation offer: ~$2-3k against $53k-$93k in documented damage.</td>
+  </tr>
+  <tr>
+    <td><em>"over the course of our collaboration, our work has contributed to generating thousands of additional leads"</em></td>
+    <td>"Look at all the good we've done" — deflection from the 18 documented incidents.</td>
+  </tr>
+</table>
+
+<p>Yuliia also sent a <strong>weekly update</strong> (Fri 3 Apr, 8:07pm) claiming React pages will be ready today and a new Meta Ads → Calendly flow is live.</p>
+
+<hr>
+
+<h2>3. How Do We Reply? <span class="section-time">15 min</span></h2>
+
+<div class="private">
+  <strong>Context from Signal (Jayden, 3 Apr):</strong>
+  <div class="quote">"I do want them to give some sort of compensation like a month refund or something just to show they're sorry. And then moving forward especially with the new site we need to be super tight can't miss any leads"</div>
+  <div class="quote">"Maybe tone down the emails... maybe even suggest a call to work out a way forward. Like weds at 5pm"</div>
+  <div class="quote">"feels like the current approach isn't really landing. Like I want to fucking yell at them but it's defo not working haha"</div>
+  <p style="margin-top: 8px;"><strong>Read:</strong> Jayden wants a month's refund + apology, not $93k. He wants to normalize the relationship and move forward tightly. He suggested a call with CRS on Wednesday.</p>
+</div>
+
+<h3>Three reply options:</h3>
+
+<div class="option recommended">
+  <h3>Option A: Accept the Meta Ads waiver + propose a call <span class="badge green">Recommended</span></h3>
+  <p>Accept Gleb's one-month Meta Ads offer as a starting point, but ask for a <strong>full month's retainer credit</strong> (not just Meta portion) as a good-faith gesture. Don't send the damage report. Propose a call (Wednesday 5pm AEST) to discuss the React handover, QA process going forward, and how to prevent this from happening again.</p>
+  <p><strong>Tone:</strong> Professional, forward-looking, firm but not aggressive. We have the damage report as a loaded gun we don't need to fire.</p>
+  <p><strong>Why this works:</strong></p>
+  <ul>
+    <li>Gets Jayden the month refund he actually wants</li>
+    <li>Normalizes the relationship for the React transition</li>
+    <li>The damage report stays in the holster — CRS knows we have it (Simon referenced "findings" in his email), and that's enough leverage</li>
+    <li>The call gives Jayden a chance to be direct with Gleb face-to-face</li>
+    <li>Sets up new QA expectations without relitigating the past</li>
+  </ul>
+  <p><strong>Draft reply below.</strong></p>
+</div>
+
+<div class="option">
+  <h3>Option B: Send the damage report, then propose a call <span class="badge amber">Aggressive</span></h3>
+  <p>Reply to Gleb with a link to the damage report. Let the evidence speak. Then propose the Wednesday call to "discuss a resolution." This gives CRS 48 hours to absorb the full scope before the call.</p>
+  <p><strong>Risk:</strong> Gleb hardens his position. CRS gets defensive. The call becomes adversarial rather than productive. Jayden said "tone down the emails" — this goes the other direction.</p>
+  <p><strong>When to use:</strong> If Option A doesn't get the month refund, the damage report is the escalation.</p>
+</div>
+
+<div class="option">
+  <h3>Option C: Don't reply yet — wait for React delivery <span class="badge blue">Strategic patience</span></h3>
+  <p>Today is the React deadline. If CRS delivers nothing (again), that's another broken promise to add to the pile. Reply after seeing whether they deliver, adjusting tone accordingly. If React is a no-show, the reply gets much firmer.</p>
+  <p><strong>Risk:</strong> Gleb's email has been sitting since Friday. Much longer and it looks like we're avoiding the conversation.</p>
+</div>
+
+<h3>Draft Reply (Option A)</h3>
+
+<div style="background: var(--gray); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 14px 0; font-size: 14px;">
+<p><strong>To:</strong> Gleb Hodorovskiy<br>
+<strong>Cc:</strong> Jayden Vecchio, Yuliia Boiko<br>
+<strong>Subject:</strong> Re: URGENT 2/2 - Website form not working</p>
+<hr style="margin: 12px 0;">
+<p>Hi Gleb,</p>
+<p>Thanks for acknowledging the field mapping issue. We don't agree that the responsibility sits with the sales team — the bug was in the form code and was visible in your own test contacts from October — but we'd rather focus on moving forward than relitigating this over email.</p>
+<p>We appreciate the offer to waive one month of Meta Ads. Given the scope of the issue (6 months of corrupted data across multiple forms, 80+ leads affected), we'd ask that this be extended to a <strong>full month's retainer credit</strong> rather than just the Meta Ads component. We think that's a fair resolution that lets both sides move on.</p>
+<p>More importantly, we need to make sure this can never happen again — especially with the React migration approaching. We'd like to propose a call this <strong>Wednesday at 5pm AEST</strong> to cover:</p>
+<ul>
+<li>React site status and handover plan</li>
+<li>QA process for the new site (we've built a 142-test automated suite that we'd like CRS to run before any deployment)</li>
+<li>Lead monitoring going forward</li>
+</ul>
+<p>Does Wednesday work for your team?</p>
+<p>Thanks,<br>Simon</p>
+</div>
+
+<div class="callout amber">
+  <strong>Decision needed:</strong> Does Jayden want to push for a full month's retainer (~$9k) or accept the Meta Ads waiver (~$2-3k) and move on? The draft above asks for the full month. If Jayden thinks that's too aggressive, we can soften to just accepting what Gleb offered.
+</div>
+
+<hr>
+
+<h2>4. React Delivery — Is It Actually Here? <span class="section-time">5 min</span></h2>
+
+<p>Yuliia's Friday email:</p>
+<div class="quote">"Our developer is finalizing all pages over the weekend. On Monday, our QA team will validate all active pages... we'll be ready to share the new website with you on April 7th."</div>
+
+<p><strong>Check today:</strong></p>
+<ul>
+  <li>Has CRS shared a React staging URL?</li>
+  <li>Has any QA been performed?</li>
+  <li>If nothing has been delivered — this is the <strong>4th missed deadline</strong> (Feb 2024: 100+ days late, Mar 2026: "pages this week" — nothing, Apr 7: "ready to share" — TBC)</li>
+</ul>
+
+<div class="callout">
+  <strong>Note:</strong> If the React site IS delivered today, that changes the dynamic. CRS has leverage ("see, we delivered"). If it's NOT delivered, it's another broken promise and strengthens Jayden's position in the Wednesday call.
+</div>
+
+<hr>
+
+<h2>5. Lead Monitoring — Prevent Future Incidents <span class="section-time">10 min</span></h2>
+
+<p>Full proposal: <a href="lead-monitoring-proposal.html">lead-monitoring-proposal.html</a></p>
+
+<h3>Option A: HubSpot Active Lists + Alerts (30 min, no code)</h3>
+<p>Three active lists that auto-detect corrupted contacts + workflow alerts to Simon and Jayden. Catches the known failure modes (email-as-name, dashes, missing attribution) in real-time. <strong>Can be set up today.</strong></p>
+
+<h3>Option B: Playwright E2E Verification (2-4 hrs)</h3>
+<p>Automated test submissions → HubSpot API verification → alert on failure. Catches ANY form breakage, not just known patterns. Requires HubSpot Private App token. <strong>Build when React ships.</strong></p>
+
+<div class="callout">
+  <strong>Decision needed:</strong> Green light to set up Option A today? It's 30 minutes and zero risk.
+</div>
+
+<hr>
+
+<h2>6. Damage Report — Send or Hold? <span class="section-time">5 min</span></h2>
+
+<div class="private">
+  <strong>Signal context (Jayden, 3 Apr):</strong>
+  <div class="quote">"Maybe tone down the emails we need to try to normalize stuff next week so maybe even suggest a call to work out a way forward"</div>
+  <p>Jayden approved the damage report but then pulled back on the aggressive approach. The report is ready but hasn't been sent to CRS.</p>
+</div>
+
+<p><strong>Options:</strong></p>
+<ul>
+  <li><strong>Hold it.</strong> Use it as leverage in the Wednesday call without sending it. Gleb knows it exists (Simon said "I will share the findings tomorrow"). The threat is as powerful as the execution.</li>
+  <li><strong>Send it before Wednesday.</strong> Gives CRS 48 hours to absorb the full scope before the call. Makes the call more productive (or more adversarial).</li>
+  <li><strong>Send it if the call goes badly.</strong> Keep it as the escalation option. If Wednesday doesn't produce a resolution, send it afterward.</li>
+</ul>
+
+<hr>
+
+<h2>7. Other Items <span class="section-time">5 min</span></h2>
+
+<table>
+  <tr><th>Item</th><th>Status</th><th>Action</th></tr>
+  <tr>
+    <td>Perfmatters vulnerability</td>
+    <td><span class="badge amber">Outstanding</span></td>
+    <td>Staging + speed test only. Jayden/Joshua to patch via WP Engine.</td>
+  </tr>
+  <tr>
+    <td>Zapier access</td>
+    <td><span class="badge amber">Pending</span></td>
+    <td>Jayden mentioned he'd "work out the zapper and audit function." Simon needs access for E2E monitoring.</td>
+  </tr>
+  <tr>
+    <td>Monday.com API access</td>
+    <td><span class="badge amber">Pending</span></td>
+    <td>Needed for full lead audit pipeline (form → HubSpot → Monday.com verification).</td>
+  </tr>
+  <tr>
+    <td>Client Insights PDF</td>
+    <td><span class="badge green">Received</span></td>
+    <td>Jayden shared typeform data (2020-2026). Use for website content + press release (homebuyer demand index).</td>
+  </tr>
+  <tr>
+    <td>DSR/SQM login</td>
+    <td><span class="badge green">Received</span></td>
+    <td>For property copilot tool.</td>
+  </tr>
+  <tr>
+    <td>CRS Wednesday call</td>
+    <td><span class="badge blue">Proposed</span></td>
+    <td>Jayden suggested Wed 5pm AEST. Needs to be proposed in email reply.</td>
+  </tr>
+</table>
+
+<hr>
+
+<h2>Summary of Decisions Needed</h2>
+
+<ol>
+  <li><strong>Reply to Gleb:</strong> Option A (accept + call), B (damage report + call), or C (wait for React)?</li>
+  <li><strong>Compensation ask:</strong> Full month retainer (~$9k) or accept Meta Ads waiver (~$2-3k)?</li>
+  <li><strong>Damage report:</strong> Send before Wednesday, hold for the call, or hold as escalation?</li>
+  <li><strong>HubSpot monitoring lists:</strong> Green light to set up today?</li>
+  <li><strong>Wednesday call:</strong> Confirm 5pm AEST — who attends? (Simon + Jayden, or just Jayden?)</li>
+  <li><strong>React delivery:</strong> Has anything been shared today? If not, how does that affect the call?</li>
+</ol>
+
+<div style="background: var(--gray); border-radius: 8px; padding: 16px; margin-top: 40px; text-align: center;">
+  <p style="color: #94a3b8; font-size: 12px; margin: 0;">Internal document — Simon Heikkila &nbsp;·&nbsp; 7 April 2026</p>
+</div>
+
+</body>
+</html>
