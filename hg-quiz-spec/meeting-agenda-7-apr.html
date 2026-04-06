@@ -51,22 +51,14 @@
 <h2>Decisions Needed</h2>
 
 <table>
-  <tr><th>#</th><th>Decision</th><th>Options</th></tr>
-  <tr><td>1</td><td><strong>Reply to Gleb</strong> — his 3 Apr email is unanswered</td><td>A) Accept + propose Wed call <span class="badge green">recommended</span><br>B) Send damage report + propose call<br>C) Wait for React delivery first</td></tr>
-  <tr><td>2</td><td><strong>Compensation ask</strong></td><td>Full month retainer (~$9k) or accept Meta Ads waiver (~$2-3k)?</td></tr>
-  <tr><td>3</td><td><strong><a href="hubspot-damage-report.html">Damage report</a></strong> — approved, not sent</td><td>Hold as leverage / send before Wed / send only if call fails</td></tr>
-  <tr><td>4</td><td><strong><a href="index.html">Quiz flow spec</a></strong> — ready, not sent to CRS</td><td>Send before or after Wednesday call?</td></tr>
-  <tr><td>5</td><td><strong><a href="lead-monitoring-proposal.html">HubSpot monitoring lists</a></strong></td><td>Green light to set up today? (30 min, no code, zero risk)</td></tr>
-  <tr><td>6</td><td><strong>Wednesday call</strong> — 5pm AEST</td><td>Confirm time. Who attends — both of us, or just one?</td></tr>
+  <tr><th>#</th><th>Decision</th><th>Outcome</th></tr>
+  <tr><td>1</td><td><strong>Reply to Gleb</strong></td><td><span class="badge green">Decided</span> Simon to email Gleb: suggest Wednesday meeting, provide the <a href="index.html">quiz flow spec</a>, ask for update on React delivery, discuss what we can implement to prevent issues like this in future.</td></tr>
+  <tr><td>2</td><td><strong><a href="hubspot-damage-report.html">Damage report</a></strong></td><td><span class="badge green">Decided</span> Skip. Hold as leverage — don't send unless needed.</td></tr>
+  <tr><td>3</td><td><strong><a href="lead-monitoring-proposal.html">HubSpot monitoring lists</a></strong></td><td><span class="badge green">Decided</span> Set up Option A today (30 min, no code).</td></tr>
+  <tr><td>4</td><td><strong>Check new form implementation</strong></td><td><span class="badge amber">To do</span> Verify what CRS has changed since the fix — are there multiple forms now? Has anything else shifted?</td></tr>
+  <tr><td>5</td><td><strong>Website → Monday.com lead gap</strong></td><td><span class="badge red">Key issue</span> Leads from the website are not reliably reaching Monday.com. This is the main operational problem to solve.</td></tr>
+  <tr><td>6</td><td><strong>Plan for React launch</strong></td><td><span class="badge amber">To do</span> Plan new workflows and systems for when the new website launches — form monitoring, lead routing, QA process.</td></tr>
 </table>
-
-<div class="private">
-  <strong>Context (Signal, 3 Apr):</strong>
-  <div class="quote">"I do want them to give some sort of compensation like a month refund or something just to show they're sorry. And then moving forward especially with the new site we need to be super tight can't miss any leads"</div>
-  <div class="quote">"Maybe tone down the emails... maybe even suggest a call to work out a way forward. Like weds at 5pm"</div>
-  <div class="quote">"feels like the current approach isn't really landing. Like I want to fucking yell at them but it's defo not working haha"</div>
-  <p style="margin-top: 8px;"><strong>Read:</strong> We want a month's refund + apology, not $93k. Normalize the relationship. <a href="hubspot-damage-report.html">Damage report</a> stays holstered unless needed.</p>
-</div>
 
 <!-- ============================================================ -->
 <hr>
@@ -83,45 +75,20 @@
 </table>
 
 <div class="option recommended">
-  <h3>Option A: Accept + propose Wednesday call <span class="badge green">Recommended</span></h3>
-  <p>Don't relitigate over email. Acknowledge the admission, ask for a <strong>full month's retainer credit</strong> instead of just Meta Ads, propose Wednesday 5pm AEST call. <a href="hubspot-damage-report.html">Damage report</a> stays holstered.</p>
+  <h3>Email to Gleb <span class="badge green">Send today</span></h3>
   <details>
-    <summary>View draft reply (Gmail draft 3 — ready to send)</summary>
+    <summary>View draft reply</summary>
     <div style="background: var(--gray); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-size: 14px;">
       <p>Hi Gleb,</p>
-      <p>Thanks for acknowledging the field mapping issue. We don't agree that the responsibility sits with the sales team — the bug was in the form code and was visible in your own test contacts from October — but we'd rather focus on moving forward than relitigating this over email.</p>
-      <p>We appreciate the offer to waive one month of Meta Ads. Given the scope of the issue (6 months of corrupted data across multiple forms, 80+ leads affected), we'd ask that this be extended to a <strong>full month's retainer credit</strong> rather than just the Meta Ads component. We think that's a fair resolution that lets both sides move on.</p>
-      <p>More importantly, we need to make sure this can never happen again — especially with the React migration approaching. We'd like to propose a call this <strong>Wednesday at 5pm AEST</strong> to cover:</p>
-      <ul>
-        <li>React site status and handover plan</li>
-        <li>QA process for the new site (we've built a 142-test automated suite that we'd like CRS to run before any deployment)</li>
-        <li>Lead monitoring going forward</li>
-      </ul>
-      <p>Does Wednesday work for your team?</p>
+      <p>Thanks for your response. Rather than going back and forth over email, I think it would be more productive to jump on a call. Would <strong>Wednesday at 5pm AEST</strong> work for your team?</p>
+      <p>In the meantime, I've put together a detailed specification for the quiz flow that documents the correct implementation — I'll share it on the call (or beforehand if you'd prefer to review it ahead of time).</p>
+      <p>I'd also like to get an update on the React delivery — the April 7 deadline has passed and we haven't seen a staging URL yet.</p>
+      <p>Going forward, the main thing we want to discuss is how we prevent issues like this from happening again — especially around the React migration. We've been building out automated testing and monitoring on our side, and it would be good to align on process.</p>
+      <p>Let me know if Wednesday works.</p>
       <p>Thanks,<br>Simon</p>
     </div>
   </details>
-</div>
-
-<details>
-  <summary>Option B: Send damage report + propose call (aggressive)</summary>
-  <div>
-    <p>Reply with the <a href="hubspot-damage-report.html">damage report</a> link. Let the evidence speak. Propose Wednesday call to "discuss a resolution." Gives CRS 48 hours to absorb the full scope.</p>
-    <p><strong>Risk:</strong> Gleb hardens. Call becomes adversarial. Goes against the agreed approach to tone things down.</p>
-    <p><strong>When to use:</strong> Only if Option A doesn't produce the month refund. This is the escalation.</p>
-  </div>
-</details>
-
-<details>
-  <summary>Option C: Wait for React delivery (strategic patience)</summary>
-  <div>
-    <p>React deadline is today. If nothing arrives, reply gets firmer. If it does arrive, evaluate it first.</p>
-    <p><strong>Risk:</strong> Gleb's email has been sitting since Friday. Much longer looks like we're avoiding it.</p>
-  </div>
-</details>
-
-<div class="callout amber">
-  <strong>Key question:</strong> Full month retainer (~$9k) or accept the Meta Ads waiver (~$2-3k) and move on? See <a href="crs-engagement-review.html">full engagement history</a> for context.
+  <p style="font-size: 13px; color: #64748b; margin-top: 8px;">Attaches the <a href="index.html">quiz flow spec</a> + <a href="index-uk.html">Ukrainian version</a>. No mention of compensation or damage report. Forward-looking. The <a href="hubspot-damage-report.html">damage report</a> and <a href="crs-engagement-review.html">engagement review</a> stay holstered.</p>
 </div>
 
 <!-- ============================================================ -->
@@ -161,14 +128,15 @@
 
 <table>
   <tr><th>Item</th><th>Status</th><th>Action</th></tr>
-  <tr><td>Reply to Gleb</td><td><span class="badge red">Overdue</span></td><td>Send today after this meeting.</td></tr>
-  <tr><td>Perfmatters vulnerability</td><td><span class="badge amber">Outstanding</span></td><td>Patch staging + speed test (v1.9.4) via WP Engine immediately after this meeting.</td></tr>
-  <tr><td><a href="lead-monitoring-proposal.html">HubSpot monitoring lists</a></td><td><span class="badge amber">Pending approval</span></td><td>Set up today if approved. 30 min.</td></tr>
-  <tr><td>Press release</td><td><span class="badge green">Ready to produce</span></td><td>Homebuyer demand index from typeform data (2020-2026). <strong>Can deliver this week.</strong></td></tr>
-  <tr><td><a href="index.html">Quiz flow spec</a> to CRS</td><td><span class="badge amber">Ready, not sent</span></td><td>Send before or after Wednesday call — decision needed.</td></tr>
+  <tr><td>Email Gleb</td><td><span class="badge red">Today</span></td><td>Suggest Wed meeting, provide spec, ask for React update, discuss prevention.</td></tr>
+  <tr><td><a href="lead-monitoring-proposal.html">HubSpot monitoring lists</a></td><td><span class="badge red">Today</span></td><td>Set up Option A. 30 min.</td></tr>
+  <tr><td>Perfmatters vulnerability</td><td><span class="badge red">Today</span></td><td>Patch staging + speed test (v1.9.4) via WP Engine.</td></tr>
+  <tr><td>Check new form implementation</td><td><span class="badge amber">This week</span></td><td>Verify what CRS changed — are there multiple forms? Anything else shifted?</td></tr>
+  <tr><td>Website → Monday.com gap</td><td><span class="badge amber">This week</span></td><td>Investigate why leads from website don't reach Monday.com. Map the full flow.</td></tr>
+  <tr><td>React launch planning</td><td><span class="badge amber">This week</span></td><td>Plan workflows and systems for new site — monitoring, lead routing, QA.</td></tr>
+  <tr><td>Press release</td><td><span class="badge green">This week</span></td><td>Homebuyer demand index from typeform data (2020-2026).</td></tr>
   <tr><td>Zapier access</td><td><span class="badge amber">Pending</span></td><td>Needed for E2E lead audit monitoring.</td></tr>
-  <tr><td>Monday.com API access</td><td><span class="badge amber">Pending</span></td><td>Needed for full lead audit pipeline.</td></tr>
-  <tr><td>Wednesday call with CRS</td><td><span class="badge blue">Proposed</span></td><td>Confirm 5pm AEST in the reply to Gleb. Who attends?</td></tr>
+  <tr><td>Monday.com API access</td><td><span class="badge amber">Pending</span></td><td>Needed for full lead audit pipeline + investigating the lead gap.</td></tr>
 </table>
 
 <!-- ============================================================ -->
