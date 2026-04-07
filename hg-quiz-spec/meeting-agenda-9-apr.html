@@ -59,11 +59,11 @@
   </tr>
   <tr>
     <td><strong>3. Lead Flow: Website → Monday.com</strong></td>
-    <td class="outcome">Identify where the gap is + who fixes it</td>
+    <td class="outcome">Ensure current flow is preserved on new site</td>
   </tr>
   <tr>
     <td><strong>4. QA &amp; Deployment Process</strong></td>
-    <td class="outcome">Agreed process for testing before deployment</td>
+    <td class="outcome">Understand CRS's QA process + agree on who tests what</td>
   </tr>
   <tr>
     <td><strong>5. Actions &amp; Next Steps</strong></td>
@@ -112,35 +112,45 @@
 <hr>
 <h2>3. Lead Flow: Website → Monday.com</h2>
 
-<p>The main operational issue right now: <strong>leads submitted on the website are not reliably reaching Monday.com</strong>, where the sales team processes them.</p>
-
-<p>The current flow is:</p>
+<p>The current lead flow is working again after the April fix:</p>
 <p style="font-size: 14px; color: #475569; text-align: center; padding: 8px 0;">
   Website form → CF7 → HubSpot (Collected Forms) → Zapier → Monday.com → Broker notification
 </p>
 
+<p>The concern is <strong>ensuring this flow doesn't regress</strong> — and that the React migration doesn't break any part of the chain.</p>
+
 <p><strong>Questions:</strong></p>
 <ul>
-  <li>Which step is breaking? Is it the webhook, the Zapier automation, or the Monday.com integration?</li>
-  <li>Is this the same root cause as the April incident, or a separate issue?</li>
-  <li>What does the lead flow look like on the React site — will it still go through CF7, or is there a new submission mechanism?</li>
+  <li>On the React site, will forms still go through CF7, or is there a new submission mechanism?</li>
+  <li>If the submission path changes, how do we ensure HubSpot, Zapier, and Monday.com integrations are preserved?</li>
+  <li>What monitoring or alerting can we put in place so that if any step in the chain breaks, we know immediately — not months later?</li>
 </ul>
 
 <!-- ============================================================ -->
 <hr>
 <h2>4. QA &amp; Deployment Process</h2>
 
-<p>We want to agree on a process that prevents form breakage from reaching production.</p>
+<p>We need to understand how QA works today and agree on what needs to change.</p>
 
-<p><strong>Proposed workflow:</strong></p>
+<p><strong>Questions for CRS:</strong></p>
+<ul>
+  <li>What is your current QA process when deploying form changes or new pages?</li>
+  <li>Do you test that submitted data arrives correctly in HubSpot with the right field mappings?</li>
+  <li>Who is responsible for verifying integrations (webhooks, CRM, Zapier) before going live?</li>
+</ul>
+
+<p><strong>What we've built on our side:</strong></p>
+<ul>
+  <li>A <strong>142-test automated suite</strong> (Playwright) covering all forms, quizzes, and calculators — available for CRS to run against staging before any deployment (<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/test-coverage.html">test coverage details</a>)</li>
+  <li><strong>HubSpot active list alerts</strong> that flag corrupted data in real time (being set up this week)</li>
+</ul>
+
+<p><strong>What we need to agree on:</strong></p>
 <ol>
-  <li><strong>Spec first</strong> — Requirements and field mappings documented before implementation begins</li>
-  <li><strong>Test on staging</strong> — Submit test data through forms on staging, verify it arrives correctly in HubSpot with correct field mappings</li>
-  <li><strong>Automated test suite</strong> — We have a 142-test Playwright suite covering all forms, quizzes, and calculators. CRS can run this against staging before any deployment (<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/test-coverage.html">test coverage details</a>)</li>
-  <li><strong>Post-deploy monitoring</strong> — HubSpot active lists that alert immediately if data arrives corrupted (already being set up on our side)</li>
+  <li>Requirements and field mappings documented <strong>before</strong> implementation begins</li>
+  <li>Test data submitted through staging forms and verified in HubSpot <strong>before</strong> production deployment</li>
+  <li>Clear ownership — who tests what, and who signs off before go-live</li>
 </ol>
-
-<p>This isn't about adding bureaucracy — it's about catching problems in 5 minutes on staging instead of discovering them 6 months later in production.</p>
 
 <!-- ============================================================ -->
 <hr>
