@@ -130,27 +130,28 @@
 <hr>
 <h2>4. QA &amp; Deployment Process</h2>
 
-<p>We need to understand how QA works today and agree on what needs to change.</p>
+<p>The React migration is a full rebuild — we need to understand how CRS plans to test it before it goes live.</p>
+
+<p><strong>What we'd expect from CRS as the developers:</strong></p>
+<ul>
+  <li>Test cases for form submissions — verifying data arrives in HubSpot with correct field mappings</li>
+  <li>Integration verification — confirming webhooks (Zapier), CRM field mapping, and lead routing work end-to-end</li>
+  <li>A staging environment where we can review and verify before production deployment</li>
+  <li>A sign-off process — who confirms the build is ready for production?</li>
+</ul>
 
 <p><strong>Questions for CRS:</strong></p>
 <ul>
-  <li>What is your current QA process when deploying form changes or new pages?</li>
-  <li>Do you test that submitted data arrives correctly in HubSpot with the right field mappings?</li>
-  <li>Who is responsible for verifying integrations (webhooks, CRM, Zapier) before going live?</li>
+  <li>What is your QA process for the React migration?</li>
+  <li>Will you be providing test cases or a test report before go-live?</li>
+  <li>How do you plan to verify that every form on the new site delivers data correctly to HubSpot and Zapier?</li>
 </ul>
 
-<p><strong>What we've built on our side:</strong></p>
+<p><strong>What we've built as a safety net:</strong></p>
 <ul>
-  <li>A <strong>142-test automated suite</strong> (Playwright) covering all forms, quizzes, and calculators — available for CRS to run against staging before any deployment (<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/test-coverage.html">test coverage details</a>)</li>
+  <li>A <strong>142-test automated suite</strong> (Playwright) covering all forms, quizzes, and calculators — available as an additional verification layer (<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/test-coverage.html">test coverage details</a>)</li>
   <li><strong>HubSpot active list alerts</strong> that flag corrupted data in real time (being set up this week)</li>
 </ul>
-
-<p><strong>What we need to agree on:</strong></p>
-<ol>
-  <li>Requirements and field mappings documented <strong>before</strong> implementation begins</li>
-  <li>Test data submitted through staging forms and verified in HubSpot <strong>before</strong> production deployment</li>
-  <li>Clear ownership — who tests what, and who signs off before go-live</li>
-</ol>
 
 <!-- ============================================================ -->
 <hr>
