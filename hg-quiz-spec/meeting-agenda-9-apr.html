@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Agenda — Wednesday 9 April 2026</title>
+<style>
+  :root { --dark: #1a1a2e; --red: #dc2626; --green: #16a34a; --blue: #2563eb; --gray: #f8fafc; --border: #e2e8f0; --amber: #d97706; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.7; color: #1e293b; background: #fff; max-width: 820px; margin: 0 auto; padding: 48px 32px; font-size: 15px; }
+  h1 { font-size: 24px; color: var(--dark); margin-bottom: 4px; }
+  h2 { font-size: 18px; color: var(--dark); margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--blue); }
+  h3 { font-size: 15px; color: var(--dark); margin: 20px 0 8px; }
+  p { margin-bottom: 10px; }
+  .subtitle { color: #64748b; font-size: 14px; margin-bottom: 28px; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 16px; font-size: 13px; }
+  th { background: #1e293b; color: #fff; text-align: left; padding: 8px 12px; font-weight: 600; font-size: 12px; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) { background: var(--gray); }
+  a { color: var(--blue); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+  ul, ol { margin: 8px 0 12px 20px; }
+  li { margin-bottom: 6px; }
+  .callout { background: #f8fafc; border: 1px solid var(--border); border-left: 4px solid var(--blue); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 14px 0; font-size: 14px; }
+  .callout.amber { border-left-color: var(--amber); background: #fffbeb; }
+  .ref-list { background: var(--gray); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 14px 0; font-size: 13px; }
+  .ref-list h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 8px; }
+  .ref-list a { display: inline; }
+  .time { font-weight: 700; color: var(--blue); font-size: 13px; white-space: nowrap; }
+  .outcome { font-size: 13px; color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+
+<h1>Meeting Agenda — Wednesday 9 April 2026</h1>
+<p class="subtitle">Hunter Galloway + CRS &nbsp;·&nbsp; 5:00 PM AEST &nbsp;·&nbsp; Jayden, Simon, Gleb, Yuliia</p>
+
+<div class="callout">
+  <strong>Goal:</strong> Agree on three things — (1) when the React site will be ready, (2) what the form and integration requirements are for the new site, and (3) how we prevent form/lead issues from recurring.
+</div>
+
+<div class="callout amber">
+  <strong>Pre-read:</strong> We've shared a <a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/index.html">quiz flow specification</a> (<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/index-uk.html">Ukrainian version</a>) that documents the correct implementation for the homepage quiz. Please review before the call — we won't walk through it line by line, but will reference it in the discussion.
+</div>
+
+<!-- ============================================================ -->
+<h2>Agenda</h2>
+
+<table>
+  <tr><th style="width: 70px;">Time</th><th>Topic</th><th style="width: 200px;">Outcome needed</th></tr>
+  <tr>
+    <td class="time">5:00</td>
+    <td><strong>1. React Site Status</strong></td>
+    <td class="outcome">Staging URL + revised go-live date</td>
+  </tr>
+  <tr>
+    <td class="time">5:15</td>
+    <td><strong>2. Form &amp; Integration Requirements</strong></td>
+    <td class="outcome">Agreed requirements before CRS builds forms</td>
+  </tr>
+  <tr>
+    <td class="time">5:35</td>
+    <td><strong>3. Lead Flow: Website → Monday.com</strong></td>
+    <td class="outcome">Identify where the gap is + who fixes it</td>
+  </tr>
+  <tr>
+    <td class="time">5:45</td>
+    <td><strong>4. QA &amp; Deployment Process</strong></td>
+    <td class="outcome">Agreed process for testing before deployment</td>
+  </tr>
+  <tr>
+    <td class="time">5:55</td>
+    <td><strong>5. Actions &amp; Next Steps</strong></td>
+    <td class="outcome">Owners + deadlines for each item</td>
+  </tr>
+</table>
+
+<!-- ============================================================ -->
+<hr>
+<h2>1. React Site Status</h2>
+
+<p>The React migration was committed to be <strong>live by 7 April</strong> (Yuliia, 4 Mar). As of today, no staging URL has been shared.</p>
+
+<p><strong>Questions:</strong></p>
+<ul>
+  <li>What is the current state of the build? Which pages are complete?</li>
+  <li>Can we see a staging URL today?</li>
+  <li>What is the revised go-live date?</li>
+  <li>Will it be an all-at-once launch or page-by-page rollout?</li>
+</ul>
+
+<!-- ============================================================ -->
+<hr>
+<h2>2. Form &amp; Integration Requirements</h2>
+
+<p>Before forms are built on the React site, we need to align on what each form must do. The recent incident showed what happens when integrations are assumed rather than specified.</p>
+
+<p><strong>Every lead-capturing form on the new site must:</strong></p>
+<ol>
+  <li>Map fields correctly to HubSpot — <code>firstname</code>, <code>lastname</code>, <code>email</code>, <code>phone</code></li>
+  <li>Connect the Zapier webhook (<code>9wymd7m4@robot.zapier.com</code>)</li>
+  <li>Pass the source page URL so leads can be attributed</li>
+  <li>Pass <code>transaction_type</code> (purchase / refinance / commercial / build)</li>
+  <li>Pass quiz answer data where applicable (not hardcoded values)</li>
+  <li>Show a success message only after the backend confirms receipt</li>
+</ol>
+
+<p>We've documented the full form inventory and known issues:</p>
+<div class="ref-list">
+  <h4>Reference</h4>
+  <a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/directory.html">Forms &amp; Calculators Directory</a> — all forms with fields, flows, and current bugs &nbsp;·&nbsp;
+  <a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/cf7-14462-context-loss.html">CF7 #14462 Context Loss</a> — how landing page forms lose context
+</div>
+
+<!-- ============================================================ -->
+<hr>
+<h2>3. Lead Flow: Website → Monday.com</h2>
+
+<p>The main operational issue right now: <strong>leads submitted on the website are not reliably reaching Monday.com</strong>, where the sales team processes them.</p>
+
+<p>The current flow is:</p>
+<p style="font-size: 14px; color: #475569; text-align: center; padding: 8px 0;">
+  Website form → CF7 → HubSpot (Collected Forms) → Zapier → Monday.com → Broker notification
+</p>
+
+<p><strong>Questions:</strong></p>
+<ul>
+  <li>Which step is breaking? Is it the webhook, the Zapier automation, or the Monday.com integration?</li>
+  <li>Is this the same root cause as the April incident, or a separate issue?</li>
+  <li>What does the lead flow look like on the React site — will it still go through CF7, or is there a new submission mechanism?</li>
+</ul>
+
+<!-- ============================================================ -->
+<hr>
+<h2>4. QA &amp; Deployment Process</h2>
+
+<p>We want to agree on a process that prevents form breakage from reaching production.</p>
+
+<p><strong>Proposed workflow:</strong></p>
+<ol>
+  <li><strong>Spec first</strong> — Requirements and field mappings documented before implementation begins</li>
+  <li><strong>Test on staging</strong> — Submit test data through forms on staging, verify it arrives correctly in HubSpot with correct field mappings</li>
+  <li><strong>Automated test suite</strong> — We have a 142-test Playwright suite covering all forms, quizzes, and calculators. CRS can run this against staging before any deployment (<a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/test-coverage.html">test coverage details</a>)</li>
+  <li><strong>Post-deploy monitoring</strong> — HubSpot active lists that alert immediately if data arrives corrupted (already being set up on our side)</li>
+</ol>
+
+<p>This isn't about adding bureaucracy — it's about catching problems in 5 minutes on staging instead of discovering them 6 months later in production.</p>
+
+<!-- ============================================================ -->
+<hr>
+<h2>5. Actions &amp; Next Steps</h2>
+
+<table>
+  <tr><th>Action</th><th>Owner</th><th>Deadline</th></tr>
+  <tr><td>Share React staging URL</td><td>CRS</td><td></td></tr>
+  <tr><td>Confirm revised go-live date</td><td>CRS</td><td></td></tr>
+  <tr><td>Review quiz flow spec + confirm implementation approach</td><td>CRS</td><td></td></tr>
+  <tr><td>Document form requirements for React site</td><td>Simon</td><td></td></tr>
+  <tr><td>Diagnose website → Monday.com lead gap</td><td></td><td></td></tr>
+  <tr><td>Run test suite against staging before go-live</td><td>Simon + CRS</td><td></td></tr>
+  <tr><td colspan="3" style="color: #94a3b8; font-style: italic;">Deadlines to be agreed during the meeting</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<hr>
+
+<div class="ref-list">
+  <h4>All Reference Documents</h4>
+  <a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/index.html">Quiz Flow Specification</a> &nbsp;·&nbsp;
+  <a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/index-uk.html">Ukrainian Version</a> &nbsp;·&nbsp;
+  <a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/directory.html">Forms Directory</a> &nbsp;·&nbsp;
+  <a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/test-coverage.html">Test Coverage</a> &nbsp;·&nbsp;
+  <a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/cf7-14462-context-loss.html">CF7 Context Loss</a> &nbsp;·&nbsp;
+  <a href="https://heikkila-pty-ltd.github.io/hunter-galloway-docs/hg-quiz-spec/implementation.html">Implementation Code</a>
+</div>
+
+<p style="color: #94a3b8; font-size: 12px; margin-top: 36px; text-align: center;">Prepared for Hunter Galloway &nbsp;·&nbsp; 7 April 2026</p>
+
+</body>
+</html>
