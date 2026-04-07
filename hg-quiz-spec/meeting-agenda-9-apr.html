@@ -130,21 +130,23 @@
 <hr>
 <h2>4. QA &amp; Deployment Process</h2>
 
-<p>The React migration is a full rebuild — we need to understand how CRS plans to test it before it goes live.</p>
-
-<p><strong>What we'd expect from CRS as the developers:</strong></p>
-<ul>
-  <li>Test cases for form submissions — verifying data arrives in HubSpot with correct field mappings</li>
-  <li>Integration verification — confirming webhooks (Zapier), CRM field mapping, and lead routing work end-to-end</li>
-  <li>A staging environment where we can review and verify before production deployment</li>
-  <li>A sign-off process — who confirms the build is ready for production?</li>
-</ul>
+<p>The React migration is a full rebuild. Yuliia mentioned (3 Apr) that "our QA team will validate all active pages" — we need to understand what that means in practice.</p>
 
 <p><strong>Questions for CRS:</strong></p>
 <ul>
-  <li>What is your QA process for the React migration?</li>
-  <li>Will you be providing test cases or a test report before go-live?</li>
-  <li>How do you plan to verify that every form on the new site delivers data correctly to HubSpot and Zapier?</li>
+  <li>What QA has been done so far on the React site? Can we see the test results?</li>
+  <li>What does "validate all active pages" include — visual checks only, or integration testing (form → HubSpot → Zapier)?</li>
+  <li>Will you be providing a test report or test cases before go-live? If so, what format?</li>
+  <li>How do you verify that submitted form data arrives in HubSpot with correct field mappings?</li>
+  <li>Who signs off that the build is ready for production?</li>
+</ul>
+
+<p><strong>What we'd expect from CRS as the developers before go-live:</strong></p>
+<ul>
+  <li>A staging environment we can access and review</li>
+  <li>Evidence that forms have been tested end-to-end — not just "it renders," but submitted data verified in HubSpot</li>
+  <li>Confirmation that all webhooks, CRM field mappings, and lead routing are working</li>
+  <li>A written test report or checklist showing what was tested and the results</li>
 </ul>
 
 <p><strong>What we've built as a safety net:</strong></p>
