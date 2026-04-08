@@ -1,0 +1,124 @@
+ID,Type,Page Name,URL,CF7/Form ID,Field / Element,Field Type,Field Name / ID,Required,Validation / Format,Default Value,Options / Notes,Test Status,Known Issues,Priority
+F-01,Form,Contact Page,/contact/,CF7 #11830,Message,Textarea,your-message,Yes,"Non-empty, error: 'Please enter your message'",,"Step 1 of 2-step form",Pass,,Critical
+F-01,Form,Contact Page,/contact/,CF7 #11830,Next Button,Button,.crs_custom_next,N/A,,,Advances from Step 1 to Step 2,Pass,,Critical
+F-01,Form,Contact Page,/contact/,CF7 #11830,Request Type,Dropdown,request-type,Yes,,,"First Home Purchase Inquiry, Investment Property Financing, Home Loan Refinance Inquiry, Borrowing Capacity Assessment, General Mortgage Advice, Other",Pass,,Critical
+F-01,Form,Contact Page,/contact/,CF7 #11830,Name,Text input,your-name,Yes,Non-empty,,"Placeholder: 'Enter your Name'",Pass,,Critical
+F-01,Form,Contact Page,/contact/,CF7 #11830,Email,Email input,your-email,Yes,"Regex: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/",,"Placeholder: 'Enter your Email'",Pass,,Critical
+F-01,Form,Contact Page,/contact/,CF7 #11830,Phone,Text input,your-phone,Yes,"Regex: /^(04\d{2}\s\d{3}\s\d{3}|\d{2}\s\d{4}\s\d{4})$/, max 12 chars",,"Auto-formats to '0412 345 678' or '07 1234 5678'",Pass,,Critical
+F-01,Form,Contact Page,/contact/,CF7 #11830,Submit Button,Button,.crs_custom_submit,N/A,,,"Disables during submission, shows spinner",Pass,,Critical
+F-01,Form,Contact Page,/contact/,CF7 #11830,Back Button,Button,.contact_form__back,N/A,,,Returns to Step 1,Pass,,Critical
+F-01,Form,Contact Page,/contact/,CF7 #11830,Form Endpoint,API,,N/A,,,POST /wp-json/contact-form-7/v1/contact-forms/11830/feedback,Pass,,Critical
+F-02,Form,Free Assessment,/get-free-assessment/,CF7 #68942,Name,Text input,text-name,Yes,"Non-empty, error: 'Please enter your name.'",,"form ID: result-form",Pass,,Critical
+F-02,Form,Free Assessment,/get-free-assessment/,CF7 #68942,Email,Email input,text-email,Yes,"Regex: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/",,"Error: 'Please enter a valid email address.'",Pass,,Critical
+F-02,Form,Free Assessment,/get-free-assessment/,CF7 #68942,Phone,Text input,text-phone,Yes,"Regex: /^(04\d{2}\s\d{3}\s\d{3}|\d{2}\s\d{4}\s\d{4})$/, max 12 chars",,"Auto-formats. Error: 'Please enter a valid phone number.'",Pass,,Critical
+F-02,Form,Free Assessment,/get-free-assessment/,CF7 #68942,Transaction Type,Custom dropdown,transaction_type,Yes,,"","Purchase A Property, Refinance A Loan, Commercial Or Business Loan, Build",Pass,,Critical
+F-02,Form,Free Assessment,/get-free-assessment/,CF7 #68942,Submit Button,Button,.crs_custom_submit,N/A,,,"Yellow background (#FFBA3A), disables during submission",Pass,,Critical
+F-02,Form,Free Assessment,/get-free-assessment/,CF7 #68942,Back Button,Button,.btn_back,N/A,,,Returns form to initial state,Pass,,Critical
+F-02,Form,Free Assessment,/get-free-assessment/,CF7 #68942,Result Type One (output),Display,.result-typ_one,N/A,,,Non-build loan outcomes,Pass,,Critical
+F-02,Form,Free Assessment,/get-free-assessment/,CF7 #68942,Result Type Two (output),Display,.result-typ_two,N/A,,,Build loan outcomes,Pass,,Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,Purpose Selection,Radio buttons,,Yes,,,"Purchase a property, Build, Commercial or business loan, Refinance a loan, I'm just exploring",Bug,No branching logic — all 5 paths follow identical linear flow,Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,Applicant Type,Radio buttons,,Yes,,,"Couple, Single person",Bug,Shown to all users including refinance (should be skipped),Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,First Home Owner,Radio buttons,,Yes,,,"Yes, No",Bug,Shown to refinance users (irrelevant question),Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,State,Dropdown,,Yes,,,"NSW, VIC, QLD, ACT, WA, SA, TAS, NT",Pass,,Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,Dependents,Radio buttons,,Yes,,,"0, 1, 2, 3+",Pass,,Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,Total Household Income,Currency input,,Yes,Dollar amount with $ prefix,,,Pass,,Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,Deposit Amount,Currency input,,Yes,Dollar amount with $ prefix,,Should be skipped for refinance,Pass,,Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,Name,Text input,,Yes,Non-empty,,,Pass,,Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,Email,Email input,,Yes,Valid email format,,,Pass,,Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,Phone,Text input,,Yes,Australian format: 04XX XXX XXX,,,Pass,,Critical
+F-03,Quiz,Homepage Quiz,/ + /mortgage-calculator/,Custom JS,"What are you looking to do?",Dropdown,,"Yes",,,"borrowing power, pre-approval, contract signed, refinance, other",Pass,,Critical
+F-04,Quiz,Assessment Quiz Popup,Multiple pages,CF7 #11832,Property Price,Preset buttons + input,,Yes,,,"$500k, $600k, $700k, $800k, more than $800k, or custom entry",Pass,,High
+F-04,Quiz,Assessment Quiz Popup,Multiple pages,CF7 #11832,Deposit Calculation,Calculated display,,N/A,,,Auto-calculated as 8% of property price,Pass,,High
+F-04,Quiz,Assessment Quiz Popup,Multiple pages,CF7 #11832,Deposit Available?,Radio buttons,,Yes,,,"YES, NO",Pass,,High
+F-04,Quiz,Assessment Quiz Popup,Multiple pages,CF7 #11832,Special Circumstances,Checkboxes,,No,,,"Bridging or Low Documentation Loan, Bad Credit Rating Default or Bankruptcy, None of these",Pass,,High
+F-04,Quiz,Assessment Quiz Popup,Multiple pages,CF7 #11832,Name,Text input,text-name,Yes,Non-empty,,,Pass,,High
+F-04,Quiz,Assessment Quiz Popup,Multiple pages,CF7 #11832,Email,Email input,text-email,Yes,Valid email,,,Pass,,High
+F-04,Quiz,Assessment Quiz Popup,Multiple pages,CF7 #11832,Phone,Text input,text-phone,Yes,Valid AU phone,,,Pass,,High
+F-04,Quiz,Assessment Quiz Popup,Multiple pages,CF7 #11832,Transaction Type,Hidden field,transaction_type,Auto,,,"Populated from quiz selection — this form has context (unlike #14462)",Pass,,High
+F-04,Quiz,Assessment Quiz Popup,Multiple pages,CF7 #11832,Source URL,Hidden field,source_url,Auto,,,"Populated automatically — this form has context (unlike #14462)",Pass,,High
+F-05,Form (spam),LVR Calculator Broker,/lvr-calculator/,Gravity Forms #10,Broker contact fields,Mixed,,No,,,100% spam (91 entries — 0 real leads). No reCAPTCHA. Not connected to HubSpot. Pre-dates CRS.,Spam,All entries are bot/crypto spam. Recommend disabling or replacing with popup quiz,Low
+F-06,Form (spam),LMI/YTD Calculator Broker,/lmi-calculator/ + /ytd-calculator/,Gravity Forms #9,Broker contact fields,Mixed,,No,,,100% spam (249 entries — 0 real leads). No reCAPTCHA. Not connected to HubSpot. Pre-dates CRS.,Spam,All entries are bot/crypto spam. Recommend disabling or replacing with popup quiz,Low
+F-07,Form Template,Landing Page Forms,24+ landing pages,"CF7 #14462 (x3), #14422, #14296, #14061, #14060, #14059, #11832 (x4)",Inline CTA (x3),Text inputs,"your-name-yefl1, your-email-yefl1, text-phone-yefl1",Yes,Non-empty,,"CF7 #14462 — Name/Email/Phone only, NO source_url, NO transaction_type",Bug,"Context loss: 72+ form instances across 24+ pages capture no page source or transaction type. See CF7 #14462 report",High
+F-07,Form Template,Landing Page Forms,24+ landing pages,CF7 #14061,Discover Capacity,Text + dropdown + textarea,"name-discovercapacity, email-discovercapacity, phone-discovercapacity, menu-108, textarea-803",Yes,,,"Has dropdown + textarea context — better than #14462",Pass,,High
+F-07,Form Template,Landing Page Forms,24+ landing pages,CF7 #14060,Find a Loan,Text + dropdown + textarea,"name-findaloan, email-findaloan, phone-findaloan, menu-109, textarea-804",Yes,,,"Has dropdown + textarea context — better than #14462",Pass,,High
+F-07,Form Template,Landing Page Forms,24+ landing pages,CF7 #14059,Check a Loan,Text + dropdown + textarea,"name-checkaloan, email-checkaloan, phone-checkaloan, menu-107, textarea-802",Yes,,,"Has dropdown + textarea context — better than #14462",Pass,,High
+F-08,Quiz,Mortgage Report,/mortgage-report/,"CF7 #67146 + #67147, Quizr system",Email Gate (Step 12),Text + email,"your-name, your-email, newsletter",Yes,Valid email,,"CF7 #67146 — email gate to unlock report. Quiz data (steps 2-9) stays client-side.",Pass,,Medium
+F-08,Quiz,Mortgage Report,/mortgage-report/,"CF7 #67146 + #67147, Quizr system",Assessment CTA (Step 13),Text + tel + textarea,"your-phone, your-message, your-name, your-email",Yes,,,"CF7 #67147 — post-report lead capture",Pass,,Medium
+F-09,Quiz,Refinance Quiz (Lower Your Rate),/lower-your-rate/,CF7 #14462 (+ possibly #72896),Interest Rate (Step 1),Radio buttons,,Yes,,,"below-5, 5-5.25, 5.25-5.5, above-5.5, not-sure",Bug,Quiz answer NOT in CF7 form — discarded on submit,Critical
+F-09,Quiz,Refinance Quiz (Lower Your Rate),/lower-your-rate/,CF7 #14462 (+ possibly #72896),Loan Amount (Step 2),Radio buttons,,Yes,,,"less-300k, 300k-500k, more-500k",Bug,Quiz answer NOT in CF7 form — discarded on submit,Critical
+F-09,Quiz,Refinance Quiz (Lower Your Rate),/lower-your-rate/,CF7 #14462 (+ possibly #72896),Remaining Term (Step 3),Radio buttons,,Yes,,,"less-5, 5-10, more-10",Bug,Quiz answer NOT in CF7 form — discarded on submit,Critical
+F-09,Quiz,Refinance Quiz (Lower Your Rate),/lower-your-rate/,CF7 #14462 (+ possibly #72896),Refinancing Priority (Step 4),Radio buttons,,Yes,,,"lower-payment, pay-faster, cash-equity, fixed-rate",Bug,Quiz answer NOT in CF7 form — discarded on submit,Critical
+F-09,Quiz,Refinance Quiz (Lower Your Rate),/lower-your-rate/,CF7 #14462 (+ possibly #72896),Name (Step 5),Text input,your-name-yefl1,Yes,Non-empty,,,Pass,,Critical
+F-09,Quiz,Refinance Quiz (Lower Your Rate),/lower-your-rate/,CF7 #14462 (+ possibly #72896),Email (Step 5),Email input,your-email-yefl1,Yes,Valid email,,,Pass,,Critical
+F-09,Quiz,Refinance Quiz (Lower Your Rate),/lower-your-rate/,CF7 #14462 (+ possibly #72896),Phone (Step 5),Text input,text-phone-yefl1,Yes,Valid AU phone,,,Pass,,Critical
+F-09,Quiz,Refinance Quiz (Lower Your Rate),/lower-your-rate/,CF7 #14462 (+ possibly #72896),Transaction Type,Hidden field,,N/A,,,"MISSING from CF7 #14462 — not submitted. Form #11832 has this field.",Bug,No transaction_type sent to HubSpot,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,Purpose Selection,Radio buttons,,Yes,,,"Purchase a property, Build, Commercial or business loan, Refinance a loan, I'm just exploring",Pass,,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,Applicant Type,Radio buttons,,Yes,,,"Couple, Single person",Pass,,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,First Home Owner,Radio buttons,,Yes,,,"Yes, No",Pass,,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,State,Dropdown,,Yes,,,"NSW, VIC, QLD, ACT, WA, SA, TAS, NT",Pass,,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,Dependents,Radio buttons,,Yes,,,"0, 1, 2, 3+",Pass,,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,Total Household Income,Currency input,,Yes,Dollar amount with $ prefix,,,Pass,,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,Deposit Amount,Currency input,,Yes,Dollar amount with $ prefix,,,Pass,,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,Name,Text input,,Yes,Non-empty,,,Pass,,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,Email,Email input,,Yes,Valid email format,,,Pass,,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,Phone,Text input,,Yes,Australian format: 04XX XXX XXX,,,Pass,,Critical
+C-01,Calculator,Mortgage Calculator,/mortgage-calculator/,,"What are you looking to do?",Dropdown,,"Yes",,,"borrowing power, pre-approval, contract signed, refinance, other",Pass,,Critical
+C-02,Calculator,Equity Calculator,/equity-calculator/,,Loan Amount,Currency input,#equity_loan_amount,Yes,Numeric with commas,,AutoNumeric formatted,Pass,,High
+C-02,Calculator,Equity Calculator,/equity-calculator/,,Property Value,Currency input,#equity_property_value,Yes,Numeric with commas,,AutoNumeric formatted,Pass,,High
+C-02,Calculator,Equity Calculator,/equity-calculator/,,Property Type,Radio buttons,equitytype,Yes,,"Investment","Investment (value=90), Owner Occupier (value=80)",Pass,,High
+C-02,Calculator,Equity Calculator,/equity-calculator/,,Calculate Button,Button,.h_button,N/A,,"calculate","Changes to 're-calculate' after first use",Pass,,High
+C-02,Calculator,Equity Calculator,/equity-calculator/,,Current LVR (output),Display,#h_equity_current_lvr,N/A,,0%,Shows calculated LVR percentage,Pass,,High
+C-02,Calculator,Equity Calculator,/equity-calculator/,,Maximum LVR (output),Display,#h_equity_max_lvr,N/A,,,Shows 80% or 90% based on property type,Pass,,High
+C-02,Calculator,Equity Calculator,/equity-calculator/,,Available Equity (output),Display,#h_equity_avialable,N/A,,,Formatted currency amount,Pass,,High
+C-02,Calculator,Equity Calculator (Banner),/equity-calculator/,,Banner Input,Currency input,input.input-banner,N/A,,,Orphaned: no name/id — no JS reads this value,Bug,"Completely broken: orphaned input, self-link button, only 1 input where 2 needed",Medium
+C-03,Calculator,LVR Calculator,/lvr-calculator/,,Loan Amount,Currency input,#lvr_loan_amount,Yes,Numeric with commas,,AutoNumeric formatted,Pass,,High
+C-03,Calculator,LVR Calculator,/lvr-calculator/,,Property Value,Currency input,#lvr_property_value,Yes,Numeric with commas,,AutoNumeric formatted,Pass,,High
+C-03,Calculator,LVR Calculator,/lvr-calculator/,,Talk to Mortgage Broker,Radio buttons,lvrbrocker,No,,"","Yes, No — Yes shows Gravity Form (gform_wrapper_10)",Pass,,High
+C-03,Calculator,LVR Calculator,/lvr-calculator/,,LVR Result (output),Display,#lvr_equity_current_lvr,N/A,,0%,Two decimal places with % symbol,Pass,,High
+C-04,Calculator,YTD Calculator,/ytd-calculator/,,Date Started Job,Date picker,#ytd_started_job,Yes,dd-mm-yy format,,,Pass,,High
+C-04,Calculator,YTD Calculator,/ytd-calculator/,,End Date of Payslip,Date picker,#ytd_end_job,Yes,dd-mm-yy format,,,Pass,,High
+C-04,Calculator,YTD Calculator,/ytd-calculator/,,YTD Gross Income,Currency input,#ytd_gross_income,Yes,Dollar amount,,"AutoNumeric, 2 decimal places",Pass,,High
+C-04,Calculator,YTD Calculator,/ytd-calculator/,,Talk to Mortgage Broker,Radio buttons,ytdbrocker,No,,"","Yes, No — Yes shows Gravity Form (gform_9)",Pass,,High
+C-04,Calculator,YTD Calculator,/ytd-calculator/,,Calculate Button,Button,.ytd_button,N/A,,"calculate","Changes to 're-calculate' after first use",Pass,,High
+C-04,Calculator,YTD Calculator,/ytd-calculator/,,Annualized Income (output),Display,#ytd_payslip,N/A,,,Currency formatted result,Pass,,High
+C-05,Calculator,Mortgage vs Rent,/mortgage-vs-rent-calculator/,,Weekly Rent,Currency input,.calc-rent__main-input input,Yes,Numeric with IMask,,Thousand separator formatting,Pass,,High
+C-05,Calculator,Mortgage vs Rent,/mortgage-vs-rent-calculator/,,Calculate Button,Button,.calc-rent__btn,N/A,,Recalculate,,Pass,,High
+C-05,Calculator,Mortgage vs Rent,/mortgage-vs-rent-calculator/,,Rent Price (output),Display,#rentPrice,N/A,,,Formatted weekly amount,Pass,,High
+C-05,Calculator,Mortgage vs Rent,/mortgage-vs-rent-calculator/,,5 Year Total (output),Display,#fiveYearsPrice,N/A,,,"rent x 52 x 5, comma formatted",Pass,,High
+C-05,Calculator,Mortgage vs Rent,/mortgage-vs-rent-calculator/,,Affordable Mortgage (output),Display,#affordPrice,N/A,,,"PV calc at 6% interest, 360 months",Pass,,High
+C-06,Calculator,Deposit Calculator,/deposit-calculator/,,Deposit Amount,Currency input,,Yes,Numeric currency,,,Pass,,Medium
+C-06,Calculator,Deposit Calculator,/deposit-calculator/,,Home Price,Currency input,,Yes,Numeric currency,,,Pass,,Medium
+C-06,Calculator,Deposit Calculator,/deposit-calculator/,,Interest Rate,Text input,,Yes,Percentage,,Suggested: around 6.0%,Pass,,Medium
+C-06,Calculator,Deposit Calculator,/deposit-calculator/,,Loan Term,Text input,,Yes,Years,,Standard: 30 years,Pass,,Medium
+C-06,Calculator,Deposit Calculator,/deposit-calculator/,,Deposit % Slider,Slider,#hc_down_slider_result,No,,,"nouislider, yellow (#ffbe0c) progress bar",Pass,,Medium
+C-07,Calculator,Stamp Duty QLD,/stamp-duty-calculator-queensland/,,State,Radio/dropdown,,Yes,,QLD,"ACT, NSW, NT, QLD, SA, TAS, VIC, WA",Pass,,High
+C-07,Calculator,Stamp Duty QLD,/stamp-duty-calculator-queensland/,,Property Price,Currency input,,Yes,Numeric,,Dollar amount,Pass,,High
+C-07,Calculator,Stamp Duty QLD,/stamp-duty-calculator-queensland/,,Property Purpose,Radio buttons,,Yes,,,"Investment, To live in",Pass,,High
+C-07,Calculator,Stamp Duty QLD,/stamp-duty-calculator-queensland/,,Security Type,Radio buttons,,Yes,,,"New home, Established home, Vacant land",Pass,,High
+C-07,Calculator,Stamp Duty QLD,/stamp-duty-calculator-queensland/,,Transaction Type,Radio buttons,,Yes,,,"Purchase, Refinance",Pass,,High
+C-07,Calculator,Stamp Duty QLD,/stamp-duty-calculator-queensland/,,First Home Buyer,Radio buttons,,Yes (conditional),,,"Yes, No — conditional on other selections",Pass,,High
+C-07,Calculator,Stamp Duty QLD,/stamp-duty-calculator-queensland/,,Primary Residence,Radio buttons,,Conditional,,,"Yes, No — appears for owner-occupiers",Pass,,High
+C-07,Calculator,Stamp Duty QLD,/stamp-duty-calculator-queensland/,,Foreign Purchaser,Radio buttons,,Conditional,,,"Yes, No",Pass,,High
+C-07,Calculator,Stamp Duty QLD,/stamp-duty-calculator-queensland/,,Calculate Button,Button,,N/A,,"Calculate Upfront Costs",,Pass,,High
+C-08,Calculator,LMI Calculator,/lmi-calculator/,,Loan Amount,Currency input,#lmi_loan_amount,Yes,Numeric with commas,,,Pass,,Medium
+C-08,Calculator,LMI Calculator,/lmi-calculator/,,Property Value,Currency input,#lmi_property_value,Yes,Numeric with commas,,,Pass,,Medium
+C-08,Calculator,LMI Calculator,/lmi-calculator/,,Occupation,Dropdown,#yourjob,Yes,,,"Quiz-style with radio buttons and currency inputs",Pass,,Medium
+C-09,Calculator,Extra Repayments,/home-loan-extra-repayment-calculator/,,Calculator,Mixed,,Yes,,,Loads own page with deposit calculator functionality (does NOT redirect),TBD,Not fully tested — verify on React site,Medium
+CTA,CTA,Get a Free Assessment,/ (Homepage),,Assessment CTA,Button/Link,,N/A,,,Links to assessment form or opens popup,Pass,,Critical
+CTA,CTA,Get a Free Assessment,/first-home-buyer-loans/,,Assessment CTA,Button/Link,,N/A,,,,Pass,,Critical
+CTA,CTA,Get a Free Assessment,/refinance-home-loan/,,Assessment CTA,Button/Link,,N/A,,,,Pass,,Critical
+CTA,CTA,Get a Free Assessment,/mortgage-vs-rent-calculator/,,Assessment CTA,Button/Link,,N/A,,,,Pass,,Critical
+CTA,CTA,Get a Free Assessment,/deposit-calculator/,,Assessment CTA,Button/Link,,N/A,,,,Pass,,Critical
+CTA,CTA,Get a Free Assessment,/equity-calculator/,,Assessment CTA,Button/Link,,N/A,,,,Pass,,Critical
+NAV,Navigation,Header,All pages,,Phone Number CTA,Link/Text,,N/A,,,1300 088 065 — tel:1300088065,Pass,,Critical
+NAV,Navigation,Header,All pages,,Get a Free Assessment,Button,,N/A,,,Header CTA button,Pass,,Critical
+NAV,Navigation,Header,All pages,,Menu Items,Links,,N/A,,,"Home Loans, Calculators (Popular), Resources, Contact, About Us",Pass,,High
+NAV,Navigation,Footer,All pages,,Footer Links,Links,,N/A,,,Multiple sections with links,Pass,,Medium
+NAV,Navigation,Footer,All pages,,Social Media,Links,,N/A,,,"Facebook, Instagram, YouTube, LinkedIn, Twitter",Pass,,Medium
+NAV,Navigation,Mobile Menu,All pages (mobile),,Hamburger Toggle,Button,,N/A,,,Opens mobile navigation overlay,Pass,,High
+SEO,SEO,Homepage,/,,Title Tag,Meta,,N/A,,,"Must be >10 chars, contains 'Hunter Galloway'",Pass,,High
+SEO,SEO,Homepage,/,,Meta Description,Meta,,N/A,,,Must be >10 chars,Pass,,High
+SEO,SEO,Homepage,/,,Canonical URL,Meta,,N/A,,,Must contain huntergalloway.com.au,Pass,,High
+SEO,SEO,Homepage,/,,OG Title,Meta,,N/A,,,og:title must be present,Pass,,High
+SEO,SEO,Homepage,/,,OG Description,Meta,,N/A,,,og:description must be present,Pass,,High
+SEO,SEO,Key Pages,/first-home-buyer-loans/ /refinance-home-loan/ /mortgage-calculator/ /contact/ /mortgage-broker-brisbane/,,Title + Canonical,Meta,,N/A,,,Checked on all 6 key pages,Pass,,High
